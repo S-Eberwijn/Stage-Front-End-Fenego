@@ -1,0 +1,163 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300&display=swap');
+* {
+    margin: 0;
+    cursor: none;
+    font-family: 'Poppins', sans-serif;
+}
+
+body {
+    background-color: blueviolet;
+}
+
+hr {
+    width: 60px;
+    height: 3px;
+    background-color: tan;
+    border: none;
+    position: absolute;
+    display: none;
+}
+
+#detailedBox {
+    position: absolute;
+    width: 400px;
+    height: 400px;
+    border: 2px solid tan;
+    display: none;
+    transition: 1000ms;
+}
+
+.wrapper {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    padding: 1.5rem;
+}
+
+#cursor {
+    width: 2rem;
+    height: 2rem;
+    background-color: white;
+    border: 1px solid white;
+    border-radius: 50%;
+    position: absolute;
+    pointer-events: none;
+    z-index: 15;
+}
+
+.item {
+    padding: 10px;
+    margin: auto;
+    margin-top: 15px;
+    margin-bottom: 15px;
+    width: 150px;
+    height: 150px;
+    border: tan 2px solid;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    overflow: hidden;
+}
+
+.imgHolder {
+    width: 100%;
+    height: 80%;
+}
+
+button {
+    border-radius: 0;
+    border: none;
+    color: transparent;
+    background-color: transparent;
+    padding: 0;
+}
+
+button:focus {
+    outline: none;
+    box-shadow: none;
+}
+
+.up {
+    border-bottom: 75px solid #fff;
+    border-right: 50px solid transparent;
+    border-left: 50px solid transparent;
+}
+
+.arrow-up:hover {
+    transition: border-color 1s linear;
+    border-bottom-color: #e32636;
+}
+
+.arrow-down:hover {
+    transition: border-color 1s linear;
+    border-top-color: #e32636;
+}
+
+.down {
+    border-top: 75px solid #fff;
+    border-right: 50px solid transparent;
+    border-left: 50px solid transparent;
+}
+
+.disabledLook {
+    opacity: 0.7;
+}
+
+.imgHolder>img {
+    /*background-color: black;*/
+    display: block;
+    margin: auto;
+    max-height: 100%;
+    max-width: 100%;
+}
+
+.item>p {
+    text-align: center;
+    color: #fff;
+    font-size: x-large;
+    font-weight: 500;
+}
+
+@keyframes bg {
+    0% {
+        background-size: 0 3px, 3px 0, 0 3px, 3px 0;
+    }
+    25% {
+        background-size: 100% 3px, 3px 0, 0 3px, 3px 0;
+    }
+    50% {
+        background-size: 100% 3px, 3px 100%, 0 3px, 3px 0;
+    }
+    75% {
+        background-size: 100% 3px, 3px 100%, 100% 3px, 3px 0;
+    }
+    100% {
+        background-size: 100% 3px, 3px 100%, 100% 3px, 3px 100%;
+    }
+}
+
+.selectingItem {
+    /*animation: bg 2000ms cubic-bezier(0.19, 1, 0.22, 1) 1;*/
+    animation: bg 2000ms cubic-bezier(.11, .11, .78, .76) 1;
+    background-repeat: no-repeat;
+    background-image: linear-gradient(to right, #e32636 100%, #e32636 100%), linear-gradient(to bottom, #e32636 100%, #e32636 100%), linear-gradient(to right, #e32636 100%, #e32636 100%), linear-gradient(to bottom, #e32636 100%, #e32636 100%);
+    background-size: 100% 3px, 3px 100%, 100% 3px, 3px 100%;
+    background-position: 0 0, 100% 0, 100% 100%, 0 100%;
+}
+
+#carouselWrapper {
+    position: relative;
+    overflow: hidden;
+    margin-bottom: 15px;
+}
+
+#carousel {
+    position: absolute;
+    visibility: hidden;
+}
+
+.verticalSlider>button {
+    display: block;
+    margin-left: auto;
+    margin-right: auto
+}
