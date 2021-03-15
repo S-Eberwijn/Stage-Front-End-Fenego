@@ -6,13 +6,13 @@
 }
 
 body {
-    background-color: blueviolet;
+    background-color: black;
 }
 
 hr {
     width: 60px;
     height: 3px;
-    background-color: tan;
+    background-color: white;
     border: none;
     position: absolute;
     display: none;
@@ -21,17 +21,16 @@ hr {
 #detailedBox {
     position: absolute;
     width: 400px;
-    height: 400px;
-    border: 2px solid tan;
+    border: 3px solid white;
+    border-radius: 4%;
     display: none;
-    transition: 1000ms;
 }
 
 .wrapper {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
-    padding: 1.5rem;
+    padding-left: 1.5rem;
 }
 
 #cursor {
@@ -52,7 +51,7 @@ hr {
     margin-bottom: 15px;
     width: 150px;
     height: 150px;
-    border: tan 2px solid;
+    border: white 2px solid;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
@@ -148,7 +147,6 @@ button:focus {
 #carouselWrapper {
     position: relative;
     overflow: hidden;
-    margin-bottom: 15px;
 }
 
 #carousel {
