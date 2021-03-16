@@ -99,7 +99,7 @@ window.onload = function() {
     //detailedBox.style.marginTop = Carousel.itemMargin / (Carousel.numVisible * 3) + 'px';
     detailedBox.style.height = (Carousel.numVisible * Carousel.rowHeight) - 24.5 + 'px';
     detailedBox.style.opacity = 0;
-    detailedBox.style.transition = '1000ms';
+    detailedBox.style.transition = '500ms';
 };
 
 function createNewItemMockData() {
@@ -177,7 +177,7 @@ function moveSmallLine(itemCoords) {
     smallLine.style.top = (itemCoords.top + itemCoords.bottom) / 2 + 'px';
     smallLine.style.left = itemCoords.right + 'px';
     smallLine.style.display = 'block';
-    smallLine.style.transition = '1000ms';
+    smallLine.style.transition = '500ms';
 }
 
 //Shows small-line
