@@ -7,6 +7,7 @@
 
 body {
     background-color: black;
+    overflow: hidden;
     padding: 2rem;
 }
 
@@ -29,9 +30,12 @@ hr {
     border-radius: 4%;
     visibility: hidden;
     text-align: justify;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
 }
 
-#detailedBox>.itemName {
+#detailedBox>#leftDetailedBoxContent>.itemName {
     font-weight: bolder;
     width: 100%;
     color: white;
@@ -49,7 +53,7 @@ hr {
     /*Maybe padding*/
 }
 
-#detailedBox>.imgBox {
+#detailedBox>#leftDetailedBoxContent>.imgBox {
     max-width: 50%;
     display: block;
     height: 30%;
@@ -58,7 +62,7 @@ hr {
     margin-right: auto;
 }
 
-#detailedBox>.subHeaders {
+#detailedBox>#leftDetailedBoxContent>.subHeaders {
     font-weight: bolder;
     font-size: 1.2rem;
     padding: .3rem;
@@ -67,7 +71,7 @@ hr {
     text-decoration: underline;
 }
 
-#detailedBox>.description {
+#detailedBox>#leftDetailedBoxContent>.description {
     font-size: .9rem;
     padding: .3rem;
     padding-top: 0;
@@ -82,7 +86,6 @@ hr {
     justify-content: space-between;
     padding-left: 1.5rem;
 }
-
 
 /*
 #cursor {
@@ -165,6 +168,7 @@ hr {
     color: #fff;
     font-size: x-large;
     font-weight: 500;
+    white-space: nowrap;
 }
 
 @keyframes bg {
@@ -249,4 +253,62 @@ button:focus {
     border-bottom: 15px solid;
     height: 60px;
     width: 60px;
+}
+
+#leftDetailedBoxContent {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    width: 100%;
+}
+
+.lds-ring {
+    margin: 0 auto;
+    display: inline-block;
+    position: relative;
+    width: 80px;
+    height: 80px;
+    display: none;
+}
+
+.lds-ring.animate {
+    animation: lds-ring 1.2s cubic-bezier(0.5, 0, 0.5, 1) .75;
+    display: block;
+}
+
+.lds-ring div {
+    box-sizing: border-box;
+    display: block;
+    position: absolute;
+    width: 64px;
+    height: 64px;
+    margin: 8px;
+    border: 8px solid #fff;
+    border-radius: 50%;
+    border-color: #fff transparent transparent transparent;
+}
+
+.lds-ring div:nth-child(1) {
+    animation-delay: -0.45s;
+}
+
+.lds-ring div:nth-child(2) {
+    animation-delay: -0.3s;
+}
+
+.lds-ring div:nth-child(3) {
+    animation-delay: -0.15s;
+}
+
+@keyframes lds-ring {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+#leftDetailedBoxContent {
+    display: none;
 }
