@@ -4,8 +4,13 @@ const previousButtons = document.querySelectorAll('button.prev');
 const nextButtons = document.querySelectorAll('button.next');
 const detailedBox = document.getElementById('detailedBox');
 const smallLine = document.getElementById('smallLine');
+const leftDetailedBoxItemName = document.getElementById('leftDetailedBoxItemName');
+const leftDetailedBoxItemPicture = document.getElementById('leftDetailedBoxItemPicture');
+const leftDetailedBoxItemDescription = document.getElementById('leftDetailedBoxItemDescription');
+const leftDetailedBoxItemTags = document.getElementById('leftDetailedBoxItemTags');
+const leftDetailedBoxItemPrice = document.getElementById('leftDetailedBoxItemPrice');
 
-const MAX_SCANNED_ITEMS = 10;
+const MAX_SCANNED_ITEMS = 20;
 
 
 let cursorInactiveTimer;
@@ -19,7 +24,7 @@ let Carousel = {
     width: 200, // Images are forced into a width of this many pixels.
     numVisible: 3, // The number of images visible at once.
     duration: 750, // Animation duration in milliseconds.
-    itemMargin: 100  //40 for laptop, 99 for home screen @stephan
+    itemMargin: 100 //40 for laptop, 100 for home screen @stephan
 };
 
 let data = {};
@@ -33,9 +38,11 @@ function createItemData() {
         let barcode = createItemCodeString();
         data[`${barcode}`] = {};
         data[`${barcode}`]["name"] = `${itemNames[Math.floor(Math.random() * Math.floor(itemNames.length))]}`;
+        data[`${barcode}`]["img"] = `./Images/ring${Math.floor(Math.random() * 3)}.png`;
         data[`${barcode}`]["description"] = `${i} - ${getLoremIpsum()}`;
         data[`${barcode}`]["tags"] = ["Ring", "Steel", "Small"];
-        data[`${barcode}`]["price"] = "29,99";
+        //TODO: Always make it double digits behind the comma.
+        data[`${barcode}`]["price"] = `€${Math.floor(Math.random() * 100) + 20},${Math.floor(Math.random() * 99)}`;
     }
 };
 
@@ -54,7 +61,7 @@ function createItemCodeString() {
 
 
 //Runs when the window is loaded.
-window.onload = function () {
+window.onload = function() {
     let carousel = Carousel.carousel = document.getElementById('carousel'),
         itemWidth = Carousel.width;
     createItemData();
@@ -81,7 +88,7 @@ window.onload = function () {
         //Create item image.
         var img = document.createElement('img');
         //TODO: make the image selection dynamic
-        img.src = `./Images/ring${Math.floor(Math.random() * 3)}.png`;
+        img.src = data[barcode].img;
         //Add the image to the image holder in the item div.
         imageHolder.appendChild(img);
 
@@ -97,11 +104,11 @@ window.onload = function () {
 
 
         //Adds an event listener to every item-box for when an animation ends.
-        item.addEventListener("animationend", function () {
+        item.addEventListener("animationend", function() {
             var selectedItemCoords = getCoords(item);
 
             //TODO: Put stuff in the detailed box here
-            console.log(data[item.id].name);
+            //console.log(data[item.id].name);
             document.querySelectorAll("div.selected").forEach(element => {
                 element.classList.toggle('selected');
             });
@@ -111,6 +118,7 @@ window.onload = function () {
             moveSmallLine(selectedItemCoords);
             //showSmallLine();
             showDetailedBox();
+            setItemInDetailedBox(item.id);
         }, false);
 
     }
@@ -149,11 +157,11 @@ window.onload = function () {
 
 //Adds an event listener to every previous-button for when a transition ends.
 previousButtons.forEach(element => {
-    element.addEventListener("transitionend", function () {
+    element.addEventListener("transitionend", function() {
         if (!isMoving) {
             isMoving = true;
             rotateForward();
-            animate(-Carousel.rowHeight, 0, function () {
+            animate(-Carousel.rowHeight, 0, function() {
                 carousel.style.top = '0';
                 isMoving = false;
             });
@@ -163,10 +171,10 @@ previousButtons.forEach(element => {
 
 //Adds an event listener to every next-button for when a transition ends.
 nextButtons.forEach(element => {
-    element.addEventListener("transitionend", function () {
+    element.addEventListener("transitionend", function() {
         if (!isMoving) {
             isMoving = true;
-            animate(0, -Carousel.rowHeight, function () {
+            animate(0, -Carousel.rowHeight, function() {
                 rotateBackward();
                 carousel.style.top = '0';
                 isMoving = false;
@@ -209,7 +217,7 @@ function showDetailedBox() {
 
 //Whenever the user clicks on the body of the page, it hides the detailed box and small-line.
 //TODO: make this a hover thing
-window.document.body.addEventListener('click', function () {
+window.document.body.addEventListener('click', function() {
     hideDetailedBox();
     hideSmallLine();
     document.querySelectorAll("div.selected").forEach(element => {
@@ -231,9 +239,9 @@ function hideSmallLine() {
 // ++=-CURSOR-=++
 
 //Turn on/off the cursor when active/inactive
-document.onmousemove = function () {
+document.onmousemove = function() {
     clearTimeout(cursorInactiveTimer);
-    cursorInactiveTimer = setTimeout(function () { cursor.style.display = 'none'; }, 8000);
+    cursorInactiveTimer = setTimeout(function() { cursor.style.display = 'none'; }, 8000);
 }
 
 //Move the cursor
@@ -297,7 +305,7 @@ function animate(begin, end, finalTask) {
         duration = Carousel.duration,
         startTime = Date.now();
     carousel.style.top = begin + 'px';
-    var animateInterval = window.setInterval(function () {
+    var animateInterval = window.setInterval(function() {
         var t = Date.now() - startTime;
         if (t >= duration) {
             window.clearInterval(animateInterval);
@@ -343,4 +351,12 @@ function getDistanceBetweenElements(a, b) {
         Math.pow(aPosition.x - bPosition.x, 2) +
         Math.pow(aPosition.y - bPosition.y, 2)
     );
+}
+
+function setItemInDetailedBox(barcode) {
+    leftDetailedBoxItemName.innerHTML = data[barcode].name;
+    leftDetailedBoxItemPicture.src = data[barcode].img;
+    leftDetailedBoxItemDescription.innerHTML = data[barcode].description;
+    leftDetailedBoxItemTags.innerHTML = data[barcode].tags.join(', ');
+    leftDetailedBoxItemPrice.innerHTML = data[barcode].price;
 }
