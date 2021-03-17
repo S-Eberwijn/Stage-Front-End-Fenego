@@ -8,6 +8,8 @@
     <title>Fits-Carousel</title>
     <meta name="description" content="The HTML5 Herald">
     <link rel="stylesheet" href="./css.css">
+    <link rel='shortcut icon' type='image/x-icon' href='favicon.ico' />
+
 
 </head>
 
@@ -16,21 +18,26 @@
     <div id="cursor"></div>
     <div class="wrapper">
         <div class="verticalSlider">
-            <button id="next" class="prev up disabledLook"></button>
-
-            <div id="carousel">
-                <div class="item"></div>
-                <div class="item"></div>
-                <div class="item"></div>
-                <div class="item"></div>
-                <div class="item"></div>
-                <div class="item"></div>
-
-            </div>
-            <button id="prev" class="next down disabledLook"></button>
+            <button id="next" class="prev arrow up disabledLook"></button>
+            <div id="carousel"></div>
+            <button id="prev" class="next arrow down disabledLook"></button>
         </div>
         <hr id="smallLine" />
-        <div id="detailedBox"></div>
+        <div id="detailedBox">
+            <p class="itemName">Brothers Alu Ring</p>
+            <div class="imgBox">
+                <img src="./Images/ring1.png" alt="ring0">
+            </div>
+            <p class="subHeaders">Description:</p>
+            <p class="description">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras sodales egestas odio a
+                venenatis. Duis lobortis imperdiet dolor. Suspendisse et porta metus. Phasellus facilisis felis id nisl
+                auctor, nec laoreet enim tempor. Cras dictum dui eget mollis accumsan. Nunc diam mauris, interdum non
+                sapien nec, mattis pellentesque purus. Donec molestie posuere eleifend.</p>
+            <p class="subHeaders">Tags:</p>
+            <p class="description">Ring, Silver, Small</p>
+            <p class="subHeaders">Price:</p>
+            <p class="description">$29,99</p>
+        </div>
     </div>
 
     <script src="./js.js"></script>

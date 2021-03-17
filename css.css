@@ -7,6 +7,8 @@
 
 body {
     background-color: black;
+    overflow: hidden;
+    padding: 2rem;
 }
 
 hr {
@@ -15,6 +17,9 @@ hr {
     background-color: white;
     border: none;
     position: absolute;
+    visibility: hidden;
+    opacity: 0;
+    transition: 500ms;
     display: none;
 }
 
@@ -23,7 +28,50 @@ hr {
     width: 400px;
     border: 3px solid white;
     border-radius: 4%;
-    display: none;
+    visibility: hidden;
+}
+
+#detailedBox>.itemName {
+    font-weight: bolder;
+    width: 100%;
+    color: white;
+    line-height: 200%;
+    font-size: 2rem;
+    text-indent: 5%;
+    border-bottom: 3px solid #fff;
+}
+
+.imgBox>img {
+    width: 100%;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    /*Maybe padding*/
+}
+
+#detailedBox>.imgBox {
+    width: 50%;
+    display: block;
+    height: 200px;
+    padding: 1rem;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+#detailedBox>.subHeaders {
+    font-weight: bolder;
+    font-size: 1.2rem;
+    padding: .3rem;
+    padding-left: .5rem;
+    color: white;
+    text-decoration: underline;
+}
+
+#detailedBox>.description {
+    font-size: .9rem;
+    padding: .3rem;
+    padding-left: .9rem;
+    color: white;
 }
 
 .wrapper {
@@ -33,6 +81,7 @@ hr {
     padding-left: 1.5rem;
 }
 
+/*
 #cursor {
     width: 2rem;
     height: 2rem;
@@ -42,6 +91,34 @@ hr {
     position: absolute;
     pointer-events: none;
     z-index: 15;
+}
+*/
+
+#cursor {
+    background: linear-gradient(45deg, white 0%, white 100%);
+    animation: morph 4s ease-in-out infinite;
+    border-radius: 60% 40% 30% 70% / 60% 30% 70% 40%;
+    height: 3rem;
+    transition: morph 500ms ease-in-out;
+    width: 3rem;
+    pointer-events: none;
+    position: absolute;
+    z-index: 5;
+}
+
+@keyframes morph {
+    0% {
+        border-radius: 60% 40% 30% 70% / 60% 30% 70% 40%;
+        background: linear-gradient(45deg, white 0%, white 100%);
+    }
+    50% {
+        border-radius: 30% 60% 70% 40% / 50% 60% 30% 60%;
+        background: linear-gradient(45deg, white 0%, white 100%);
+    }
+    100% {
+        border-radius: 60% 40% 30% 70% / 60% 30% 70% 40%;
+        background: linear-gradient(45deg, white 0%, white 100%);
+    }
 }
 
 .item {
@@ -56,6 +133,7 @@ hr {
     flex-direction: column;
     justify-content: space-between;
     overflow: hidden;
+    transition: border-color 250ms;
 }
 
 .imgHolder {
@@ -63,43 +141,12 @@ hr {
     height: 80%;
 }
 
-button {
-    border-radius: 0;
-    border: none;
-    color: transparent;
-    background-color: transparent;
-    padding: 0;
-}
-
-button:focus {
-    outline: none;
-    box-shadow: none;
-}
-
-.up {
-    border-bottom: 75px solid #fff;
-    border-right: 50px solid transparent;
-    border-left: 50px solid transparent;
-}
-
-.arrow-up:hover {
-    transition: border-color 1s linear;
-    border-bottom-color: #e32636;
-}
-
-.arrow-down:hover {
-    transition: border-color 1s linear;
-    border-top-color: #e32636;
-}
-
-.down {
-    border-top: 75px solid #fff;
-    border-right: 50px solid transparent;
-    border-left: 50px solid transparent;
-}
-
 .disabledLook {
-    opacity: 0.7;
+    opacity: 0.8;
+}
+
+.item.selected {
+    border-color: crimson;
 }
 
 .imgHolder>img {
@@ -152,10 +199,51 @@ button:focus {
 #carousel {
     position: absolute;
     visibility: hidden;
+    align-items: center;
+    overflow: hidden;
 }
 
 .verticalSlider>button {
     display: block;
     margin-left: auto;
     margin-right: auto
+}
+
+button {
+    border-radius: 0;
+    border: none;
+    color: transparent;
+    background-color: transparent;
+    padding: 0;
+}
+
+button:focus {
+    outline: none;
+    box-shadow: none;
+}
+
+.up {
+    transform: rotate(-135deg);
+}
+
+.arrow-up {
+    transition: color 1s linear;
+    color: #e32636 !important;
+}
+
+.arrow-down {
+    transition: color 1s linear;
+    color: #e32636 !important;
+}
+
+.down {
+    transform: rotate(45deg);
+}
+
+.arrow {
+    color: white;
+    border-right: 15px solid;
+    border-bottom: 15px solid;
+    height: 60px;
+    width: 60px;
 }

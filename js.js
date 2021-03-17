@@ -2,9 +2,11 @@
 const cursor = document.getElementById("cursor");
 const previousButtons = document.querySelectorAll('button.prev');
 const nextButtons = document.querySelectorAll('button.next');
-const items = document.querySelectorAll('div.item');
 const detailedBox = document.getElementById('detailedBox');
 const smallLine = document.getElementById('smallLine');
+
+const MAX_SCANNED_ITEMS = 10;
+
 
 let cursorInactiveTimer;
 
@@ -17,70 +19,110 @@ let Carousel = {
     width: 200, // Images are forced into a width of this many pixels.
     numVisible: 3, // The number of images visible at once.
     duration: 750, // Animation duration in milliseconds.
-    itemMargin: 40
+    itemMargin: 100  //40 for laptop, 99 for home screen @stephan
 };
+
+let data = {};
+
 
 let itemNames = ['Queens Ring', 'Kings Ring', 'Black Widow Ring', 'Hercules Ring', 'Brothers Alu Ring'];
 let itemCodeNumber = 0;
 
+function createItemData() {
+    for (let i = 0; i < MAX_SCANNED_ITEMS; i++) {
+        let barcode = createItemCodeString();
+        data[`${barcode}`] = {};
+        data[`${barcode}`]["name"] = `${itemNames[Math.floor(Math.random() * Math.floor(itemNames.length))]}`;
+        data[`${barcode}`]["description"] = `${i} - ${getLoremIpsum()}`;
+        data[`${barcode}`]["tags"] = ["Ring", "Steel", "Small"];
+        data[`${barcode}`]["price"] = "29,99";
+    }
+};
+
+function getLoremIpsum() {
+    return "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras sodales egestas odio a venenatis. Duis lobortis imperdiet dolor. Suspendisse et porta metus. Phasellus facilisis felis id nisl auctor, nec laoreet enim tempor. Cras dictum dui eget mollis accumsan. Nunc diam mauris, interdum nonsapien nec, mattis pellentesque purus. Donec molestie posuere eleifend.";
+}
+
+function createItemCodeString() {
+    let codeString = itemCodeNumber.toString();
+    for (let index = 0; codeString.length < 12; index++) {
+        codeString = `0${codeString}`;
+    }
+    itemCodeNumber++;
+    return codeString;
+}
+
+
 //Runs when the window is loaded.
-window.onload = function() {
-    //Make the carousel as it should be, with items in it.
-    var carousel = Carousel.carousel = document.getElementById('carousel'),
-        items = carousel.querySelectorAll('div.item'),
-        numItems = items.length,
-        //itemHeight = 150,
-        //padding = Carousel.padding,
-        //rowHeight = Carousel.rowHeight = itemHeight + 2 * padding;
-        //rowHeight = Carousel.rowHeight = 2 * itemHeight + 2 * padding;
+window.onload = function () {
+    let carousel = Carousel.carousel = document.getElementById('carousel'),
         itemWidth = Carousel.width;
-    carousel.style.width = itemWidth + 'px';
+    createItemData();
+    for (let barcode in data) {
+        //TODO: Betere error message, wanneer een barcode niet gevonden wordt.
+        if (!data.hasOwnProperty(barcode)) { console.log("Houston, we have a problem!") }
+        console.log(barcode + " -> " + data[barcode].name);
 
-    //Goes over every item in the items array.
-    for (var i = 0; i < numItems; ++i) {
-        let itemData = createNewItemMockData();
-        var item = items[i],
-            imageHolder = document.createElement('div');
-
-        //Give the item an 'id' and 'margin'.
-        item.id = itemData.itemCode;
+        //Create the item and give it an 'id' and 'margin'.
+        let item = document.createElement('div');
+        item.id = barcode;
+        item.className = 'item';
         item.style.marginTop = Carousel.itemMargin / 2 + "px";
         item.style.marginBottom = Carousel.itemMargin / 2 + "px";
+        //Add the item to the carousel.
+        carousel.appendChild(item);
 
-        //Add the image holder div
+        //Create the image holder for the item box.
+        let imageHolder = document.createElement('div');
         imageHolder.className = 'imgHolder';
+        //Add the image holder div to the item.
         item.appendChild(imageHolder);
 
-        //Add item image
+        //Create item image.
         var img = document.createElement('img');
-        for (let index = 0; index < 3; index++) {
-            img.src = `./Images/ring${i % 3}.png`;
-        }
-
+        //TODO: make the image selection dynamic
+        img.src = `./Images/ring${Math.floor(Math.random() * 3)}.png`;
+        //Add the image to the image holder in the item div.
         imageHolder.appendChild(img);
 
-        //Add the item name "p"-tag
+        //Create the item name "p"-tag.
         let itemNameTag = document.createElement('p');
-        console.log(itemData.itemName.length)
-        if (itemData.itemName.length > 12) {
-            itemNameTag.innerHTML = itemData.itemName.substring(0, 10) + "...";
+        if (data[barcode].name.length > 12) {
+            itemNameTag.innerHTML = data[barcode].name.substring(0, 10) + "...";
         } else {
-            itemNameTag.innerHTML = itemData.itemName;
+            itemNameTag.innerHTML = data[barcode].name;
         }
+        //Add the name-tag to the item div.
         item.appendChild(itemNameTag);
+
+
+        //Adds an event listener to every item-box for when an animation ends.
+        item.addEventListener("animationend", function () {
+            var selectedItemCoords = getCoords(item);
+
+            //TODO: Put stuff in the detailed box here
+            console.log(data[item.id].name);
+            document.querySelectorAll("div.selected").forEach(element => {
+                element.classList.toggle('selected');
+            });
+            item.classList.toggle('selected');
+            //TODO: hide small line, move small line, show small line
+            //hideSmallLine();
+            moveSmallLine(selectedItemCoords);
+            //showSmallLine();
+            showDetailedBox();
+        }, false);
+
     }
+    carousel.style.width = itemWidth + 'px';
 
-    carousel.style.alignItems = 'center';
-
-
-    //TODO: Might throw NullPointerException
+    //TODO: Might throw NullPointerException when there are no items
     Carousel.rowHeight = getDistanceBetweenElements(
         document.querySelectorAll("div.item")[0],
         document.querySelectorAll("div.item")[1]
     );
     carousel.style.height = Carousel.numVisible * Carousel.rowHeight + 'px';
     carousel.style.visibility = 'visible';
-    carousel.style.overflow = 'hidden';
 
     let wrapper = Carousel.wrapper = document.createElement('div');
     wrapper.id = 'carouselWrapper';
@@ -100,32 +142,18 @@ window.onload = function() {
     detailedBox.style.height = (Carousel.numVisible * Carousel.rowHeight) - 24.5 + 'px';
     detailedBox.style.opacity = 0;
     detailedBox.style.transition = '500ms';
+
+    //Skip the transition bug when the screen loads
+    smallLine.style.display = 'block';
 };
 
-function createNewItemMockData() {
-    let ItemMockData = {
-        itemName: itemNames[Math.floor(Math.random() * Math.floor(itemNames.length))],
-        itemCode: createItemCodeString(),
-        itemTags: ['Ring'],
-    }
-    itemCodeNumber++;
-    return ItemMockData;
-}
-
-function createItemCodeString() {
-    let codeString = itemCodeNumber.toString();
-    for (let index = 0; codeString.length < 12; index++) {
-        codeString = `0${codeString}`;
-    }
-    return codeString;
-}
 //Adds an event listener to every previous-button for when a transition ends.
 previousButtons.forEach(element => {
-    element.addEventListener("transitionend", function() {
+    element.addEventListener("transitionend", function () {
         if (!isMoving) {
             isMoving = true;
             rotateForward();
-            animate(-Carousel.rowHeight, 0, function() {
+            animate(-Carousel.rowHeight, 0, function () {
                 carousel.style.top = '0';
                 isMoving = false;
             });
@@ -135,30 +163,16 @@ previousButtons.forEach(element => {
 
 //Adds an event listener to every next-button for when a transition ends.
 nextButtons.forEach(element => {
-    element.addEventListener("transitionend", function() {
+    element.addEventListener("transitionend", function () {
         if (!isMoving) {
             isMoving = true;
-            animate(0, -Carousel.rowHeight, function() {
+            animate(0, -Carousel.rowHeight, function () {
                 rotateBackward();
                 carousel.style.top = '0';
                 isMoving = false;
             });
         }
     })
-});
-
-//Adds an event listener to every item-box for when an animation ends.
-items.forEach(element => {
-    element.addEventListener("animationend", function() {
-        var selectedItemCoords = getCoords(element);
-
-        //TODO: hide small line, move small line, show small line
-        hideSmallLine();
-        moveSmallLine(selectedItemCoords);
-        showSmallLine();
-        showDetailedBox();
-
-    }, false);
 });
 
 //Gets the coordinates of an element.
@@ -174,49 +188,52 @@ function getCoords(elem) {
 
 //Moves the "small-line" to the middle right of the selected item-box.
 function moveSmallLine(itemCoords) {
+    hideSmallLine();
     smallLine.style.top = (itemCoords.top + itemCoords.bottom) / 2 + 'px';
     smallLine.style.left = itemCoords.right + 'px';
-    smallLine.style.display = 'block';
-    smallLine.style.transition = '500ms';
+    showSmallLine();
 }
 
 //Shows small-line
 function showSmallLine() {
+    smallLine.style.visibility = 'visible';
     smallLine.style.opacity = 1;
 }
 
 //Moves the "detailed-box". TODO:make this an initialization thing.
 function showDetailedBox() {
     //TODO: Currently only for left side.
-    detailedBox.style.display = 'block';
+    detailedBox.style.visibility = 'visible';
     detailedBox.style.opacity = 1;
 }
 
 //Whenever the user clicks on the body of the page, it hides the detailed box and small-line.
 //TODO: make this a hover thing
-window.document.body.addEventListener('click', function() {
+window.document.body.addEventListener('click', function () {
     hideDetailedBox();
     hideSmallLine();
+    document.querySelectorAll("div.selected").forEach(element => {
+        element.classList.toggle('selected');
+    });
 });
 
 //Hides the "detailed-box".
 function hideDetailedBox() {
-    //detailedBox.style.display = 'none';
     detailedBox.style.opacity = 0;
 }
 
 //Hides the "small-line".
 function hideSmallLine() {
-    //smallLine.style.display = 'none';
     smallLine.style.opacity = 0;
+    //smallLine.style.visibility = 'hidden';
 }
 
 // ++=-CURSOR-=++
 
 //Turn on/off the cursor when active/inactive
-document.onmousemove = function() {
+document.onmousemove = function () {
     clearTimeout(cursorInactiveTimer);
-    cursorInactiveTimer = setTimeout(function() { cursor.style.display = 'none'; }, 5000);
+    cursorInactiveTimer = setTimeout(function () { cursor.style.display = 'none'; }, 8000);
 }
 
 //Move the cursor
@@ -226,7 +243,6 @@ document.addEventListener('mousemove', e => {
     //Check for each item-box if the cursor is colliding.
     document.querySelectorAll('div.item').forEach(item => {
         if (isColliding(cursor.getBoundingClientRect(), item.getBoundingClientRect())) {
-            console.log()
             for (let index = 0; index < Carousel.numVisible; index++) {
                 if (item.parentElement.children[index] === item) {
                     item.classList.add('selectingItem');
@@ -273,12 +289,15 @@ function isColliding(a, b) {
 function animate(begin, end, finalTask) {
     hideSmallLine();
     hideDetailedBox();
+    document.querySelectorAll("div.selected").forEach(element => {
+        element.classList.toggle('selected');
+    });
     let carousel = Carousel.carousel,
         change = end - begin,
         duration = Carousel.duration,
         startTime = Date.now();
     carousel.style.top = begin + 'px';
-    var animateInterval = window.setInterval(function() {
+    var animateInterval = window.setInterval(function () {
         var t = Date.now() - startTime;
         if (t >= duration) {
             window.clearInterval(animateInterval);
