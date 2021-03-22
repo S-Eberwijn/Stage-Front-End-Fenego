@@ -19,6 +19,10 @@ const MAX_SCANNED_ITEMS = 50;
 let cursorInactiveTimer;
 
 
+
+
+
+
 //Initialize page
 cursor.style.display = 'none';
 let isMoving = false;
@@ -41,7 +45,7 @@ function createItemData() {
         let barcode = createItemCodeString();
         data[`${barcode}`] = {};
         data[`${barcode}`]["name"] = `${itemNames[Math.floor(Math.random() * Math.floor(itemNames.length))]}`;
-        //TODO: make the image selection dynamic
+        //TODO: make the image selection dynamic, as in get length of the Images folder.
         data[`${barcode}`]["img"] = `./Images/ring${Math.floor(Math.random() * 6)}.png`;
         data[`${barcode}`]["description"] = `${i} - ${getLoremIpsum()}`;
         data[`${barcode}`]["tags"] = ["Ring", "Steel", "Small"];
@@ -119,7 +123,6 @@ window.onload = function () {
             moveSmallLine(selectedItemCoords);
             leftDetailedBoxContent.style.display = 'none';
             showDetailedBox();
-
             leftDetailedBoxLoader.classList.add('animate');
             leftDetailedBoxLoader.addEventListener("animationend", function () {
                 setItemInDetailedBox(item.id);
@@ -259,9 +262,11 @@ document.addEventListener('mousemove', e => {
     //Check for each item-box if the cursor is colliding.
     document.querySelectorAll('div.item').forEach(item => {
         if (isColliding(cursor.getBoundingClientRect(), item.getBoundingClientRect())) {
-            for (let index = 0; index < Carousel.numVisible; index++) {
-                if (item.parentElement.children[index] === item) {
-                    item.classList.add('selectingItem');
+            if (!item.classList.contains('selected')) {
+                for (let index = 0; index < Carousel.numVisible; index++) {
+                    if (item.parentElement.children[index] === item) {
+                        item.classList.add('selectingItem');
+                    }
                 }
             }
         } else {
