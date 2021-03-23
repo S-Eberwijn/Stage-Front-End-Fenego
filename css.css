@@ -19,14 +19,18 @@ body {
     position: absolute;
 }
 
-#inputVideo {
+#input_video {
+
+    transform: rotateY(180deg);
+    -webkit-transform:rotateY(180deg); /* Safari and Chrome */
+    -moz-transform:rotateY(180deg); /* Firefox */
     position: fixed;
     right: 0;
     bottom: 0;
     min-width: 100%;
     min-height: 100%;
     z-index: -10;
-    visibility: hidden;
+    /*visibility: hidden;*/
 }
 
 hr {

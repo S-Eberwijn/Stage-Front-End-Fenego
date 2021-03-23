@@ -11,13 +11,18 @@
     <link rel='shortcut icon' type='image/x-icon' href='favicon.ico' />
 
 
+    <script src="https://cdn.jsdelivr.net/npm/@mediapipe/camera_utils/camera_utils.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@mediapipe/control_utils/control_utils.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@mediapipe/drawing_utils/drawing_utils.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@mediapipe/hands/hands.js" crossorigin="anonymous"></script>
+
 
 </head>
 
 <body>
     <div id="clock"></div>
     <div id="cursor"></div>
-    <video autoplay="true" id="inputVideo"></video>
+    <video id="input_video"></video>
 
     <div class="wrapper">
         <div class="verticalSlider">
