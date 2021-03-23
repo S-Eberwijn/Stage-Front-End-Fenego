@@ -1,39 +1,11 @@
 const videoElement = document.getElementById("input_video");
-
-// video.style.height = document.body.offsetHeight;
-// video.style.width = document.body.offsetWidth;
-// console.log('worked');
-
-// if (navigator.mediaDevices.getUserMedia) {
-//     navigator.mediaDevices.getUserMedia({ video: true })
-//         .then(function(stream) {
-//             video.srcObject = stream;
-//         })
-//         .catch(function(err0r) {
-//             console.log("Something went wrong!");
-//         });
-// }
-
-// Our input frames will come from here.
-// const videoElement = document.getElementsByClassName('input_video')[0];
 const canvasElement = document.getElementsByClassName('output_canvas')[0];
 const controlsElement = document.getElementsByClassName('control-panel')[0];
 const cursorElement = document.getElementById("cursor");
-//const canvasCtx = canvasElement.getContext('2d');
-
-// We'll add this to our control panel later, but we'll save it here so we can
-// call tick() each time the graph runs.
-//const fpsControl = new FPS();
-
-// Optimization: Turn off animated spinner after its hiding animation is done.
-// const spinner = document.querySelector('.loading');
-// spinner.ontransitionend = () => {
-//     spinner.style.display = 'none';
-// };
 
 let cursorY, cursorX;
 function onResults(results) {
-    // console.log(results);
+
     if (results.multiHandLandmarks[0] !== undefined) {
         console.log(results.multiHandLandmarks[0][9])
         cursor.style.display = "block";
@@ -42,35 +14,54 @@ function onResults(results) {
         cursorX = 100 - cursorX;
         cursor.style.left = cursorX + "%";
         cursor.style.top = cursorY + "%";
+
+        document.querySelectorAll('div.item').forEach(item => {
+            //Check for each item-box if the cursor is colliding.
+
+            if (isColliding(cursor.getBoundingClientRect(), item.getBoundingClientRect())) {
+                if (!item.classList.contains('selected')) {
+                    for (let index = 0; index < Carousel.numVisible; index++) {
+                        if (item.parentElement.children[index] === item) {
+                            item.classList.add('selectingItem');
+                        }
+                    }
+                }
+            } else {
+                if (item.classList.contains('selectingItem')) {
+                    item.classList.remove('selectingItem');
+                }
+            }
+        });
+        //Check for each next-button if the cursor is colliding.
+        nextButtons.forEach(button => {
+            if (isColliding(cursor.getBoundingClientRect(), button.getBoundingClientRect())) {
+                button.classList.add('arrow-down');
+            } else {
+                if (button.classList.contains('arrow-down')) {
+                    button.classList.remove('arrow-down');
+                }
+            }
+        });
+        //Check for each previous-button if the cursor is colliding.
+        previousButtons.forEach(button => {
+            if (isColliding(cursor.getBoundingClientRect(), button.getBoundingClientRect())) {
+                button.classList.add('arrow-up');
+            } else {
+                if (button.classList.contains('arrow-up')) {
+                    button.classList.remove('arrow-up');
+                }
+            }
+        });
     }
-    // Hide the spinner.
-    // document.body.classList.add('loaded');
-    //
-    // // Update the frame rate.
-    // fpsControl.tick();
-    //
-    // // Draw the overlays.
-    // canvasCtx.save();
-    // canvasCtx.clearRect(0, 0, canvasElement.width, canvasElement.height);
-    // canvasCtx.drawImage(
-    //     results.image, 0, 0, canvasElement.width, canvasElement.height);
-    // if (results.multiHandLandmarks && results.multiHandedness) {
-    //     for (let index = 0; index < results.multiHandLandmarks.length; index++) {
-    //         const classification = results.multiHandedness[index];
-    //         const isRightHand = classification.label === 'Right';
-    //         const landmarks = results.multiHandLandmarks[index];
-    //         drawConnectors(
-    //             canvasCtx, landmarks, HAND_CONNECTIONS, { color: isRightHand ? '#00FF00' : '#FF0000' }),
-    //             drawLandmarks(canvasCtx, landmarks, {
-    //                 color: isRightHand ? '#00FF00' : '#FF0000',
-    //                 fillColor: isRightHand ? '#FF0000' : '#00FF00',
-    //                 radius: (x) => {
-    //                     return lerp(x.from.z, -0.15, .1, 10, 1);
-    //                 }
-    //             });
-    //     }
-    // }
-    // canvasCtx.restore();
+}
+
+function isColliding(a, b) {
+    return !(
+        ((a.y + a.height) < (b.y)) ||
+        (a.y > (b.y + b.height)) ||
+        ((a.x + a.width) < b.x) ||
+        (a.x > (b.x + b.width))
+    );
 }
 
 const hands = new Hands({
@@ -91,34 +82,3 @@ const camera = new Camera(videoElement, {
     height: 720
 });
 camera.start();
-
-// Present a control panel through which the user can manipulate the solution
-// options.
-// new ControlPanel(controlsElement, {
-//     selfieMode: true,
-//     maxNumHands: 2,
-//     minDetectionConfidence: 0.5,
-//     minTrackingConfidence: 0.5
-// })
-//     .add([
-//         new StaticText({ title: 'MediaPipe Hands' }),
-//         fpsControl,
-//         new Toggle({ title: 'Selfie Mode', field: 'selfieMode' }),
-//         new Slider({ title: 'Max Number of Hands', field: 'maxNumHands', range: [1, 4], step: 1 }),
-//         new Slider({
-//             title: 'Min Detection Confidence',
-//             field: 'minDetectionConfidence',
-//             range: [0, 1],
-//             step: 0.01
-//         }),
-//         new Slider({
-//             title: 'Min Tracking Confidence',
-//             field: 'minTrackingConfidence',
-//             range: [0, 1],
-//             step: 0.01
-//         }),
-//     ])
-//     .on(options => {
-//         videoElement.classList.toggle('selfie', options.selfieMode);
-//         hands.setOptions(options);
-//     });

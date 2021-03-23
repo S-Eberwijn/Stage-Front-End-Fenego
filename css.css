@@ -134,6 +134,8 @@ hr {
     pointer-events: none;
     position: absolute;
     z-index: 5;
+    transition: ease-in;
+    transition-duration: 100ms;
 }
 
 @keyframes morph {

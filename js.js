@@ -256,46 +256,46 @@ document.onmousemove = function () {
 }
 
 //Move the cursor
-document.addEventListener('mousemove', e => {
-    //Set the cursor div on the position of the mouse.
-    cursor.setAttribute("style", `top: ${e.pageY - 15}px; left: ${e.pageX - 15}px`);
-    //Check for each item-box if the cursor is colliding.
-    document.querySelectorAll('div.item').forEach(item => {
-        if (isColliding(cursor.getBoundingClientRect(), item.getBoundingClientRect())) {
-            if (!item.classList.contains('selected')) {
-                for (let index = 0; index < Carousel.numVisible; index++) {
-                    if (item.parentElement.children[index] === item) {
-                        item.classList.add('selectingItem');
-                    }
-                }
-            }
-        } else {
-            if (item.classList.contains('selectingItem')) {
-                item.classList.remove('selectingItem');
-            }
-        }
-    });
-    //Check for each next-button if the cursor is colliding.
-    nextButtons.forEach(button => {
-        if (isColliding(cursor.getBoundingClientRect(), button.getBoundingClientRect())) {
-            button.classList.add('arrow-down');
-        } else {
-            if (button.classList.contains('arrow-down')) {
-                button.classList.remove('arrow-down');
-            }
-        }
-    });
-    //Check for each previous-button if the cursor is colliding.
-    previousButtons.forEach(button => {
-        if (isColliding(cursor.getBoundingClientRect(), button.getBoundingClientRect())) {
-            button.classList.add('arrow-up');
-        } else {
-            if (button.classList.contains('arrow-up')) {
-                button.classList.remove('arrow-up');
-            }
-        }
-    });
-});
+// document.addEventListener('mousemove', e => {
+//     //Set the cursor div on the position of the mouse.
+//     cursor.setAttribute("style", `top: ${e.pageY - 15}px; left: ${e.pageX - 15}px`);
+//     //Check for each item-box if the cursor is colliding.
+//     document.querySelectorAll('div.item').forEach(item => {
+//         if (isColliding(cursor.getBoundingClientRect(), item.getBoundingClientRect())) {
+//             if (!item.classList.contains('selected')) {
+//                 for (let index = 0; index < Carousel.numVisible; index++) {
+//                     if (item.parentElement.children[index] === item) {
+//                         item.classList.add('selectingItem');
+//                     }
+//                 }
+//             }
+//         } else {
+//             if (item.classList.contains('selectingItem')) {
+//                 item.classList.remove('selectingItem');
+//             }
+//         }
+//     });
+//     //Check for each next-button if the cursor is colliding.
+//     nextButtons.forEach(button => {
+//         if (isColliding(cursor.getBoundingClientRect(), button.getBoundingClientRect())) {
+//             button.classList.add('arrow-down');
+//         } else {
+//             if (button.classList.contains('arrow-down')) {
+//                 button.classList.remove('arrow-down');
+//             }
+//         }
+//     });
+//     //Check for each previous-button if the cursor is colliding.
+//     previousButtons.forEach(button => {
+//         if (isColliding(cursor.getBoundingClientRect(), button.getBoundingClientRect())) {
+//             button.classList.add('arrow-up');
+//         } else {
+//             if (button.classList.contains('arrow-up')) {
+//                 button.classList.remove('arrow-up');
+//             }
+//         }
+//     });
+// });
 
 //Checks if element "a" is colliding with element "b".
 function isColliding(a, b) {
