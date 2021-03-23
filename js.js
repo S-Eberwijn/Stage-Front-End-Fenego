@@ -250,10 +250,10 @@ function hideSmallLine() {
 // ++=-CURSOR-=++
 
 //Turn on/off the cursor when active/inactive
-document.onmousemove = function () {
-    clearTimeout(cursorInactiveTimer);
-    cursorInactiveTimer = setTimeout(function () { cursor.style.display = 'none'; }, 8000);
-}
+// document.onmousemove = function () {
+//     clearTimeout(cursorInactiveTimer);
+//     cursorInactiveTimer = setTimeout(function () { cursor.style.display = 'none'; }, 8000);
+// }
 
 //Move the cursor
 // document.addEventListener('mousemove', e => {
