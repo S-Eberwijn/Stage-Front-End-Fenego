@@ -1,5 +1,5 @@
 //Variables
-const cursor = document.getElementById("cursor");
+const cursor = document.getElementById("cursorLeft");
 const previousButtons = document.querySelectorAll('button.prev');
 const nextButtons = document.querySelectorAll('button.next');
 const detailedBox = document.getElementById('detailedBox');

@@ -21,16 +21,16 @@ body {
 
 #input_video {
 
-    transform: rotateY(180deg);
-    -webkit-transform:rotateY(180deg); /* Safari and Chrome */
-    -moz-transform:rotateY(180deg); /* Firefox */
+    /*transform: rotateY(180deg);*/
+    /*-webkit-transform:rotateY(180deg); !* Safari and Chrome *!*/
+    /*-moz-transform:rotateY(180deg); !* Firefox *!*/
     position: fixed;
     right: 0;
     bottom: 0;
     min-width: 100%;
     min-height: 100%;
     z-index: -10;
-    /*visibility: hidden;*/
+    visibility: hidden;
 }
 
 hr {
@@ -124,8 +124,21 @@ hr {
 }
 */
 
-#cursor {
+#cursorLeft {
     background: linear-gradient(45deg, white 0%, white 100%);
+    animation: morph 3s ease-in-out infinite;
+    border-radius: 60% 40% 30% 70% / 60% 30% 70% 40%;
+    height: 3rem;
+    transition: morph 500ms ease-in-out;
+    width: 3rem;
+    pointer-events: none;
+    position: absolute;
+    z-index: 5;
+    transition: ease-in;
+    transition-duration: 100ms;
+}
+#cursorRight {
+    background: linear-gradient(45deg, red 0%, red 100%);
     animation: morph 3s ease-in-out infinite;
     border-radius: 60% 40% 30% 70% / 60% 30% 70% 40%;
     height: 3rem;

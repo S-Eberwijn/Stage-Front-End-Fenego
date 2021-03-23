@@ -1,13 +1,38 @@
 const videoElement = document.getElementById("input_video");
 const canvasElement = document.getElementsByClassName('output_canvas')[0];
 const controlsElement = document.getElementsByClassName('control-panel')[0];
-const cursorElement = document.getElementById("cursor");
+const cursorLeftElement = document.getElementById("cursorLeft");
+const cursorRightElement = document.getElementById("cursorRight");
 
-let cursorY, cursorX;
+let cursorLeftY, cursorLeftX;
+let cursorRightY, cursorRightX;
+
+function onResultsTwoHands(results) {
+    if(results.multiHandLandmarks && results.multiHandedness) {
+        for (let index = 0; index < results.multiHandLandmarks.length; index++) {
+            if (results.multiHandedness[index].label == "Right") {
+                console.log("Right");
+                cursorRightElement.style.display = "block";
+                cursorRightX = results.multiHandLandmarks[index][9].x*100;
+                cursorRightY = results.multiHandLandmarks[index][9].y*100;
+                cursorRightX = 100 - cursorRightX;
+                cursorRightElement.style.left = cursorRightX + "%";
+                cursorRightElement.style.top = cursorRightY + "%";
+            } else {
+                console.log("Left");
+                cursorLeftElement.style.display = "block";
+                cursorLeftX = results.multiHandLandmarks[index][9].x*100;
+                cursorLeftY = results.multiHandLandmarks[index][9].y*100;
+                cursorLeftX = 100 - cursorLeftX;
+                cursorLeftElement.style.left = cursorLeftX + "%";
+                cursorLeftElement.style.top = cursorLeftY + "%";
+            }
+        }
+    }
+}
+
 function onResults(results) {
-
-    if (results.multiHandLandmarks[0] !== undefined) {
-        console.log(results.multiHandLandmarks[0][9])
+    if (results.multiHandLandmarks !== undefined) {
         cursor.style.display = "block";
         cursorX = results.multiHandLandmarks[0][9].x*100;
         cursorY = results.multiHandLandmarks[0][9].y*100;
