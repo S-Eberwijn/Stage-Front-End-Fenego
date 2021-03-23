@@ -31,13 +31,17 @@ const cursorElement = document.getElementById("cursor");
 //     spinner.style.display = 'none';
 // };
 
+let cursorY, cursorX;
 function onResults(results) {
     // console.log(results);
     if (results.multiHandLandmarks[0] !== undefined) {
         console.log(results.multiHandLandmarks[0][9])
         cursor.style.display = "block";
-        cursor.style.left = (results.multiHandLandmarks[0][9].x*1000) + "px";
-        cursor.style.top = results.multiHandLandmarks[0][9].y*1000 + "px";
+        cursorX = results.multiHandLandmarks[0][9].x*100;
+        cursorY = results.multiHandLandmarks[0][9].y*100;
+        cursorX = 100 - cursorX;
+        cursor.style.left = cursorX + "%";
+        cursor.style.top = cursorY + "%";
     }
     // Hide the spinner.
     // document.body.classList.add('loaded');
