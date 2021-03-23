@@ -3,16 +3,48 @@ body {
 }
 
 #center {
-    width: 300px;
-    height: 100px;
-    color: white;
-    text-align: center;
+}
+@keyframes fadeOut {
+    75% {
+        opacity:1;
+    }
+    100% {
+        opacity:0;
+    }
+}
 
-    position: absolute;
-    top:0;
-    bottom: 0;
-    left: 0;
-    right: 0;
+@-moz-keyframes fadeOut {
+    75% {
+        opacity:1;
+    }
+    100% {
+        opacity:0;
+    }
+}
 
-    margin: auto;
+@-webkit-keyframes fadeOut {
+    75% {
+        opacity:1;
+    }
+    100% {
+        opacity:0;
+    }
+}
+
+@-o-keyframes fadeOut {
+    75% {
+        opacity:1;
+    }
+    100% {
+        opacity:0;
+    }
+}
+
+@-ms-keyframes fadeOut {
+    75% {
+        opacity: 1;
+    }
+    100% {
+        opacity: 0;
+    }
 }

@@ -3,6 +3,18 @@ const canvasElement = document.getElementsByClassName('output_canvas')[0];
 const controlsElement = document.getElementsByClassName('control-panel')[0];
 const cursorLeftElement = document.getElementById("cursorLeft");
 const cursorRightElement = document.getElementById("cursorRight");
+const spinner = document.getElementById("spinner");
+const message = document.getElementById("message");
+spinner.style.visibility = "hidden";
+message.style.visibility = "hidden";
+
+const mainDiv = document.getElementById("main");
+mainDiv.onanimationend = (e) => {
+    mainDiv.style.opacity = "1";
+};
+
+
+
 
 // let cursorLeftY, cursorLeftX;
 // let cursorRightY, cursorRightX;
@@ -73,6 +85,11 @@ const cursorRightElement = document.getElementById("cursorRight");
 
 let cursorY, cursorX;
 function onResults(results) {
+    spinner.style.display = "none";
+    message.style.display = "none";
+
+    main.classList.add("loaded");
+
     if (results.multiHandLandmarks !== undefined) {
         if (results.multiHandLandmarks[0] !== undefined) {
             console.log(results.multiHandLandmarks[0][9])
@@ -149,4 +166,9 @@ const camera = new Camera(videoElement, {
     width: 1280,
     height: 720
 });
-camera.start();
+
+setTimeout(() => {
+    spinner.style.visibility = "visible";
+    message.style.visibility = "visible";
+    camera.start();
+}, 5000);

@@ -17,12 +17,6 @@ const MAX_SCANNED_ITEMS = 50;
 
 
 let cursorInactiveTimer;
-
-
-
-
-
-
 //Initialize page
 cursor.style.display = 'none';
 let isMoving = false;
@@ -377,4 +371,9 @@ function setItemInDetailedBox(barcode) {
 function toggleLoader() {
     leftDetailedBoxLoader.classList.toggle('animate');
 }
+
+var greeting = document.getElementById("greeting");
+greeting.onanimationend = (e) => {
+    greeting.parentNode.removeChild(greeting);
+};
 
