@@ -99,45 +99,46 @@ function onResults(results) {
             cursorX = 100 - cursorX;
             cursor.style.left = cursorX + "%";
             cursor.style.top = cursorY + "%";
-        }
-    }
-    document.querySelectorAll('div.item').forEach(item => {
-        //Check for each item-box if the cursor is colliding.
-        if (isColliding(cursor.getBoundingClientRect(), item.getBoundingClientRect())) {
-            if (!item.classList.contains('selected')) {
-                for (let index = 0; index < Carousel.numVisible; index++) {
-                    if (item.parentElement.children[index] === item) {
-                        item.classList.add('selectingItem');
+
+            document.querySelectorAll('div.item').forEach(item => {
+                //Check for each item-box if the cursor is colliding.
+                if (isColliding(cursor.getBoundingClientRect(), item.getBoundingClientRect())) {
+                    if (!item.classList.contains('selected')) {
+                        for (let index = 0; index < Carousel.numVisible; index++) {
+                            if (item.parentElement.children[index] === item) {
+                                item.classList.add('selectingItem');
+                            }
+                        }
+                    }
+                } else {
+                    if (item.classList.contains('selectingItem')) {
+                        item.classList.remove('selectingItem');
                     }
                 }
-            }
-        } else {
-            if (item.classList.contains('selectingItem')) {
-                item.classList.remove('selectingItem');
-            }
-        }
-    });
-    //Check for each next-button if the cursor is colliding.
-    nextButtons.forEach(button => {
-        if (isColliding(cursor.getBoundingClientRect(), button.getBoundingClientRect())) {
-            button.classList.add('arrow-down');
-        } else {
-            if (button.classList.contains('arrow-down')) {
-                button.classList.remove('arrow-down');
-            }
-        }
-    });
+            });
+            //Check for each next-button if the cursor is colliding.
+            nextButtons.forEach(button => {
+                if (isColliding(cursor.getBoundingClientRect(), button.getBoundingClientRect())) {
+                    button.classList.add('arrow-down');
+                } else {
+                    if (button.classList.contains('arrow-down')) {
+                        button.classList.remove('arrow-down');
+                    }
+                }
+            });
 
-    //Check for each previous-button if the cursor is colliding.
-    previousButtons.forEach(button => {
-        if (isColliding(cursor.getBoundingClientRect(), button.getBoundingClientRect())) {
-            button.classList.add('arrow-up');
-        } else {
-            if (button.classList.contains('arrow-up')) {
-                button.classList.remove('arrow-up');
-            }
+            //Check for each previous-button if the cursor is colliding.
+            previousButtons.forEach(button => {
+                if (isColliding(cursor.getBoundingClientRect(), button.getBoundingClientRect())) {
+                    button.classList.add('arrow-up');
+                } else {
+                    if (button.classList.contains('arrow-up')) {
+                        button.classList.remove('arrow-up');
+                    }
+                }
+            });
         }
-    });
+    }
 }
 
 function isColliding(a, b) {
