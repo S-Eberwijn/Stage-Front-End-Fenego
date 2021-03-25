@@ -5,7 +5,7 @@ let itemNames = ['Queens Ring', 'Kings Ring', 'Black Widow Ring', 'Hercules Ring
 let itemCodeNumber = 0;
 
 function createItemData() {
-    for (let i = 0; i < MAX_SCANNED_ITEMS; i++) {
+    for (let i = 0; i < AMOUNT_OF_SCANNED_ITEMS; i++) {
         let barcode = createItemCodeString();
         data[`${barcode}`] = {};
         data[`${barcode}`]["name"] = `${itemNames[Math.floor(Math.random() * Math.floor(itemNames.length))]}`;

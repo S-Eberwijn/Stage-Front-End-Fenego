@@ -9,8 +9,9 @@ document.addEventListener('mousemove', e => {
             if (!item.classList.contains('selected')) {
                 for (let index = 0; index < MAX_VISIBLE_ITEMS; index++) {
                     if (item.parentElement.children[index] === item) {
-                        console.log('item')
-                        item.classList.add('selecting');
+                        if (!carouselIsMoving) {
+                            item.classList.add('selecting');
+                        }
                     }
                 }
             }
@@ -20,9 +21,11 @@ document.addEventListener('mousemove', e => {
             }
         }
     });
+    //TODO: Rewrite this to a function.
     //Check for each next-button if the cursor is colliding.
     nextButtons.forEach(button => {
-        if (isColliding(cursorLeft.getBoundingClientRect(), button.getBoundingClientRect())) {
+        console.log()
+        if (isColliding(cursorLeft.getBoundingClientRect(), button.getBoundingClientRect()) && !button.classList.contains('disabled')) {
             button.classList.add('selecting');
         } else {
             if (button.classList.contains('selecting')) {
@@ -32,7 +35,7 @@ document.addEventListener('mousemove', e => {
     });
     //Check for each previous-button if the cursor is colliding.
     previousButtons.forEach(button => {
-        if (isColliding(cursorLeft.getBoundingClientRect(), button.getBoundingClientRect())) {
+        if (isColliding(cursorLeft.getBoundingClientRect(), button.getBoundingClientRect()) && !button.classList.contains('disabled')) {
             button.classList.add('selecting');
         } else {
             if (button.classList.contains('selecting')) {

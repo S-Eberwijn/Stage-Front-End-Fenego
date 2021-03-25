@@ -1,16 +1,16 @@
 let items = document.querySelectorAll('div.item');
 let carousels = document.querySelectorAll('.carousel');
-let previousButtons = document.querySelectorAll('svg.prev');
-let nextButtons = document.querySelectorAll('svg.next');
+let previousButtons = document.querySelectorAll('i.prev');
+let nextButtons = document.querySelectorAll('i.next');
 let verticalSliders = document.querySelectorAll('.verticalSlider');
 let cursorLeft = document.getElementById('cursorLeft');
 
 
-let isMoving = false;
 
 window.onload = function () {
     carousels.forEach(carousel => {
         carousel.style.width = `${verticalSliders[0].getBoundingClientRect().width}px`;
+
 
         var wrapper = document.createElement('div');
         wrapper.classList.add('carouselWrapper');
@@ -19,15 +19,63 @@ window.onload = function () {
         carousel.parentNode.insertBefore(wrapper, carousel);
         wrapper.appendChild(carousel);
 
+        if (carousel.classList.contains('left')) {
+            carousel.querySelectorAll('div.item').forEach(item => {
+                //Create a holder div for the icon.
+                var imageHolder = document.createElement('div');
+                imageHolder.classList = "imageHolder";
 
-        for (let barcode in data) {
-            //TODO: Betere error message, wanneer een barcode niet gevonden wordt.
-            if (!data.hasOwnProperty(barcode)) { console.log("Houston, we have a problem!") }
-            console.log(barcode + " -> " + data[barcode].name);
-            //TODO: Load items, fill item divs, create extra item divs
+                //Create a new plus icon element.
+                var plusIconElement = document.createElement('i');
+                plusIconElement.classList = 'fas fa-plus fa-5x';
+
+                //Create a new p-tag element.
+                var scanTextElement = document.createElement('p');
+                scanTextElement.innerHTML = 'Scan Item';
+
+                //Add the elements to the item divs.
+                item.appendChild(imageHolder);
+                imageHolder.appendChild(plusIconElement);
+                item.appendChild(scanTextElement);
+            });
+        } else if (carousel.classList.contains('right')) {
+            carousel.querySelectorAll('div.item').forEach(item => {
+                item.parentElement.removeChild(item);
+            })
+            for (let barcode in data) {
+                //TODO: Better error message, when a barcode could not be found.
+                if (!data.hasOwnProperty(barcode)) { console.log("Houston, we have a problem!") }
+                console.log(barcode + " -> " + data[barcode].name);
+                // //TODO: Load items, fill item divs, create extra item divs
+                var itemElement = document.createElement('div');
+                itemElement.className = 'item';
+                itemElement.id = barcode;
+                carousel.appendChild(itemElement);
+
+                var imageHolderElement = document.createElement('div');
+                imageHolderElement.className = 'imageHolder';
+                //Add the image holder div to the item.
+                itemElement.appendChild(imageHolderElement);
+
+                var imgElement = document.createElement('img');
+                imgElement.src = data[barcode].img;
+                //Add the image to the image holder in the item div.
+                imageHolderElement.appendChild(imgElement);
+
+                //Create the item name "p"-tag.
+                var itemNameTag = document.createElement('p');
+                if (data[barcode].name.length > 12) {
+                    itemNameTag.innerHTML = data[barcode].name.substring(0, 9) + "...";
+                } else {
+                    itemNameTag.innerHTML = data[barcode].name;
+                }
+                //Add the name-tag to the item div.
+                itemElement.appendChild(itemNameTag);
+            }
         }
+        disableArrowButtons(carousel);
     });
-
+    items = document.querySelectorAll('div.item');
     items.forEach(item => {
         //Border width of an item div, only lower than 9px.
         var borderW = getComputedStyle(item, null).getPropertyValue('border-left-width').substr(0, 1);
@@ -51,15 +99,26 @@ window.onload = function () {
 //Adds an event listener to every previous-button for when a transition ends.
 previousButtons.forEach(element => {
     element.addEventListener("transitionend", function () {
-        if (!isMoving) {
-            isMoving = true;
+        if (!carouselIsMoving) {
+            carouselIsMoving = true;
             var carousel = getCorrectCarousel(element);
             var rowHeight = getDistanceBetweenElements(carousel.querySelectorAll('div.item')[0], carousel.querySelectorAll('div.item')[1]);
+            rotateForward(carousel);
             animate(carousel, -rowHeight, 0, function () {
-                rotateForward(carousel);
                 carousel.style.top = '0';
-                isMoving = false;
+                carouselIsMoving = false;
             });
+            var rotateCarousel = setInterval(function () {
+                if ((rgb2hex(window.getComputedStyle(element, null).getPropertyValue('color')) === '#e32636')) {
+                    rotateForward(carousel);
+                    animate(carousel, -rowHeight, 0, function () {
+                        carousel.style.top = '0';
+                        carouselIsMoving = false;
+                    });
+                } else {
+                    clearInterval(rotateCarousel);
+                }
+            }, CAROUSEL_ANIMATION_TIME * 1.2);
         }
     });
 });
@@ -67,16 +126,29 @@ previousButtons.forEach(element => {
 //Adds an event listener to every next-button for when a transition ends.
 nextButtons.forEach(element => {
     element.addEventListener("transitionend", function () {
-        if (!isMoving) {
-            isMoving = true;
+        if (!carouselIsMoving) {
+            carouselIsMoving = true;
             var carousel = getCorrectCarousel(element);
             var rowHeight = getDistanceBetweenElements(carousel.querySelectorAll('div.item')[0], carousel.querySelectorAll('div.item')[1]);
             //TODO: While element is color red, set interval for scrolling through items.
             animate(carousel, 0, -rowHeight, function () {
                 carousel.style.top = '0';
                 rotateBackward(carousel);
-                isMoving = false;
+                carouselIsMoving = false;
             });
+            var rotateCarousel = setInterval(function () {
+                if ((rgb2hex(window.getComputedStyle(element, null).getPropertyValue('color')) === '#e32636')) {
+                    animate(carousel, 0, -rowHeight, function () {
+                        carousel.style.top = '0';
+                        rotateBackward(carousel);
+                        carouselIsMoving = false;
+                    });
+                } else {
+                    clearInterval(rotateCarousel);
+                }
+            }, CAROUSEL_ANIMATION_TIME * 1.2);
+
+
         }
     })
 });
@@ -140,3 +212,18 @@ function rotateForward(carousel) {
     carousel.insertBefore(lastChild, firstChild);
 }
 
+function rgb2hex(rgb) {
+    rgb = rgb.match(/^rgb\((\d+),\s*(\d+),\s*(\d+)\)$/);
+    function hex(x) {
+        return ("0" + parseInt(x).toString(16)).slice(-2);
+    }
+    return "#" + hex(rgb[1]) + hex(rgb[2]) + hex(rgb[3]);
+}
+
+function disableArrowButtons(carousel) {
+    if (carousel.querySelectorAll('div.item').length < MAX_VISIBLE_ITEMS) {
+        carousel.parentElement.parentElement.querySelectorAll('i.arrow').forEach(button => {
+            button.classList.add('disabled');
+        });
+    }
+}
