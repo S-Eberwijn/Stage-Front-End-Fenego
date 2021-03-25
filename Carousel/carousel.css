@@ -2,12 +2,14 @@
 * {
     margin: 0;
     font-family: 'Poppins', sans-serif;
+    cursor: none;
 }
 
 body, html {
     background-color: black;
     height: 100%;
     margin: 0;
+    overflow: hidden;
 }
 
 #clock {
@@ -50,6 +52,11 @@ body, html {
     width: 7rem;
 }
 
+.arrow.selecting {
+    transition: color 1s linear;
+    color: #e32636 !important;
+}
+
 .carouselWrapper {
     position: relative;
     overflow: hidden;
@@ -67,4 +74,35 @@ body, html {
     /*For an indication*/
     /*background: tomato;*/
     border: white 3px solid;
+}
+
+.item.selected {
+    border-color: crimson;
+}
+
+.item.selecting {
+    /*animation: bg 2000ms cubic-bezier(0.19, 1, 0.22, 1) 1;*/
+    animation: inner-border 2000ms cubic-bezier(.11, .11, .78, .76) 1;
+    background-repeat: no-repeat;
+    background-image: linear-gradient(to right, #e32636 100%, #e32636 100%), linear-gradient(to bottom, #e32636 100%, #e32636 100%), linear-gradient(to right, #e32636 100%, #e32636 100%), linear-gradient(to bottom, #e32636 100%, #e32636 100%);
+    background-size: 100% 3px, 3px 100%, 100% 3px, 3px 100%;
+    background-position: 0 0, 100% 0, 100% 100%, 0 100%;
+}
+
+@keyframes inner-border {
+    0% {
+        background-size: 0 3px, 3px 0, 0 3px, 3px 0;
+    }
+    25% {
+        background-size: 100% 3px, 3px 0, 0 3px, 3px 0;
+    }
+    50% {
+        background-size: 100% 3px, 3px 100%, 0 3px, 3px 0;
+    }
+    75% {
+        background-size: 100% 3px, 3px 100%, 100% 3px, 3px 0;
+    }
+    100% {
+        background-size: 100% 3px, 3px 100%, 100% 3px, 3px 100%;
+    }
 }

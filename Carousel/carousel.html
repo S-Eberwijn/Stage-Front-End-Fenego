@@ -7,14 +7,19 @@
     <title>FITS-Carousel</title>
     <meta name="description" content="The HTML5 Herald">
     <link rel="stylesheet" href="./carousel.css">
+    <link rel="stylesheet" href="../CSS/cursor.css">
+
+
     <link rel='shortcut icon' type='image/x-icon' href='../favicon.ico' />
 </head>
 
 <body>
     <div id="clock"></div>
+    <div id="cursorLeft"></div>
+
     <div class="wrapper">
         <div class="verticalSlider">
-            <svg aria-hidden="true" focusable="false" data-prefix="fas" data-icon="chevron-up" class="arrow prev"
+            <svg aria-hidden="true" focusable="false" data-prefix="fas" data-icon="chevron-up" class="arrow next"
                 role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512">
                 <path fill="currentColor"
                     d="M240.971 130.524l194.343 194.343c9.373 9.373 9.373 24.569 0 33.941l-22.667 22.667c-9.357 9.357-24.522 9.375-33.901.04L224 227.495 69.255 381.516c-9.379 9.335-24.544 9.317-33.901-.04l-22.667-22.667c-9.373-9.373-9.373-24.569 0-33.941L207.03 130.525c9.372-9.373 24.568-9.373 33.941-.001z">
@@ -26,7 +31,7 @@
                 <div id="3" class="item"></div>
                 <div id="4" class="item"></div>
             </div>
-            <svg aria-hidden="true" focusable="false" data-prefix="fas" data-icon="chevron-down" class="arrow next"
+            <svg aria-hidden="true" focusable="false" data-prefix="fas" data-icon="chevron-down" class="arrow prev"
                 role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512">
                 <path fill="currentColor"
                     d="M207.029 381.476L12.686 187.132c-9.373-9.373-9.373-24.569 0-33.941l22.667-22.667c9.357-9.357 24.522-9.375 33.901-.04L224 284.505l154.745-154.021c9.379-9.335 24.544-9.317 33.901.04l22.667 22.667c9.373 9.373 9.373 24.569 0 33.941L240.971 381.476c-9.373 9.372-24.569 9.372-33.942 0z">
@@ -34,7 +39,7 @@
             </svg>
         </div>
         <div class="verticalSlider">
-            <svg aria-hidden="true" focusable="false" data-prefix="fas" data-icon="chevron-up" class="arrow prev"
+            <svg aria-hidden="true" focusable="false" data-prefix="fas" data-icon="chevron-up" class="arrow next"
                 role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512">
                 <path fill="currentColor"
                     d="M240.971 130.524l194.343 194.343c9.373 9.373 9.373 24.569 0 33.941l-22.667 22.667c-9.357 9.357-24.522 9.375-33.901.04L224 227.495 69.255 381.516c-9.379 9.335-24.544 9.317-33.901-.04l-22.667-22.667c-9.373-9.373-9.373-24.569 0-33.941L207.03 130.525c9.372-9.373 24.568-9.373 33.941-.001z">
@@ -46,7 +51,7 @@
                 <div class="item"></div>
                 <div class="item"></div>
             </div>
-            <svg aria-hidden="true" focusable="false" data-prefix="fas" data-icon="chevron-down" class="arrow next"
+            <svg aria-hidden="true" focusable="false" data-prefix="fas" data-icon="chevron-down" class="arrow prev"
                 role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512">
                 <path fill="currentColor"
                     d="M207.029 381.476L12.686 187.132c-9.373-9.373-9.373-24.569 0-33.941l22.667-22.667c9.357-9.357 24.522-9.375 33.901-.04L224 284.505l154.745-154.021c9.379-9.335 24.544-9.317 33.901.04l22.667 22.667c9.373 9.373 9.373 24.569 0 33.941L240.971 381.476c-9.373 9.372-24.569 9.372-33.942 0z">
@@ -57,8 +62,11 @@
     </div>
     </div>
 
-    <script src="./carousel.js"></script>
+    <script src="../config.js"></script>
     <script src="../Javascript/clock.js"></script>
+    <script src="./loadItems.js"></script>
+    <script src="./carousel.js"></script>
+    <script src="./cursor.js"></script>
 
 </body>
 

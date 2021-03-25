@@ -3,10 +3,8 @@ let carousels = document.querySelectorAll('.carousel');
 let previousButtons = document.querySelectorAll('svg.prev');
 let nextButtons = document.querySelectorAll('svg.next');
 let verticalSliders = document.querySelectorAll('.verticalSlider');
+let cursorLeft = document.getElementById('cursorLeft');
 
-const MAX_VISIBLE_ITEMS = 3;
-const ITEMS_MARGIN = 100;
-const CAROUSEL_ANIMATION_TIME = 1000;
 
 let isMoving = false;
 
@@ -20,6 +18,14 @@ window.onload = function () {
         wrapper.style.height = `${carousel.getBoundingClientRect().height}px`;
         carousel.parentNode.insertBefore(wrapper, carousel);
         wrapper.appendChild(carousel);
+
+
+        for (let barcode in data) {
+            //TODO: Betere error message, wanneer een barcode niet gevonden wordt.
+            if (!data.hasOwnProperty(barcode)) { console.log("Houston, we have a problem!") }
+            console.log(barcode + " -> " + data[barcode].name);
+            //TODO: Load items, fill item divs, create extra item divs
+        }
     });
 
     items.forEach(item => {
@@ -44,9 +50,8 @@ window.onload = function () {
 }
 //Adds an event listener to every previous-button for when a transition ends.
 previousButtons.forEach(element => {
-    element.addEventListener("click", function () {
+    element.addEventListener("transitionend", function () {
         if (!isMoving) {
-            console.log('prev')
             isMoving = true;
             var carousel = getCorrectCarousel(element);
             var rowHeight = getDistanceBetweenElements(carousel.querySelectorAll('div.item')[0], carousel.querySelectorAll('div.item')[1]);
@@ -61,12 +66,12 @@ previousButtons.forEach(element => {
 
 //Adds an event listener to every next-button for when a transition ends.
 nextButtons.forEach(element => {
-    element.addEventListener("click", function () {
+    element.addEventListener("transitionend", function () {
         if (!isMoving) {
-            console.log('next')
             isMoving = true;
             var carousel = getCorrectCarousel(element);
             var rowHeight = getDistanceBetweenElements(carousel.querySelectorAll('div.item')[0], carousel.querySelectorAll('div.item')[1]);
+            //TODO: While element is color red, set interval for scrolling through items.
             animate(carousel, 0, -rowHeight, function () {
                 carousel.style.top = '0';
                 rotateBackward(carousel);
@@ -134,3 +139,4 @@ function rotateForward(carousel) {
         lastChild = children[children.length - 1];
     carousel.insertBefore(lastChild, firstChild);
 }
+

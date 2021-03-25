@@ -1,5 +1,5 @@
 //Variables
-const cursor = document.getElementById("cursorLeft");
+const cursorLeft = document.getElementById("cursorLeft");
 const previousButtons = document.querySelectorAll('button.prev');
 const nextButtons = document.querySelectorAll('button.next');
 const detailedBox = document.getElementById('detailedBox');
@@ -26,7 +26,7 @@ message.style.visibility = "hidden";
 
 let cursorInactiveTimer;
 //Initialize page
-cursor.style.display = 'none';
+cursorLeft.style.display = 'none';
 let isMoving = false;
 
 let Carousel = {
