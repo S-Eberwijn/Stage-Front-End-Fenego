@@ -40,7 +40,7 @@ function createItemData() {
         data[`${barcode}`] = {};
         data[`${barcode}`]["name"] = `${itemNames[Math.floor(Math.random() * Math.floor(itemNames.length))]}`;
         //TODO: make the image selection dynamic, as in get length of the Images folder.
-        data[`${barcode}`]["img"] = `./Images/ring${Math.floor(Math.random() * 6)}.png`;
+        data[`${barcode}`]["img"] = `./Images/Rings/ring${Math.floor(Math.random() * 6)}.png`;
         data[`${barcode}`]["description"] = `${i} - ${getLoremIpsum()}`;
         data[`${barcode}`]["tags"] = ["Ring", "Steel", "Small"];
         data[`${barcode}`]["price"] = `€${Math.floor(Math.random() * 100) + 20},${Math.floor(Math.random() * 9)}${Math.floor(Math.random() * 9)}`;
