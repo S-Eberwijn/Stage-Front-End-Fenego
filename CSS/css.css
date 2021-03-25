@@ -454,6 +454,24 @@ button:focus {
     margin:auto;
 }
 
+#scanner {
+    position: absolute;
+    top:0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+
+    border: 1px solid white;
+    width: 10%;
+    height: 30px;
+
+    color: white;
+    text-align: center;
+    font-size: x-large;
+    color: white;
+    margin:auto;
+}
+
 @keyframes spin {
     0% { transform: rotate(0deg); }
     100% { transform: rotate(360deg); }

@@ -3,15 +3,18 @@ const canvasElement = document.getElementsByClassName('output_canvas')[0];
 const controlsElement = document.getElementsByClassName('control-panel')[0];
 const cursorLeftElement = document.getElementById("cursorLeft");
 const cursorRightElement = document.getElementById("cursorRight");
-const spinner = document.getElementById("spinner");
-const message = document.getElementById("message");
-spinner.style.visibility = "hidden";
-message.style.visibility = "hidden";
+const scanner = document.getElementById("scanner");
+// const spinner = document.getElementById("spinner");
+// const message = document.getElementById("message");
+
 
 const mainDiv = document.getElementById("main");
 mainDiv.onanimationend = (e) => {
     mainDiv.style.opacity = "1";
+    scanner.style.visibility = "visible";
 };
+
+console.log(sessionStorage.getItem("barcode"));
 
 
 
@@ -100,6 +103,10 @@ function onResults(results) {
             cursor.style.left = cursorX + "%";
             cursor.style.top = cursorY + "%";
 
+            if(isColliding(cursor.getBoundingClientRect(), scanner.getBoundingClientRect())) {
+                location.href="./Scanner/scanner.html";
+            }
+
             document.querySelectorAll('div.item').forEach(item => {
                 //Check for each item-box if the cursor is colliding.
                 if (isColliding(cursor.getBoundingClientRect(), item.getBoundingClientRect())) {
@@ -168,8 +175,21 @@ const camera = new Camera(videoElement, {
     height: 720
 });
 
-setTimeout(() => {
+var greeting = document.getElementById("greeting");
+let barcode = sessionStorage.getItem("barcode");
+
+if (barcode !== null) {
+    greeting.parentNode.removeChild(greeting);
     spinner.style.visibility = "visible";
-    message.style.visibility = "visible";
+    message.style.visibilty = "visible";
     camera.start();
-}, 5000);
+} else {
+    setTimeout(() => {
+        spinner.style.visibility = "visible";
+        message.style.visibility = "visible";
+        camera.start();
+    }, 5000);
+    greeting.onanimationend = (e) => {
+        greeting.parentNode.removeChild(greeting);
+    };
+}

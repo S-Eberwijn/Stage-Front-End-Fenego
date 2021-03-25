@@ -15,6 +15,14 @@ const leftDetailedBoxItemPrice = document.getElementById('leftDetailedBoxItemPri
 
 const MAX_SCANNED_ITEMS = 50;
 
+const spinner = document.getElementById("spinner");
+const message = document.getElementById("message");
+spinner.style.visibility = "hidden";
+message.style.visibility = "hidden";
+
+
+
+
 
 let cursorInactiveTimer;
 //Initialize page
@@ -372,8 +380,7 @@ function toggleLoader() {
     leftDetailedBoxLoader.classList.toggle('animate');
 }
 
-var greeting = document.getElementById("greeting");
-greeting.onanimationend = (e) => {
-    greeting.parentNode.removeChild(greeting);
-};
+
+
+
 
