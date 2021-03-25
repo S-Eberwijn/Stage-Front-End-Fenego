@@ -1,7 +1,7 @@
 const videoElement = document.getElementById("input_video");
 const canvasElement = document.getElementsByClassName('output_canvas')[0];
 const controlsElement = document.getElementsByClassName('control-panel')[0];
-const cursorLeftElement = document.getElementById("cursorLeft");
+const cursor = document.getElementById("cursorLeft");
 const cursorRightElement = document.getElementById("cursorRight");
 const scanner = document.getElementById("scanner");
 // const spinner = document.getElementById("spinner");
