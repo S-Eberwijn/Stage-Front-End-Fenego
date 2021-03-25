@@ -16,6 +16,12 @@ Quagga.init({
     Quagga.start();
 });
 
+Quagga.onProcessed(function(result) {
+    console.log(result);
+});
+
+
+
 Quagga.onDetected(function(result) {
     var code = result.codeResult.code;
     console.log(code);
