@@ -1,0 +1,24 @@
+{
+  "name": "stage-front-end-fenego",
+  "version": "1.0.0",
+  "description": "FITS - Find the perfect accessoires for you outfits!",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/S-Eberwijn/Stage-Front-End-Fenego.git"
+  },
+  "author": "Stephan Eberwijn & Anthony Lambrechts",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/S-Eberwijn/Stage-Front-End-Fenego/issues"
+  },
+  "homepage": "https://github.com/S-Eberwijn/Stage-Front-End-Fenego#readme",
+  "dependencies": {
+    "@fortawesome/fontawesome-free": "^5.15.3",
+    "express": "^4.17.1",
+    "serve-favicon": "^2.5.0"
+  }
+}

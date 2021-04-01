@@ -8,6 +8,7 @@
     position: absolute;
     z-index: 5;
     /*transition: 200ms ease-out;*/
+    display: none;
 }
 
 #cursorRight {

@@ -1,8 +1,7 @@
 //TODO: Change "onmousemove" to when a hand is detected. (video.js)
 document.addEventListener('mousemove', e => {
-    cursorLeft.style.visibility = 'visible';
     //Set the cursor div on the position of the mouse.
-    cursorLeft.setAttribute("style", `top: ${e.pageY}px; left: ${e.pageX}px`);
+    cursorLeft.setAttribute("style", `top: ${e.pageY}px; left: ${e.pageX}px; display: block;`);
     //Check for each item-box if the cursor is colliding.
     items.forEach(item => {
         if (isColliding(cursorLeft.getBoundingClientRect(), item.getBoundingClientRect())) {

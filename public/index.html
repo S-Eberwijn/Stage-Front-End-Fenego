@@ -1,0 +1,96 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+
+    <title>FITS</title>
+    <link rel="stylesheet" href="./css/main.css">
+    <link rel="stylesheet" href="./css/carousel.css">
+    <link rel="stylesheet" href="./css/cursor.css">
+    <link rel="stylesheet" href="./css/fontawesome-free-5.15.3-web/css/all.min.css">
+
+    <script src="https://cdn.jsdelivr.net/npm/@mediapipe/camera_utils/camera_utils.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@mediapipe/control_utils/control_utils.js"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@mediapipe/drawing_utils/drawing_utils.js"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@mediapipe/hands/hands.js" crossorigin="anonymous"></script>
+
+</head>
+
+<body>
+    <div id="greeting">
+        <img src="./images/Fits.png" height="90" width="160" />
+        <h1>Find the perfect accessories for your outfits!</h1>
+    </div>
+    <div id="spinner" class="lds-ring">
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+    </div>
+
+    <div id="main">
+        <div id="topBar">
+            <div id="clock"></div>
+            <i id="help" class="far fa-question-circle fa-3x"></i>
+        </div>
+
+        <div id="cursorLeft"></div>
+        <video id="input_video" autoplay="true"></video>
+
+        <hr id="smallLine" />
+        <div id="detailedBox">
+            <div id="detailedBoxContentLoader" class="lds-ring">
+                <div></div>
+                <div></div>
+                <div></div>
+                <div></div>
+            </div>
+            <div id="detailedBoxContent">
+                <p id="itemName"></p>
+                <div class="imageHolder">
+                    <img id="itemImage" />
+                </div>
+                <div id="detailedBoxText">
+                    <p>Description</p>
+                    <p id="itemDescription"></p>
+                    <p>Tags</p>
+                    <p id="itemTags"></p>
+                    <p>Price</p>
+                    <p id="itemPrice"></p>
+                </div>
+            </div>
+        </div>
+
+        <div class="wrapper">
+            <div class="verticalSlider">
+                <i class="fas fa-chevron-up fa-5x arrow prev"></i>
+                <div class="carousel left">
+                    <div id="scan" class="item"></div>
+                </div>
+                <i class="fas fa-chevron-down fa-5x arrow next"></i>
+            </div>
+            <div class="verticalSlider">
+                <i class="fas fa-chevron-up fa-5x arrow prev"></i>
+                <div class="carousel right">
+                </div>
+                <i class="fas fa-chevron-down fa-5x arrow next"></i>
+            </div>
+        </div>
+    </div>
+
+
+    <script src="./js/config.js"></script>
+    <script src="./js/js.js"></script>
+    <script src="./js/clock.js"></script>
+    <script src="./js/loadItems.js"></script>
+    <script src="./js/carousel.js"></script>
+    <script src="./js/cursor.js"></script>
+    <script src="./js/video.js"></script>
+
+
+</body>
+
+</html>
