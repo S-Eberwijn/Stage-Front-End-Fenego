@@ -47,22 +47,23 @@ window.onload = function () {
             scanItemElement.appendChild(scanTextElement);
 
             if (scannedItems) {
-                scannedItems.forEach(barcode => {
-                    scanItemElement.parentElement.insertBefore(insertItemInCarousel(barcode), scanItemElement)
+                scannedItems.forEach(item => {
+                    console.log(item);
+                    scanItemElement.parentElement.insertBefore(insertItemInCarousel(item), scanItemElement)
                 });
             }
         } else if (carousel.classList.contains('right')) {
             carousel.querySelectorAll('div.item').forEach(item => {
                 item.parentElement.removeChild(item);
             })
-            if (scannedItems) {
-                for (let barcode in data) {
-                    //TODO: Better error message, when a barcode could not be found.
-                    if (!data.hasOwnProperty(barcode)) { console.log("Houston, we have a problem!") }
-                    //console.log(barcode + " -> " + data[barcode].name);
-                    carousel.appendChild(insertItemInCarousel(barcode));
-                }
-            }
+            // if (scannedItems) { //TODO: fix :)
+            //     for (let barcode in data) {
+            //         //TODO: Better error message, when a barcode could not be found.
+            //         if (!data.hasOwnProperty(barcode)) { console.log("Houston, we have a problem!") }
+            //         //console.log(barcode + " -> " + data[barcode].name);
+            //         carousel.appendChild(insertItemInCarousel(barcode));
+            //     }
+            // }
         }
     });
     disableArrowButtons();
@@ -91,23 +92,23 @@ window.onload = function () {
             item.classList.toggle('selected');
             if (item.querySelector('p').innerHTML === 'Scan Item') {
                 window.location.href = "/barcode";
-            } else if (item.id.length >= 12) {
+            } else if (item.id.length >= 6) {
                 detailedBoxContent.style.opacity = 0;
-                loadItemIntoDetailedBox(data[item.id])
+                loadItemIntoDetailedBox(scannedItems.find(obj => {return obj.key = item.id}));
                 detailedBoxContentLoader.classList.add('animate1');
                 moveSmallLine(item);
                 moveDetailedBox(item);
             }
         });
     });
-}
+};
 
 detailedBoxContentLoader.addEventListener('animationend', function () {
     detailedBoxContent.style.opacity = 1;
     detailedBoxContentLoader.classList.remove('animate1');
 
 
-})
+});
 
 //Adds an event listener to every previous-button for when a transition ends.
 previousButtons.forEach(element => {
@@ -294,7 +295,7 @@ function loadItemIntoDetailedBox(item) {
     itemName.innerHTML = item.name;
     itemImage.src = item.img;
     itemDescription.innerHTML = item.description;
-    itemTags.innerHTML = item.tags.join(', ');
+    itemTags.innerHTML = item.categories.join(', ');
     itemPrice.innerHTML = item.price;
 }
 
@@ -307,27 +308,26 @@ function deselectAllSelectedItems() {
     document.querySelectorAll('.item.selected').forEach(item => { item.classList.toggle('selected') });
 }
 
-function insertItemInCarousel(barcode) {
-    // //TODO: Load items, fill item divs, create extra item divs
+function insertItemInCarousel(item) {
     var itemElement = document.createElement('div');
     itemElement.className = 'item';
-    itemElement.id = barcode;
+    itemElement.id = item.key; //TODO: add key to item
     var imageHolderElement = document.createElement('div');
     imageHolderElement.className = 'imageHolder';
     //Add the image holder div to the item.
     itemElement.appendChild(imageHolderElement);
 
     var imgElement = document.createElement('img');
-    imgElement.src = data[barcode].img;
+    imgElement.src = item.img;
     //Add the image to the image holder in the item div.
     imageHolderElement.appendChild(imgElement);
 
     //Create the item name "p"-tag.
     var itemNameTag = document.createElement('p');
-    if (data[barcode].name.length > 12) {
-        itemNameTag.innerHTML = data[barcode].name.substring(0, 9) + "...";
+    if (item['name'].length > 12) {
+        itemNameTag.innerHTML = item['name'].substring(0, 9) + "...";
     } else {
-        itemNameTag.innerHTML = data[barcode].name;
+        itemNameTag.innerHTML = item['name'];
     }
     //Add the name-tag to the item div.
     itemElement.appendChild(itemNameTag);

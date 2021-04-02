@@ -1,4 +1,6 @@
-Quagga.init(this.state, function (err) {
+import ProductService from "./commercetools/service/ProductService.js";
+
+Quagga.init({}, function (err) {
     if (err) {
         console.log(err);
     }
@@ -31,13 +33,31 @@ Quagga.onProcessed(function (result) {
     }
 });
 
+let productService = new ProductService();
 
-
+let scannercheck;
+let counter = 0;
 Quagga.onDetected(function (result) {
-    var code = JSON.parse(sessionStorage.getItem("barcodes")) || [];
+    console.log(result.codeResult.code);
+    if (scannercheck !== result.codeResult.code) {
+        scannercheck = result.codeResult.code;
+        counter = 0;
+    } else {
+        counter++;
+        if (counter === 75) {
+            productService.getProductByKey(result.codeResult.code).then(product => {
+                productService.getCategories(product.categories).then(r => {
+                    product.categories = r;
+                    var code = JSON.parse(sessionStorage.getItem("barcodes")) || [];
+                    code.push(product);
+                    sessionStorage.setItem("barcodes", JSON.stringify(code));
+                    window.location.href = "/";
+
+                })
+            });
+        }
+    }
     //TODO: Check if barcode already exists in the array
     //TODO: Make it so only the barcode scans
-    code.push(result.codeResult.code);
-    sessionStorage.setItem("barcodes", JSON.stringify(code));
-    window.location.href = "/";
+
 });
