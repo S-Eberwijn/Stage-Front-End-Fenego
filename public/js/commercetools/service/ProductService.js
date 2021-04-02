@@ -11,7 +11,7 @@ export default class ProductService {
                 name: result.masterData.current.name["nl-NL"],
                 description: result.masterData.current.metaDescription["nl-NL"],
                 categories: result.masterData.current.categories,
-                price: result.masterData.current.masterVariant.prices[0].value.centAmount / 100,
+                price: "€" + result.masterData.current.masterVariant.prices[0].value.centAmount / 100,
                 img: result.masterData.current.masterVariant.images[0].url,
             };
         });
@@ -23,7 +23,7 @@ export default class ProductService {
                 name: result.masterData.current.name["nl-NL"],
                 description: result.masterData.current.metaDescription["nl-NL"],
                 categories: result.masterData.current.categories,
-                price: result.masterData.current.masterVariant.prices[0].value.centAmount / 100,
+                price: "€" + result.masterData.current.masterVariant.prices[0].value.centAmount / 100,
                 img: result.masterData.current.masterVariant.images[0].url,
             };
         });
@@ -38,7 +38,7 @@ export default class ProductService {
                         name: result.masterData.current.name["nl-NL"],
                         description: result.masterData.current.metaDescription["nl-NL"],
                         categories: result.masterData.current.categories,
-                        price: result.masterData.current.masterVariant.prices[0].value.centAmount / 100,
+                        price: "€" + result.masterData.current.masterVariant.prices[0].value.centAmount / 100,
                         img: result.masterData.current.masterVariant.images[0].url,
                     };
 
