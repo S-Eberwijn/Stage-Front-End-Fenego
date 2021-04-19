@@ -10,10 +10,8 @@ Quagga.init({}, function(err) {
     addToLogger('Starting scanner...');
 });
 
-
-
 Quagga.onProcessed(function(result) {
-    var drawingCtx = Quagga.canvas.ctx.overlay,
+    let drawingCtx = Quagga.canvas.ctx.overlay,
         drawingCanvas = Quagga.canvas.dom.overlay;
 
     if (result) {
@@ -72,7 +70,6 @@ Quagga.onDetected(function(result) {
                                 sessionStorage.setItem("suggestions", JSON.stringify(suggestedItemsArray));
                             });
                         })
-
                     })
                 });
             })

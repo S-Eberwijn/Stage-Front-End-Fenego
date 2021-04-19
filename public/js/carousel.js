@@ -330,5 +330,4 @@ function insertItemInCarousel(item) {
     itemElement.appendChild(itemNameTag);
 
     return itemElement;
-
 }

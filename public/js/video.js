@@ -1,6 +1,4 @@
 const videoElement = document.getElementById("input_video");
-const canvasElement = document.getElementsByClassName('output_canvas')[0];
-const controlsElement = document.getElementsByClassName('control-panel')[0];
 const cursorRightElement = document.getElementById("cursorRight");
 const spinner = document.getElementById("spinner");
 

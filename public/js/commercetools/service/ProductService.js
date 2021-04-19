@@ -1,4 +1,3 @@
-// let ProductDao = require("../dao/ProductDAO");
 import ProductDAO from '../dao/ProductDAO.js';
 export default class ProductService {
     constructor() {
@@ -41,7 +40,6 @@ export default class ProductService {
                         price: "€" + result.masterData.current.masterVariant.prices[0].value.centAmount / 100,
                         img: result.masterData.current.masterVariant.images[0].url,
                     };
-
                     filteredProducts.push(filteredProduct);
             });
             return filteredProducts;
@@ -72,4 +70,3 @@ export default class ProductService {
         return categories;
     }
 }
-// module.exports = ProductService;

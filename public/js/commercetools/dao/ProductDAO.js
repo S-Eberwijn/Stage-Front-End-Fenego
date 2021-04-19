@@ -1,5 +1,3 @@
-
-
 export default class ProductDAO {
     constructor() {
         this.client = CommercetoolsSdkClient.createClient({
