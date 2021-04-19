@@ -28,7 +28,7 @@ export default class ProductService {
             };
         });
     }
-    getProducts() {
+    getAllProducts() {
         return this.productDao.getProducts().then(results => {
             let filteredProducts = [];
             let filteredProduct = null;
@@ -47,7 +47,22 @@ export default class ProductService {
             return filteredProducts;
         });
     }
-
+    async getSuggestions(categoryIds) {
+        let products = await this.getAllProducts();
+        let filteredProducts = products.filter((pr) => {
+            let prCategories = [];
+            for(let cat of pr.categories) {
+                prCategories.push(cat.id);
+            }
+            for (const categoryId of categoryIds) {
+                if (prCategories.includes(categoryId.id)) {
+                    return false;
+                }
+            }
+            return true;
+        });
+        return filteredProducts.slice(0, 20);
+    }
     async getCategories(categoryIds) {
         let categories = [];
         for (const categoryId of categoryIds) {

@@ -52,11 +52,15 @@ Quagga.onDetected(function(result) {
             addToLogger('Fetching product...');
             productService.getProductByKey(result.codeResult.code).then(product => {
                 productService.getCategories(product.categories).then(r => {
+                    let categoryIds = product.categories;
                     product.categories = r;
                     var code = JSON.parse(sessionStorage.getItem("barcodes")) || [];
                     code.push(product);
                     sessionStorage.setItem("barcodes", JSON.stringify(code));
-                    window.location.href = "/";
+                    productService.getSuggestions(categoryIds).then(r => {
+                        sessionStorage.setItem("suggestions", JSON.stringify(r));
+                        window.location.href = "/";
+                    })
                 })
             });
         }
