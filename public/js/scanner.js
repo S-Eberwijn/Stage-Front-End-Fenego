@@ -48,6 +48,7 @@ Quagga.onDetected(function(result) {
     } else {
         counter++;
         if (counter === 75) {
+            let alreadyScanned = false;
             addToLogger('Identified barcode...');
             addToLogger('Fetching product...');
             productService.getProductByKey(result.codeResult.code).then(product => {
@@ -55,6 +56,11 @@ Quagga.onDetected(function(result) {
                     let categoryIds = product.categories;
                     product.categories = r;
                     var code = JSON.parse(sessionStorage.getItem("barcodes")) || [];
+                    code.forEach(pr => {
+                        console.log('hi: ' + pr.key + ' - ' + product.key);
+                        if (pr.key === product.key) return alreadyScanned = true;
+                    });
+                    if (alreadyScanned) return addToLogger('Already added this product!');
                     code.push(product);
                     sessionStorage.setItem("barcodes", JSON.stringify(code));
                     productService.getSuggestions(categoryIds).then(r => {
