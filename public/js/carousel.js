@@ -91,7 +91,7 @@ window.onload = function () {
             document.querySelectorAll('.item.selected').forEach(item => { item.classList.toggle('selected') });
             item.classList.toggle('selected');
             if (item.querySelector('p').innerHTML === 'Scan Item') {
-                window.location.href = "/barcode";
+                window.location.href = "./barcode.html";
             } else if (item.id.length >= 6) {
                 detailedBoxContent.style.opacity = 0;
                 loadItemIntoDetailedBox(scannedItems.find(obj => {return obj.key = item.id}));
