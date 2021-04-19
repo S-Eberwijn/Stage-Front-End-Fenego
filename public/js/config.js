@@ -9,3 +9,4 @@ let carouselIsMoving = false;
 let isFirstTime = true;
 let greeterAnimationTime = 4000;
 let scannedItems = JSON.parse(sessionStorage.getItem("barcodes")) || null;
+let suggestedItems = JSON.parse(sessionStorage.getItem("suggestions")) || null;

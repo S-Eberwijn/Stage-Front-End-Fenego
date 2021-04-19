@@ -49,6 +49,7 @@ Quagga.onDetected(function(result) {
         counter++;
         if (counter === 75) {
             let alreadyScanned = false;
+            let suggestedItemsArray = [];
             addToLogger('Identified barcode...');
             addToLogger('Fetching product...');
             productService.getProductByKey(result.codeResult.code).then(product => {
@@ -57,23 +58,28 @@ Quagga.onDetected(function(result) {
                     product.categories = r;
                     var code = JSON.parse(sessionStorage.getItem("barcodes")) || [];
                     code.forEach(pr => {
-                        console.log('hi: ' + pr.key + ' - ' + product.key);
                         if (pr.key === product.key) return alreadyScanned = true;
                     });
                     if (alreadyScanned) return addToLogger('Already added this product!');
                     code.push(product);
                     sessionStorage.setItem("barcodes", JSON.stringify(code));
-                    productService.getSuggestions(categoryIds).then(r => {
-                        sessionStorage.setItem("suggestions", JSON.stringify(r));
-                        window.location.href = "/";
+                    productService.getSuggestions(categoryIds).then(products => {
+                        products.forEach(product => {
+                            productService.getCategories(product.categories).then(r => {
+                                product.categories = r;
+                                suggestedItemsArray.push(product);
+                                console.log(suggestedItemsArray);
+                                sessionStorage.setItem("suggestions", JSON.stringify(suggestedItemsArray));
+                            });
+                        })
+
                     })
-                })
-            });
+                });
+            })
+            window.location.href = "/";
+
         }
     }
-    //TODO: Check if barcode already exists in the array
-    //TODO: Make it so only the barcode scans
-
 });
 
 function addToLogger(message) {
