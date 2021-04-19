@@ -1,3 +1,5 @@
+
+
 export default class ProductDAO {
     constructor() {
         this.client = CommercetoolsSdkClient.createClient({
@@ -7,6 +9,21 @@ export default class ProductDAO {
                 }),
             ],
         });
+        this.authClient = new CommercetoolsSdkAuth.default({
+            host: "https://auth.europe-west1.gcp.commercetools.com",
+            projectkey: "pr-stagepxl",
+            disableRefreshToken: false,
+            credentials: {
+                clientId: "9zgMpbKb5h5B_YhzhUvWgZt2",
+                clientSecret: "tsRLTzeSc293vxR9ZMs6tHEd6JeCaHfG"
+            },
+            scopes: ['manage_project:pr-stagepxl']
+
+        })
+        this.bearerToken = "";
+        this.getBearerToken().then(data => {
+            this.bearerToken = data.access_token;
+        });
 
         this.requestBuilder = CommercetoolsApiRequestBuilder.createRequestBuilder({
             projectKey: 'pr-stagepxl',
@@ -14,14 +31,18 @@ export default class ProductDAO {
         });
         this.productsService = this.requestBuilder.products;
         this.categoryService = this.requestBuilder.categories;
-        console.log(this.categoryService.build());
+    }
+    async getBearerToken() {
+        let request = CommercetoolsSdkAuth.default._buildRequest(this.authClient.config, this.authClient.BASE_AUTH_FLOW_URI);
+        let processedRequest = this.authClient._process(request);
+        return await processedRequest;
     }
     getProductById(id) {
         const request = {
             uri: this.productsService.build() + "/" + id, //max 500
             method: 'GET',
             headers: {
-                Authorization: 'Bearer SaGtOIXlnusgaqhHXSNDTteUel1hZLax',
+                Authorization: `Bearer ${this.bearerToken}`,
             },
         };
         return this.client.execute(request)
@@ -33,11 +54,12 @@ export default class ProductDAO {
             .catch(error => console.log(error));
     }
     getProductByKey(key) {
+        console.log(this.bearerToken);
         const request = {
             uri: this.productsService.byKey(key).build(), //max 500
             method: 'GET',
             headers: {
-                Authorization: 'Bearer SaGtOIXlnusgaqhHXSNDTteUel1hZLax',
+                Authorization: `Bearer ${this.bearerToken}`,
             },
         };
         return this.client.execute(request)
@@ -54,7 +76,7 @@ export default class ProductDAO {
             uri: this.productsService.build() + "?limit=400", //max 500
             method: 'GET',
             headers: {
-                Authorization: 'Bearer SaGtOIXlnusgaqhHXSNDTteUel1hZLax',
+                Authorization: `Bearer ${this.bearerToken}`,
             },
         };
         let returnResults = null;
@@ -73,7 +95,7 @@ export default class ProductDAO {
             uri: this.categoryService.build() + "/" + id,
             method: 'GET',
             headers: {
-                Authorization: 'Bearer SaGtOIXlnusgaqhHXSNDTteUel1hZLax',
+                Authorization: `Bearer ${this.bearerToken}`,
             },
         };
         let categoryName = this.client.execute(request)
@@ -86,5 +108,3 @@ export default class ProductDAO {
         return await categoryName;
     }
 }
-
-// module.exports = ProductDAO;

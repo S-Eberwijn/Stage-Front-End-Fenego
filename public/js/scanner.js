@@ -44,7 +44,7 @@ Quagga.onDetected(function (result) {
         counter = 0;
     } else {
         counter++;
-        if (counter === 75) {
+        if (counter === 30) {
             productService.getProductByKey(result.codeResult.code).then(product => {
                 productService.getCategories(product.categories).then(r => {
                     product.categories = r;
