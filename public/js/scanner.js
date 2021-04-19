@@ -47,8 +47,9 @@ Quagga.onDetected(function(result) {
         counter = 0;
     } else {
         counter++;
-<<<<<<< Updated upstream
-        if (counter === 30) {
+        if (counter === 75) {
+            addToLogger('Identified barcode...');
+            addToLogger('Fetching product...');
             productService.getProductByKey(result.codeResult.code).then(product => {
                 productService.getCategories(product.categories).then(r => {
                     product.categories = r;
@@ -56,27 +57,8 @@ Quagga.onDetected(function(result) {
                     code.push(product);
                     sessionStorage.setItem("barcodes", JSON.stringify(code));
                     window.location.href = "/";
-
                 })
             });
-=======
-        if (counter === 75) {
-            addToLogger('Identified barcode...');
-            addToLogger('Fetching product...');
-            try {
-                productService.getProductByKey(result.codeResult.code).then(product => {
-                    productService.getCategories(product.categories).then(r => {
-                        product.categories = r;
-                        var code = JSON.parse(sessionStorage.getItem("barcodes")) || [];
-                        code.push(product);
-                        sessionStorage.setItem("barcodes", JSON.stringify(code));
-                        window.location.href = "/";
-                    })
-                });
-            } catch (error) {
-                addToLogger('Product not found...');
-            }
->>>>>>> Stashed changes
         }
     }
     //TODO: Check if barcode already exists in the array
