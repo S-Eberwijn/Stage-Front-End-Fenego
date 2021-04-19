@@ -1,26 +1,49 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300&display=swap');
 body {
+    font-family: 'Poppins', sans-serif;
     background-color: black;
     overflow: hidden;
+}
+
+.wrapper {
+    position: relative;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
     padding: 1.2rem;
 }
 
 h1 {
     width: 100%;
-    height: 200px;
+    font-size: 3rem;
+    padding-bottom: 1rem;
     color: white;
     text-align: center;
-    position: absolute;
-    top: 0;
-    bottom: 0;
-    left: 0;
-    right: 0;
     margin: auto;
+}
+
+p.logger {
+    height: 4.5rem;
+    width: auto;
+    border: 2px solid gray;
+    color: gray;
+    padding: .5rem;
+    border-radius: 15px;
+    overflow: hidden;
 }
 
 #container {
     width: 640px;
-    margin: 20px auto;
     padding: 10px;
+}
+
+#interactive {
+    background: linear-gradient(white, white) top left, linear-gradient(white, white) top left, linear-gradient(white, white) top right, linear-gradient(white, white) top right, linear-gradient(white, white) bottom left, linear-gradient(white, white) bottom left, linear-gradient(white, white) bottom right, linear-gradient(white, white) bottom right;
+    background-size: 6rem .5rem, .5rem 6rem;
+    background-repeat: no-repeat;
+    padding: .5rem;
 }
 
 #interactive.viewport {
@@ -28,13 +51,15 @@ h1 {
     height: 480px;
 }
 
-#interactive.viewport canvas, video {
+#interactive.viewport canvas,
+video {
     float: left;
     width: 640px;
     height: 480px;
 }
 
-#interactive.viewport canvas.drawingBuffer, video.drawingBuffer {
+#interactive.viewport canvas.drawingBuffer,
+video.drawingBuffer {
     margin-left: -640px;
 }
 
@@ -59,7 +84,8 @@ h1 {
     margin-bottom: 14px;
 }
 
-.scanner-overlay>.header h4, .scanner-overlay>.header .close {
+.scanner-overlay>.header h4,
+.scanner-overlay>.header .close {
     line-height: 16px;
 }
 
@@ -78,4 +104,100 @@ h1 {
     font-weight: bold;
     font-size: 14px;
     cursor: pointer;
+}
+
+.circle {
+    position: absolute;
+    width: 5rem;
+    height: 5rem;
+    top: 50%;
+    right: 5px;
+    border-radius: 999px;
+    box-shadow: inset 0 0 0 20px rgba(255, 255, 255, 0.5);
+}
+
+.count {
+    position: absolute;
+    width: 100%;
+    line-height: 5rem;
+    text-align: center;
+    font-weight: 800;
+    font-size: 20px;
+    color: #fff;
+    z-index: 2;
+    animation: fadeout .5s 21s 1 linear;
+    -webkit-animation: fadeout .5s 21s 1 linear;
+    animation-fill-mode: forwards;
+    -webkit-animation-fill-mode: forwards;
+}
+
+.l-half,
+.r-half {
+    float: left;
+    width: 50%;
+    height: 100%;
+    overflow: hidden;
+}
+
+.l-half::before,
+.r-half::before {
+    content: "";
+    display: block;
+    width: 100%;
+    height: 100%;
+    box-sizing: border-box;
+    border: 20px solid #fff;
+    -webkit-animation-duration: 21s;
+    -webkit-animation-iteration-count: 1;
+    -webkit-animation-timing-function: linear;
+    -webkit-animation-fill-mode: forwards;
+}
+
+.l-half::before {
+    border-right: none;
+    border-top-left-radius: 999px;
+    border-bottom-left-radius: 999px;
+    -webkit-transform-origin: center right;
+    -webkit-animation-name: l-rotate;
+}
+
+.r-half::before {
+    border-left: none;
+    border-top-right-radius: 999px;
+    border-bottom-right-radius: 999px;
+    -webkit-transform-origin: center left;
+    -webkit-animation-name: r-rotate;
+}
+
+@-webkit-keyframes l-rotate {
+    0% {
+        -webkit-transform: rotate(0deg);
+    }
+    50% {
+        -webkit-transform: rotate(-180deg);
+    }
+    100% {
+        -webkit-transform: rotate(-180deg);
+    }
+}
+
+@-webkit-keyframes r-rotate {
+    0% {
+        -webkit-transform: rotate(0deg);
+    }
+    50% {
+        -webkit-transform: rotate(0deg);
+    }
+    100% {
+        -webkit-transform: rotate(-180deg);
+    }
+}
+
+@-webkit-keyframes fadeout {
+    0% {
+        opacity: 1;
+    }
+    100% {
+        opacity: 0.5;
+    }
 }
