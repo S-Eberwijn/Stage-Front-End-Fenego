@@ -51,15 +51,13 @@ p.logger {
     height: 480px;
 }
 
-#interactive.viewport canvas,
-video {
+#interactive.viewport canvas, video {
     float: left;
     width: 640px;
     height: 480px;
 }
 
-#interactive.viewport canvas.drawingBuffer,
-video.drawingBuffer {
+#interactive.viewport canvas.drawingBuffer, video.drawingBuffer {
     margin-left: -640px;
 }
 
@@ -84,8 +82,7 @@ video.drawingBuffer {
     margin-bottom: 14px;
 }
 
-.scanner-overlay>.header h4,
-.scanner-overlay>.header .close {
+.scanner-overlay>.header h4, .scanner-overlay>.header .close {
     line-height: 16px;
 }
 
@@ -131,16 +128,14 @@ video.drawingBuffer {
     -webkit-animation-fill-mode: forwards;
 }
 
-.l-half,
-.r-half {
+.l-half, .r-half {
     float: left;
     width: 50%;
     height: 100%;
     overflow: hidden;
 }
 
-.l-half::before,
-.r-half::before {
+.l-half::before, .r-half::before {
     content: "";
     display: block;
     width: 100%;
@@ -157,16 +152,12 @@ video.drawingBuffer {
     border-right: none;
     border-top-left-radius: 999px;
     border-bottom-left-radius: 999px;
-    -webkit-transform-origin: center right;
-    -webkit-animation-name: l-rotate;
 }
 
 .r-half::before {
     border-left: none;
     border-top-right-radius: 999px;
     border-bottom-right-radius: 999px;
-    -webkit-transform-origin: center left;
-    -webkit-animation-name: r-rotate;
 }
 
 @-webkit-keyframes l-rotate {
