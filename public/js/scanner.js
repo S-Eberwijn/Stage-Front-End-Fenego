@@ -68,12 +68,13 @@ Quagga.onDetected(function(result) {
                                 suggestedItemsArray.push(product);
                                 console.log(suggestedItemsArray);
                                 sessionStorage.setItem("suggestions", JSON.stringify(suggestedItemsArray));
+                                window.location.href = "/";
+
                             });
                         })
                     })
                 });
             })
-            window.location.href = "/";
 
         }
     }
