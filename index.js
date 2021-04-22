@@ -15,6 +15,10 @@ app.get('/barcode', function (req, res) {
     res.sendFile('barcode.html', { root: `${__dirname}\\public` });
 });
 
+app.get('/startscreen', function (req, res) {
+    res.sendFile('startscreen.html', { root: `${__dirname}\\public` });
+});
+
 app.listen(3000, function () {
     console.log("Listening on port 3000!")
 });
