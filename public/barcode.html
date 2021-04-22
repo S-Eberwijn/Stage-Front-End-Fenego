@@ -11,17 +11,16 @@
     <div class="wrapper">
         <section class="container">
             <h1>Scan uw barcode</h1>
-            <div id="interactive" class="viewport"></div>
+            <div id="interactive" class="viewport">
+                <div class="timer">
+                    <div class="count">20</div>
+                    <div class="l-half l-rotation"></div>
+                    <div class="r-half r-rotation"></div>
+                </div>
+            </div>
             <p class="logger"></p>
         </section>
-        <div class="circle">
-            <div class="count">20</div>
-            <div class="l-half l-rotation"></div>
-            <div class="r-half r-rotation"></div>
-        </div>
     </div>
-
-
 
 
     <script src="https://unpkg.com/@commercetools/sdk-client/dist/sdk-client.umd.min.js"></script>
@@ -33,9 +32,6 @@
 
     <script src="./js/quagga.min.js"></script>
     <script src="./js/scanner.js" type="module"></script>
-    <script src="./js/timer.js"></script>
-
-
 </body>
 
 </html>

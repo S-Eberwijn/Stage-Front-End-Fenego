@@ -40,6 +40,7 @@ p.logger {
 }
 
 #interactive {
+    position: relative;
     background: linear-gradient(white, white) top left, linear-gradient(white, white) top left, linear-gradient(white, white) top right, linear-gradient(white, white) top right, linear-gradient(white, white) bottom left, linear-gradient(white, white) bottom left, linear-gradient(white, white) bottom right, linear-gradient(white, white) bottom right;
     background-size: 6rem .5rem, .5rem 6rem;
     background-repeat: no-repeat;
@@ -103,12 +104,12 @@ p.logger {
     cursor: pointer;
 }
 
-.circle {
+.timer {
     position: absolute;
     width: 5rem;
     height: 5rem;
-    top: 50%;
-    right: 5px;
+    top: 45%;
+    right: -10rem;
     border-radius: 999px;
     box-shadow: inset 0 0 0 20px rgba(255, 255, 255, 0.5);
 }
@@ -123,7 +124,7 @@ p.logger {
     color: #fff;
     z-index: 2;
     animation: fadeout .5s 21s 1 linear;
-    -webkit-animation: fadeout .5s 21s 1 linear;
+    -webkit-animation: fadeout .5s 21.5s 1 linear;
     animation-fill-mode: forwards;
     -webkit-animation-fill-mode: forwards;
 }
@@ -142,7 +143,7 @@ p.logger {
     height: 100%;
     box-sizing: border-box;
     border: 20px solid #fff;
-    -webkit-animation-duration: 21s;
+    -webkit-animation-duration: 21.5s;
     -webkit-animation-iteration-count: 1;
     -webkit-animation-timing-function: linear;
     -webkit-animation-fill-mode: forwards;

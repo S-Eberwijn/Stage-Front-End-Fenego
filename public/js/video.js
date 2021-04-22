@@ -2,6 +2,9 @@ const videoElement = document.getElementById("input_video");
 const cursorRightElement = document.getElementById("cursorRight");
 const spinner = document.getElementById("spinner");
 
+const cursor = document.getElementById("cursorLeft");
+
+
 let cursorY, cursorX;
 
 function onResults(results) {
@@ -23,7 +26,7 @@ function onResults(results) {
             cursor.style.top = cursorY + "%";
 
             items.forEach(item => {
-                if (isColliding(cursorLeft.getBoundingClientRect(), item.getBoundingClientRect())) {
+                if (isColliding(cursor.getBoundingClientRect(), item.getBoundingClientRect())) {
                     if (!item.classList.contains('selected')) {
                         for (let index = 0; index < MAX_VISIBLE_ITEMS; index++) {
                             if (item.parentElement.children[index] === item) {
@@ -42,8 +45,7 @@ function onResults(results) {
             //TODO: Rewrite this to a function.
             //Check for each next-button if the cursor is colliding.
             nextButtons.forEach(button => {
-                console.log()
-                if (isColliding(cursorLeft.getBoundingClientRect(), button.getBoundingClientRect()) && !button.classList.contains('disabled')) {
+                if (isColliding(cursor.getBoundingClientRect(), button.getBoundingClientRect()) && !button.classList.contains('disabled')) {
                     button.classList.add('selecting');
                 } else {
                     if (button.classList.contains('selecting')) {
@@ -53,7 +55,7 @@ function onResults(results) {
             });
             //Check for each previous-button if the cursor is colliding.
             previousButtons.forEach(button => {
-                if (isColliding(cursorLeft.getBoundingClientRect(), button.getBoundingClientRect()) && !button.classList.contains('disabled')) {
+                if (isColliding(cursor.getBoundingClientRect(), button.getBoundingClientRect()) && !button.classList.contains('disabled')) {
                     button.classList.add('selecting');
                 } else {
                     if (button.classList.contains('selecting')) {
@@ -85,7 +87,7 @@ hands.onResults(onResults);
  * Instantiate a camera. We'll feed each frame we receive into the solution.
  */
 const camera = new Camera(videoElement, {
-    onFrame: async() => {
+    onFrame: async () => {
         await hands.send({ image: videoElement });
     },
     width: 1280,
