@@ -19,8 +19,8 @@ function onResults(results) {
     if (results.multiHandLandmarks !== undefined) {
         if (results.multiHandLandmarks[0] !== undefined) {
             cursor.style.display = "block";
-            cursorX = results.multiHandLandmarks[0][9].x * 100;
-            cursorY = results.multiHandLandmarks[0][9].y * 100;
+            cursorX = results.multiHandLandmarks[0][12].x * 150;
+            cursorY = results.multiHandLandmarks[0][12].y * 150;
             cursorX = 100 - cursorX;
             cursor.style.left = cursorX + "%";
             cursor.style.top = cursorY + "%";
@@ -42,13 +42,9 @@ function onResults(results) {
                     }
                 }
             });
-            //TODO: Rewrite this to a function.
-            //Check for each next-button if the cursor is colliding.
-            nextButtons.forEach(button => {
-                isCollidingButton(cursor, button);
-
-            });
-            //Check for each previous-button if the cursor is colliding.
+            iconHolders.forEach(iconHolder => {
+                isCollidingButton(cursor, iconHolder);
+            })
             buttons.forEach(button => {
                 isCollidingButton(cursor, button);
             });

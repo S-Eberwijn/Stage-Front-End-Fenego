@@ -11,10 +11,6 @@
     <link rel="stylesheet" href="./css/fontawesome-free-5.15.3-web/css/all.min.css">
 
     <script src="https://cdn.jsdelivr.net/npm/@mediapipe/camera_utils/camera_utils.js" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@mediapipe/control_utils/control_utils.js"
-        crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@mediapipe/drawing_utils/drawing_utils.js"
-        crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/@mediapipe/hands/hands.js" crossorigin="anonymous"></script>
 
 </head>
@@ -49,7 +45,9 @@
                 <div></div>
             </div>
             <div id="detailedBoxContent">
-                <p id="itemName"></p>
+                <div class="itemNameHolder">
+                    <p id="itemName"></p>
+                </div>
                 <div class="imageHolder">
                     <img id="itemImage" />
                 </div>
@@ -60,6 +58,15 @@
                     <p id="itemTags"></p>
                     <p>Price</p>
                     <p id="itemPrice"></p>
+                </div>
+                <div class="iconHolder star">
+                    <i class="far fa-star fa-3x"></i>
+                </div>
+                <div class="iconHolder eye">
+                    <i class="far fa-eye-slash fa-3x"></i>
+                </div>
+                <div class="iconHolder trash">
+                    <i class="far fa-trash-alt fa-3x"></i>
                 </div>
             </div>
         </div>
@@ -84,8 +91,6 @@
 
     <script src="./js/config.js"></script>
     <script src="./js/main.js"></script>
-    <script src="./js/carousel.js"></script>
-    <script src="./js/cursor.js"></script>
     <script src="./js/video.js"></script>
 
 

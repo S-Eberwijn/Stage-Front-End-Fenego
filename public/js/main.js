@@ -38,7 +38,7 @@ function currentTime() {
     min = updateTime(min);
     sec = updateTime(sec);
     document.getElementById("clock").innerText = `${hour}:${min}`; /* adding time to the div */
-    var t = setTimeout(function () { currentTime() }, 1000); /* setting timer */
+    var t = setTimeout(function() { currentTime() }, 1000); /* setting timer */
 }
 
 function updateTime(k) {
@@ -63,6 +63,7 @@ let detailedBox = document.getElementById('detailedBox');
 let detailedBoxContent = document.getElementById('detailedBoxContent');
 let detailedBoxContentLoader = document.getElementById('detailedBoxContentLoader');
 let scanItemElement = document.getElementById('scan');
+let iconHolders = document.querySelectorAll('.iconHolder');
 
 let itemName = document.getElementById('itemName');
 let itemImage = document.getElementById('itemImage');
@@ -90,7 +91,7 @@ window.onload = function() {
 
             //Create a new plus icon element.
             var plusIconElement = document.createElement('i');
-            plusIconElement.classList = 'fas fa-plus fa-5x';
+            plusIconElement.classList = 'fas fa-plus fa-5x plus';
 
             //Create a new p-tag element.
             var scanTextElement = document.createElement('p');
@@ -223,6 +224,40 @@ nextButtons.forEach(element => {
     })
 });
 
+iconHolders.forEach(iconHolder => {
+    iconHolder.addEventListener('transitionend', function() {
+        let oldIcon = iconHolder.querySelector('i');
+        let newIcon = document.createElement('i');
+        if (iconHolder.classList.contains('star')) {
+            if (oldIcon.classList.contains('far')) {
+                oldIcon.remove();
+                newIcon.className = 'fas fa-star fa-3x yellow';
+                iconHolder.appendChild(newIcon);
+            } else {
+                oldIcon.remove();
+                newIcon.className = 'far fa-star fa-3x';
+                iconHolder.appendChild(newIcon);
+            }
+        } else if (iconHolder.classList.contains('eye')) {
+            if (oldIcon.classList.contains('fa-eye-slash')) {
+                oldIcon.remove();
+                newIcon.className = 'far fa-eye fa-3x';
+                iconHolder.appendChild(newIcon);
+            } else {
+                oldIcon.remove();
+                newIcon.className = 'far fa-eye-slash fa-3x';
+                iconHolder.appendChild(newIcon);
+            }
+        } else if (iconHolder.classList.contains('trash')) {
+            if (oldIcon.classList.contains('far')) {
+
+            }
+        }
+        newIcon.classList.add('iconAni');
+        console.log('testing');
+    })
+})
+
 function getCorrectCarousel(element) {
     if (element.parentElement.querySelector('.left')) {
         return element.parentElement.querySelector('.left');
@@ -306,8 +341,16 @@ function moveSmallLine(item) {
     smallLine.style.top = `${getPositionAtCenter(item).y}px`;
     if (item.parentElement.classList.contains('left')) {
         smallLine.style.left = `${item.getBoundingClientRect().right}px`;
+        iconHolders.forEach(iconHolder => {
+            iconHolder.classList.remove('left');
+            iconHolder.classList.add('right');
+        })
     } else if (item.parentElement.classList.contains('right')) {
         smallLine.style.left = `${item.getBoundingClientRect().left - smallLine.getBoundingClientRect().width}px`;
+        iconHolders.forEach(iconHolder => {
+            iconHolder.classList.remove('right');
+            iconHolder.classList.add('left');
+        })
     }
     showSmallLine();
 }

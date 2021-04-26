@@ -58,16 +58,18 @@
 }
 
 .imageHolder {
+    position: relative;
     height: 70%;
     width: 100%;
-    overflow: hidden;
     display: flex;
+    overflow-y: hidden;
+    overflow-x: hidden;
     flex-direction: column;
     align-items: center;
     justify-content: space-evenly;
 }
 
-.imageHolder>i {
+.imageHolder>i.plus {
     height: 90%;
     width: 90%;
     color: white;
@@ -76,6 +78,67 @@
     align-items: center;
     justify-content: space-evenly;
     padding: 10%;
+}
+
+#detailedBoxContent>div.iconHolder {
+    height: 5rem;
+    width: 5rem;
+    position: absolute;
+    border: 3px solid white;
+    border-radius: 50%;
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#detailedBoxContent>div.iconHolder>i {
+    color: white;
+}
+
+.iconHolder.selecting {
+    transition: background-color 500ms linear;
+    background-color: #e32636 !important;
+}
+
+div.iconHolder.left {
+    left: -7rem;
+}
+
+div.iconHolder.right {
+    right: -7rem;
+}
+
+.star {
+    top: 10%;
+}
+
+.yellow {
+    color: yellow !important;
+}
+
+.eye {
+    top: 25%;
+}
+
+.trash {
+    top: 40%;
+}
+
+.iconAni {
+    animation: iconAnimation 500ms 1 ease-in;
+}
+
+@keyframes iconAnimation {
+    0% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.2);
+    }
+    100% {
+        transform: scale(1);
+    }
 }
 
 .imageHolder>img {
@@ -139,7 +202,6 @@ div#detailedBox {
     border-radius: 4%;
     position: absolute;
     visibility: hidden;
-    overflow: hidden;
     transition: opacity 400ms ease;
     opacity: 0;
 }
@@ -152,17 +214,22 @@ div#detailedBox>div#detailedBoxContent {
     flex-direction: column;
     align-items: center;
     justify-content: space-between;
+    position: relative;
+}
+
+.itemNameHolder {
+    width: 100%;
+    height: 10%;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    border-bottom: 3px solid white;
 }
 
 #itemName {
-    max-height: 7.5%;
-    width: 100%;
     font-size: xx-large;
     white-space: nowrap;
-    border-bottom: 3px solid white;
-    padding-top: 3%;
-    padding-bottom: 3%;
-    text-indent: 5%;
+    text-indent: 2%;
     color: white;
 }
 
