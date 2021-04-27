@@ -18,25 +18,28 @@ async function start() {
     document.body.append('Loaded')
     imageUpload.addEventListener('click', async () => {
 
-        //TODO: kijk naar original code en fiks deze nest
         if (image) image.remove()
         if (canvas) canvas.remove()
-        // image = await faceapi.bufferToImage("/something.jpg")
-        image = document.createElement("image");
-        image.src = "/something.jpg"
+        image = document.createElement("img");
+        image.src = "./labeled_images/something.jpg";
         container.append(image)
-        canvas = faceapi.createCanvasFromMedia(image)
-        container.append(canvas)
-        const displaySize = { width: image.width, height: image.height }
-        faceapi.matchDimensions(canvas, displaySize)
-        const detections = await faceapi.detectAllFaces(image).withFaceLandmarks().withFaceDescriptors()
-        const resizedDetections = faceapi.resizeResults(detections, displaySize)
-        const results = resizedDetections.map(d => faceMatcher.findBestMatch(d.descriptor))
-        results.forEach((result, i) => {
-            const box = resizedDetections[i].detection.box
-            const drawBox = new faceapi.draw.DrawBox(box, { label: result.toString() })
-            drawBox.draw(canvas)
+        image.addEventListener('load', async () => {
+            canvas = faceapi.createCanvasFromMedia(image)
+            container.append(canvas)
+            const displaySize = { width: image.width, height: image.height }
+            faceapi.matchDimensions(canvas, displaySize)
+            const detections = await faceapi.detectAllFaces(image).withFaceLandmarks().withFaceDescriptors()
+            const resizedDetections = faceapi.resizeResults(detections, displaySize)
+            const results = resizedDetections.map(d => faceMatcher.findBestMatch(d.descriptor))
+            results.forEach((result, i) => {
+                const box = resizedDetections[i].detection.box
+                const drawBox = new faceapi.draw.DrawBox(box, { label: result.toString() })
+                drawBox.draw(canvas)
+            })
         })
+
+
+
     })
 }
 
