@@ -1,0 +1,71 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300&display=swap');
+* {
+    margin: 0;
+    font-family: 'Poppins', sans-serif;
+    cursor: none;
+}
+
+body, html {
+    background-color: black;
+    height: 100%;
+    width: 100%;
+    margin: 0;
+    overflow: hidden;
+}
+
+.wrapper {
+    height: 100%;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    padding-top: 50px;
+}
+
+i {
+    color: rgb(175, 175, 175);
+    z-index: 100;
+    opacity: 1;
+}
+
+.wave {
+    animation: wave-animation 5s infinite ease;
+}
+
+@keyframes wave-animation {
+    0% {
+        transform: rotate( 0.0deg);
+        opacity: 1;
+    }
+    10% {
+        transform: rotate(14.0deg)
+    }
+    /* The following five values can be played with to make the waving more or less extreme */
+    20% {
+        transform: rotate(-8.0deg)
+    }
+    30% {
+        transform: rotate(14.0deg)
+    }
+    40% {
+        transform: rotate(-4.0deg)
+    }
+    50% {
+        transform: rotate(10.0deg);
+        opacity: 1;
+    }
+    60% {
+        transform: rotate( 0.0deg);
+        opacity: 1;
+    }
+    80% {
+        opacity: 0.1;
+    }
+    /* Reset for the last half to pause */
+    90% {
+        opacity: 0.1;
+    }
+    100% {
+        opacity: 1;
+        transform: rotate( 0.0deg)
+    }
+}

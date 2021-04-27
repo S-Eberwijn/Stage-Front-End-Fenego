@@ -2,20 +2,20 @@ let mainElement = document.getElementById("main");
 let greeting = document.getElementById("greeting");
 let spinnerElement = document.getElementById("spinner");
 
-//If we have scanned items, skip the greeting
-if (scannedItems) {
-    greeting.parentNode.removeChild(greeting);
-    spinnerElement.style.opacity = "1";
-    spinnerElement.classList.add('animate2');
-    greeterAnimationTime = 0;
-} else {
-    greeting.classList.add('fadeOut')
-    greeting.onanimationend = (e) => {
-        greeting.parentNode.removeChild(greeting);
-        spinnerElement.style.opacity = "1";
-        spinnerElement.classList.add('animate2');
-    };
-}
+// //If we have scanned items, skip the greeting
+// if (scannedItems) {
+//     greeting.parentNode.removeChild(greeting);
+//     spinnerElement.style.opacity = "1";
+//     spinnerElement.classList.add('animate2');
+//     greeterAnimationTime = 0;
+// } else {
+//     greeting.classList.add('fadeOut')
+//     greeting.onanimationend = (e) => {
+//         greeting.parentNode.removeChild(greeting);
+//         spinnerElement.style.opacity = "1";
+//         spinnerElement.classList.add('animate2');
+//     };
+// }
 
 
 spinnerElement.onanimationend = (e) => {
@@ -38,7 +38,7 @@ function currentTime() {
     min = updateTime(min);
     sec = updateTime(sec);
     document.getElementById("clock").innerText = `${hour}:${min}`; /* adding time to the div */
-    var t = setTimeout(function() { currentTime() }, 1000); /* setting timer */
+    var t = setTimeout(function () { currentTime() }, 1000); /* setting timer */
 }
 
 function updateTime(k) {
@@ -72,7 +72,7 @@ let itemTags = document.getElementById('itemTags');
 let itemPrice = document.getElementById('itemPrice');
 
 
-window.onload = function() {
+window.onload = function () {
     carousels.forEach(carousel => {
         carousel.style.width = `${verticalSliders[0].getBoundingClientRect().width}px`;
 
@@ -140,11 +140,11 @@ window.onload = function() {
         item.style.marginBottom = `${ITEMS_MARGIN / 2}px`;
 
 
-        item.addEventListener("animationend", function() {
+        item.addEventListener("animationend", function () {
             document.querySelectorAll('.item.selected').forEach(item => { item.classList.toggle('selected') });
             item.classList.toggle('selected');
             if (item.querySelector('p').innerHTML === 'Scan Item') {
-                window.location.href = "./barcode.html";
+                window.location.href = "/barcode";
             } else if (item.id.length >= 6) {
                 detailedBoxContent.style.opacity = 0;
                 loadItemIntoDetailedBox(scannedItems.find(obj => { return obj.key === item.id }) || suggestedItems.find(obj => { return obj.key === item.id }));
@@ -156,16 +156,14 @@ window.onload = function() {
     });
 };
 
-detailedBoxContentLoader.addEventListener('animationend', function() {
+detailedBoxContentLoader.addEventListener('animationend', function () {
     detailedBoxContent.style.opacity = 1;
     detailedBoxContentLoader.classList.remove('animate1');
-
-
 });
 
 //Adds an event listener to every previous-button for when a transition ends.
 previousButtons.forEach(element => {
-    element.addEventListener("transitionend", function() {
+    element.addEventListener("transitionend", function () {
         hideSmallLineAndDetailedBox();
         deselectAllSelectedItems();
         if (!carouselIsMoving) {
@@ -173,14 +171,14 @@ previousButtons.forEach(element => {
             var carousel = getCorrectCarousel(element);
             var rowHeight = getDistanceBetweenElements(carousel.querySelectorAll('div.item')[0], carousel.querySelectorAll('div.item')[1]);
             rotateForward(carousel);
-            animate(carousel, -rowHeight, 0, function() {
+            animate(carousel, -rowHeight, 0, function () {
                 carousel.style.top = '0';
                 carouselIsMoving = false;
             });
-            var rotateCarousel = setInterval(function() {
+            var rotateCarousel = setInterval(function () {
                 if ((rgb2hex(window.getComputedStyle(element, null).getPropertyValue('color')) === '#e32636')) {
                     rotateForward(carousel);
-                    animate(carousel, -rowHeight, 0, function() {
+                    animate(carousel, -rowHeight, 0, function () {
                         carousel.style.top = '0';
                         carouselIsMoving = false;
                     });
@@ -194,7 +192,7 @@ previousButtons.forEach(element => {
 
 //Adds an event listener to every next-button for when a transition ends.
 nextButtons.forEach(element => {
-    element.addEventListener("transitionend", function() {
+    element.addEventListener("transitionend", function () {
         hideSmallLineAndDetailedBox();
         deselectAllSelectedItems();
         if (!carouselIsMoving) {
@@ -202,14 +200,14 @@ nextButtons.forEach(element => {
             var carousel = getCorrectCarousel(element);
             var rowHeight = getDistanceBetweenElements(carousel.querySelectorAll('div.item')[0], carousel.querySelectorAll('div.item')[1]);
             //TODO: While element is color red, set interval for scrolling through items.
-            animate(carousel, 0, -rowHeight, function() {
+            animate(carousel, 0, -rowHeight, function () {
                 carousel.style.top = '0';
                 rotateBackward(carousel);
                 carouselIsMoving = false;
             });
-            var rotateCarousel = setInterval(function() {
+            var rotateCarousel = setInterval(function () {
                 if ((rgb2hex(window.getComputedStyle(element, null).getPropertyValue('color')) === '#e32636')) {
-                    animate(carousel, 0, -rowHeight, function() {
+                    animate(carousel, 0, -rowHeight, function () {
                         carousel.style.top = '0';
                         rotateBackward(carousel);
                         carouselIsMoving = false;
@@ -225,7 +223,7 @@ nextButtons.forEach(element => {
 });
 
 iconHolders.forEach(iconHolder => {
-    iconHolder.addEventListener('transitionend', function() {
+    iconHolder.addEventListener('transitionend', function () {
         let oldIcon = iconHolder.querySelector('i');
         let newIcon = document.createElement('i');
         if (iconHolder.classList.contains('star')) {
@@ -271,7 +269,7 @@ function animate(carousel, begin, end, finalTask) {
         duration = CAROUSEL_ANIMATION_TIME,
         startTime = Date.now();
     carousel.style.top = begin + 'px';
-    var animateInterval = window.setInterval(function() {
+    var animateInterval = window.setInterval(function () {
         var t = Date.now() - startTime;
         if (t >= duration) {
             window.clearInterval(animateInterval);

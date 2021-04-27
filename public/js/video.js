@@ -82,7 +82,7 @@ hands.onResults(onResults);
  * Instantiate a camera. We'll feed each frame we receive into the solution.
  */
 const camera = new Camera(videoElement, {
-    onFrame: async() => {
+    onFrame: async () => {
         await hands.send({ image: videoElement });
     },
     width: 1280,
@@ -91,4 +91,4 @@ const camera = new Camera(videoElement, {
 
 setTimeout(() => {
     camera.start();
-}, greeterAnimationTime);
+}, 750);

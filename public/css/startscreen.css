@@ -13,13 +13,65 @@ body {
     height: 100vh;
 }
 
-.wrapper {
+#greeting {
+    width: 100%;
+    height: 100%;
+    background: black;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    color: white;
+    text-align: center;
+    position: absolute;
+    z-index: 10;
+}
+
+#greeting.fadeOut {
+    animation-delay: 4s;
+}
+
+#wrapper.fadeIn {
+    animation-delay: 8s;
+}
+
+.fadeOut {
+    animation: fadeOut ease 4s;
+}
+
+.fadeIn {
+    animation: fadeIn ease 2s;
+}
+
+@keyframes fadeIn {
+    0% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 1;
+    }
+}
+
+@keyframes fadeOut {
+    0% {
+        opacity: 1;
+    }
+    75% {
+        opacity: 1;
+    }
+    100% {
+        opacity: 0;
+    }
+}
+
+#wrapper {
     height: 50%;
     width: 50%;
     display: flex;
     flex-direction: row;
     justify-content: space-evenly;
     align-items: center;
+    opacity: 0;
 }
 
 a:link, a:visited, a:hover, a:active {
@@ -49,7 +101,7 @@ i {
 
 p {
     font-size: 2rem;
-    color: white;
     position: absolute;
     bottom: -3rem;
+    color: white;
 }
