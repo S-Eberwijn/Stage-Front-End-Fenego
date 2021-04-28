@@ -1,5 +1,5 @@
 import CustomerService from "../commercetools/service/CustomerService.js";
-let bla = new CustomerService();
+let customerService = new CustomerService();
 const imageUpload = document.getElementById('imageUpload')
 
 Promise.all([
@@ -58,40 +58,20 @@ function loadLabeledImages() {
     const images = [];
     let counter = 0;
     let customers;
-    customers = bla.getAllCustomers();
+    customers = customerService.getAllCustomers();
     return customers.then(customers => {
         customers.forEach(customer => {
-            console.log("customer " + customer);
             labels.push(customer.name);
             images.push(customer.img);
         });
         return Promise.all(labels.map(async label => {
-            console.log("labels");
             const descriptions = [];
             const img = await faceapi.fetchImage(images[counter]);
             const detections = await faceapi.detectSingleFace(img).withFaceLandmarks().withFaceDescriptor();
             descriptions.push(detections.descriptor);
-            console.log(descriptions);console.log("descriptions");
             counter++;
             return new faceapi.LabeledFaceDescriptors(label, descriptions)
         }))
     });
 
-    // console.log(labels);console.log("help");
-
-}
-function loadLabeledImagesOri() {
-    const labels = ['Black Widow', 'Captain America', 'Captain Marvel', 'Hawkeye', 'Jim Rhodes', 'Thor', 'Tony Stark']
-    return Promise.all(
-        labels.map(async label => {
-            const descriptions = []
-            for (let i = 1; i <= 2; i++) {
-                const img = await faceapi.fetchImage(`https://raw.githubusercontent.com/WebDevSimplified/Face-Recognition-JavaScript/master/labeled_images/${label}/${i}.jpg`)
-                const detections = await faceapi.detectSingleFace(img).withFaceLandmarks().withFaceDescriptor()
-                descriptions.push(detections.descriptor)
-            }
-
-            return new faceapi.LabeledFaceDescriptors(label, descriptions)
-        })
-    )
 }
