@@ -1,3 +1,5 @@
+import CustomerService from "../commercetools/service/CustomerService.js";
+let bla = new CustomerService();
 const imageUpload = document.getElementById('imageUpload')
 
 Promise.all([
@@ -7,15 +9,23 @@ Promise.all([
 ]).then(start)
 
 async function start() {
-    console.log("ggg");
     const container = document.createElement('div')
     container.style.position = 'relative'
     document.body.append(container)
-    const labeledFaceDescriptors = await loadLabeledImages()
-    const faceMatcher = new faceapi.FaceMatcher(labeledFaceDescriptors, 0.6)
+    let faceMatcher;
     let image
     let canvas
+    const labeledFaceDescriptors = await loadLabeledImages().then((result) => {
+        return result;
+    });
+    console.log(labeledFaceDescriptors);
+    let loaded = false;
+    console.log("na log");
+    faceMatcher = new faceapi.FaceMatcher(labeledFaceDescriptors, 0.6)
     document.body.append('Loaded')
+    console.log(labeledFaceDescriptors); console.log("all done");
+
+
     imageUpload.addEventListener('click', async () => {
 
         if (image) image.remove()
@@ -44,13 +54,42 @@ async function start() {
 }
 
 function loadLabeledImages() {
-    const labels = ['Anthony']
+    const labels = [];
+    const images = [];
+    let counter = 0;
+    let customers;
+    customers = bla.getAllCustomers();
+    return customers.then(customers => {
+        customers.forEach(customer => {
+            console.log("customer " + customer);
+            labels.push(customer.name);
+            images.push(customer.img);
+        });
+        return Promise.all(labels.map(async label => {
+            console.log("labels");
+            const descriptions = [];
+            const img = await faceapi.fetchImage(images[counter]);
+            const detections = await faceapi.detectSingleFace(img).withFaceLandmarks().withFaceDescriptor();
+            descriptions.push(detections.descriptor);
+            console.log(descriptions);console.log("descriptions");
+            counter++;
+            return new faceapi.LabeledFaceDescriptors(label, descriptions)
+        }))
+    });
+
+    // console.log(labels);console.log("help");
+
+}
+function loadLabeledImagesOri() {
+    const labels = ['Black Widow', 'Captain America', 'Captain Marvel', 'Hawkeye', 'Jim Rhodes', 'Thor', 'Tony Stark']
     return Promise.all(
         labels.map(async label => {
             const descriptions = []
-            const img = await faceapi.fetchImage(`./labeled_images/Anthony/Reference.jpg`)
-            const detections = await faceapi.detectSingleFace(img).withFaceLandmarks().withFaceDescriptor()
-            descriptions.push(detections.descriptor)
+            for (let i = 1; i <= 2; i++) {
+                const img = await faceapi.fetchImage(`https://raw.githubusercontent.com/WebDevSimplified/Face-Recognition-JavaScript/master/labeled_images/${label}/${i}.jpg`)
+                const detections = await faceapi.detectSingleFace(img).withFaceLandmarks().withFaceDescriptor()
+                descriptions.push(detections.descriptor)
+            }
 
             return new faceapi.LabeledFaceDescriptors(label, descriptions)
         })
