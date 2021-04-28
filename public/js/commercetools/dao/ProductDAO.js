@@ -35,9 +35,9 @@ export default class ProductDAO {
         let processedRequest = this.authClient._process(request);
         return await processedRequest;
     }
-    getProductById(id) {
+    getProductById(productId) {
         const request = {
-            uri: this.productsService.build() + "/" + id, //max 500
+            uri: this.productsService.build() + "/" + productId, //max 500
             method: 'GET',
             headers: {
                 Authorization: `Bearer ${this.bearerToken}`,

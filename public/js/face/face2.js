@@ -1,3 +1,5 @@
+import CustomerService from "../commercetools/service/CustomerService.js";
+let customerService = new CustomerService();
 const imageUpload = document.getElementById('imageUpload')
 
 Promise.all([
@@ -7,15 +9,23 @@ Promise.all([
 ]).then(start)
 
 async function start() {
-    console.log("ggg");
     const container = document.createElement('div')
     container.style.position = 'relative'
     document.body.append(container)
-    const labeledFaceDescriptors = await loadLabeledImages()
-    const faceMatcher = new faceapi.FaceMatcher(labeledFaceDescriptors, 0.6)
+    let faceMatcher;
     let image
     let canvas
+    const labeledFaceDescriptors = await loadLabeledImages().then((result) => {
+        return result;
+    });
+    console.log(labeledFaceDescriptors);
+    let loaded = false;
+    console.log("na log");
+    faceMatcher = new faceapi.FaceMatcher(labeledFaceDescriptors, 0.6)
     document.body.append('Loaded')
+    console.log(labeledFaceDescriptors); console.log("all done");
+
+
     imageUpload.addEventListener('click', async () => {
 
         if (image) image.remove()
@@ -44,15 +54,24 @@ async function start() {
 }
 
 function loadLabeledImages() {
-    const labels = ['Anthony']
-    return Promise.all(
-        labels.map(async label => {
-            const descriptions = []
-            const img = await faceapi.fetchImage(`./labeled_images/Anthony/Reference.jpg`)
-            const detections = await faceapi.detectSingleFace(img).withFaceLandmarks().withFaceDescriptor()
-            descriptions.push(detections.descriptor)
-
+    const labels = [];
+    const images = [];
+    let counter = 0;
+    let customers;
+    customers = customerService.getAllCustomers();
+    return customers.then(customers => {
+        customers.forEach(customer => {
+            labels.push(customer.name);
+            images.push(customer.img);
+        });
+        return Promise.all(labels.map(async label => {
+            const descriptions = [];
+            const img = await faceapi.fetchImage(images[counter]);
+            const detections = await faceapi.detectSingleFace(img).withFaceLandmarks().withFaceDescriptor();
+            descriptions.push(detections.descriptor);
+            counter++;
             return new faceapi.LabeledFaceDescriptors(label, descriptions)
-        })
-    )
+        }))
+    });
+
 }

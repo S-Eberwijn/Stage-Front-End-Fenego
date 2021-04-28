@@ -30,7 +30,7 @@ app.get('/face2', function (req, res) {
         console.log("Try");
         fs.unlinkSync("./something.jpg");
     } catch (e){
-        console.log('catch');
+        console.log('catch'); //TODO: Make program not crash if something.jpg doesn't exist
         res.sendFile('face2.html', { root: `${__dirname}\\public` });
     }
     finally {
