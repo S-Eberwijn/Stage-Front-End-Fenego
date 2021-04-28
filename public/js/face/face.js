@@ -1,6 +1,8 @@
 const vid = document.querySelector("video");
 let i = 4; //countdown in 10 seconds
 let blobURL;
+import CustomerService from "../commercetools/service/CustomerService.js";
+let customerService = new CustomerService();
 
 Promise.all([
     faceapi.nets.faceRecognitionNet.loadFromUri('models'),
@@ -49,8 +51,6 @@ async function start() {
     const labeledFaceDescriptors = await loadLabeledImages();
     const faceMatcher = new faceapi.FaceMatcher(labeledFaceDescriptors, 0.6)
     let image, canvas;
-    document.body.append('In start function')
-
     if (image) image.remove()
     if (canvas) canvas.remove()
     image = document.createElement("img");
@@ -75,15 +75,23 @@ async function start() {
 }
 
 function loadLabeledImages() {
-    const labels = ['Anthony']
-    return Promise.all(
-        labels.map(async label => {
-            const descriptions = []
-            const img = await faceapi.fetchImage(`./labeled_images/Anthony/Reference.jpg`)
-            const detections = await faceapi.detectSingleFace(img).withFaceLandmarks().withFaceDescriptor()
-            descriptions.push(detections.descriptor)
-
+    const labels = [];
+    const images = [];
+    let counter = 0;
+    let customers;
+    customers = customerService.getAllCustomers();
+    return customers.then(customers => {
+        customers.forEach(customer => {
+            labels.push(customer.name);
+            images.push(customer.img);
+        });
+        return Promise.all(labels.map(async label => {
+            const descriptions = [];
+            const img = await faceapi.fetchImage(images[counter]);
+            const detections = await faceapi.detectSingleFace(img).withFaceLandmarks().withFaceDescriptor();
+            descriptions.push(detections.descriptor);
+            counter++;
             return new faceapi.LabeledFaceDescriptors(label, descriptions)
-        })
-    )
+        }))
+    });
 }

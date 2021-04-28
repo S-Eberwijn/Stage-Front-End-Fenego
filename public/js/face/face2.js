@@ -73,5 +73,4 @@ function loadLabeledImages() {
             return new faceapi.LabeledFaceDescriptors(label, descriptions)
         }))
     });
-
 }
