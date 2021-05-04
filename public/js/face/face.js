@@ -20,7 +20,9 @@ Promise.all([
                     takeASnap().then(blob => {
                         console.log(getBlobURL(blob))
                         blobURL = getBlobURL(blob);
-                        start()
+                        document.getElementById('pop_up').style.display = 'block';
+                        document.getElementById('spinning-circle').style.display = 'block';
+                        start();
                     });
                     clearInterval(intervalid);
                 }
@@ -48,6 +50,8 @@ function getBlobURL(blob) {
 /*---------------------------------------------------------------------*/
 
 async function start() {
+    let titel = document.getElementById("titelElement");
+    titel.innerHTML = "Bezig met identificeren!";
     const labeledFaceDescriptors = await loadLabeledImages();
     const faceMatcher = new faceapi.FaceMatcher(labeledFaceDescriptors, 0.6)
     let image, canvas;
@@ -55,8 +59,6 @@ async function start() {
     if (canvas) canvas.remove()
     image = document.createElement("img");
     image.src = blobURL;
-    image.style.display = 'none';
-    document.body.appendChild(image);
     image.addEventListener('load', async () => {
         canvas = faceapi.createCanvasFromMedia(image)
         const displaySize = { width: image.width, height: image.height }
@@ -65,13 +67,21 @@ async function start() {
         const resizedDetections = faceapi.resizeResults(detections, displaySize)
         const results = resizedDetections.map(d => faceMatcher.findBestMatch(d.descriptor))
         results.forEach((result, i) => {
-            console.log(result)
-            const box = resizedDetections[i].detection.box
-            const drawBox = new faceapi.draw.DrawBox(box, { label: result.toString() })
-            drawBox.draw(canvas)
-        })
-    })
-
+            console.log(result);
+        });
+        sessionStorage.setItem("customerName", "Anoniempje");
+        if (results[0]) {
+            if (results[0].label != 'unknown') {
+                sessionStorage.setItem("customerName", `${results[0].label}`);
+            };
+        }
+        let vidWrapper = document.getElementsByClassName("vidWrapper")[0];
+        vidWrapper.parentElement.removeChild(vidWrapper);
+        titel.innerHTML = `Welkom ${sessionStorage.getItem("customerName")}!`;
+        setTimeout(function () {
+            window.location.href = '/';
+        }, 3000);
+    });
 }
 
 function loadLabeledImages() {

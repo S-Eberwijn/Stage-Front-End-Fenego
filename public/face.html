@@ -8,8 +8,12 @@
 </head>
 
 <body>
-    <h1>Gezichtsherkenning in <span id="countdown">5</span>!</h1>
-    <video id="vid"></video>
+    <h1 id="titelElement">Gezichtsherkenning in <span id="countdown">5</span>!</h1>
+    <div class="vidWrapper">
+        <video id="vid"></video>
+        <div id="pop_up" class="blacked-out"></div>
+        <div id="spinning-circle" class="circle"></div>
+    </div>
 </body>
 <script src="https://unpkg.com/@commercetools/sdk-client/dist/sdk-client.umd.min.js"></script>
 <script src="https://unpkg.com/@commercetools/sdk-auth/dist/sdk-auth.umd.js"></script>
