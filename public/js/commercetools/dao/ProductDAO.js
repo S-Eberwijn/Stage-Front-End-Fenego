@@ -9,13 +9,13 @@ export default class ProductDAO {
         });
         this.authClient = new CommercetoolsSdkAuth.default({
             host: "https://auth.europe-west1.gcp.commercetools.com",
-            projectkey: "stage-pxl-20",
+            projectkey: "pr-stagepxl",
             disableRefreshToken: false,
             credentials: {
-                clientId: "tesYg1HdkwOXngl3oCECKlAE",
-                clientSecret: "8Lo4p0N9mW7xIDE7a4c8WUBvT2BibS1d"
+                clientId: "9zgMpbKb5h5B_YhzhUvWgZt2",
+                clientSecret: "tsRLTzeSc293vxR9ZMs6tHEd6JeCaHfG"
             },
-            scopes: ['manage_project:stage-pxl-20']
+            scopes: ['manage_project:pr-stagepxl']
 
         })
         this.bearerToken = "";
@@ -24,7 +24,7 @@ export default class ProductDAO {
         });
 
         this.requestBuilder = CommercetoolsApiRequestBuilder.createRequestBuilder({
-            projectKey: 'stage-pxl-20',
+            projectKey: 'pr-stagepxl',
             features: [CommercetoolsApiRequestBuilder.features.queryLocation]
         });
         this.productsService = this.requestBuilder.products;
@@ -35,9 +35,9 @@ export default class ProductDAO {
         let processedRequest = this.authClient._process(request);
         return await processedRequest;
     }
-    getProductById(productId) {
+    getProductById(id) {
         const request = {
-            uri: this.productsService.build() + "/" + productId, //max 500
+            uri: this.productsService.build() + "/" + id, //max 500
             method: 'GET',
             headers: {
                 Authorization: `Bearer ${this.bearerToken}`,
