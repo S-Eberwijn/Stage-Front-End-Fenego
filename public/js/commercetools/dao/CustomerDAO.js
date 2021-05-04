@@ -16,7 +16,6 @@ export default class CustomerDAO {
                 clientSecret: "8Lo4p0N9mW7xIDE7a4c8WUBvT2BibS1d"
             },
             scopes: ['manage_project:stage-pxl-20']
-
         })
         this.bearerToken = "";
         this.requestBuilder = CommercetoolsApiRequestBuilder.createRequestBuilder({
