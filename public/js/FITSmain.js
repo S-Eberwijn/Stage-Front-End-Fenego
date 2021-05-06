@@ -18,15 +18,18 @@ let spinnerElement = document.getElementById("spinner");
 // }
 
 
+
 spinnerElement.onanimationend = (e) => {
     spinnerElement.parentNode.removeChild(spinnerElement);
-    mainElement.classList.add('fadeIn');
-    mainElement.style.opacity = "1";
+    // mainElement.classList.add('fadeIn');
+    // mainElement.style.opacity = "1";
 };
 
 mainElement.onanimationend = (e) => {
     mainElement.style.opacity = "1";
 };
+
+
 
 // CLOCK
 function currentTime() {

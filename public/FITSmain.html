@@ -8,6 +8,8 @@
     <link rel="stylesheet" href="./css/FITSmain.css">
     <link rel="stylesheet" href="./css/carousel.css">
     <link rel="stylesheet" href="./css/cursor.css">
+    <link rel="stylesheet" href="./css/tutorial.css">
+
     <link rel="stylesheet" href="./css/fontawesome-free-5.15.3-web/css/all.min.css">
 
     <script src="https://cdn.jsdelivr.net/npm/@mediapipe/camera_utils/camera_utils.js" crossorigin="anonymous"></script>
@@ -22,7 +24,35 @@
         <div></div>
         <div></div>
     </div>
-
+    <div class="tutorialWrapper">
+        <section>
+            <p><span class="step">1</span></p>
+            <p class="step-instruction">Laat de cursor bewegen met uw handen.</p>
+            <div class="gif-animation">
+                <i class="fas fa-hand-paper fa-6x wave"></i>
+                <div class="tutorialCursor wave"></div>
+            </div>
+        </section>
+        <section>
+            <p><span class="step">2</span></p>
+            <p class="step-instruction">Scan de barcodes van uw producten in.
+            </p>
+            <div class="gif-animation">
+                <i class="fas fa-barcode fa-6x pulse"></i>
+            </div>
+        </section>
+        <section>
+            <p><span class="step">3</span></p>
+            <p class="step-instruction">Selecteer een product voor meer info
+            </p>
+            <div class="gif-animation">
+                <div class="tutorialItemBox">
+                    <div class="tutorialCursor"></div>
+                </div>
+            </div>
+        </section>
+        <button id="tutorialButton">BEGREPEN</button>
+    </div>
     <div id="main">
         <div id="topBar">
             <div id="clock"></div>
@@ -94,6 +124,7 @@
     <script src="./js/FITSmain.js"></script>
     <script src="./js/video.js"></script>
     <script type="module" src="./js/favourites.js"></script>
+
 
 
 </body>
