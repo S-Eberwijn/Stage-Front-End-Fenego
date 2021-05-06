@@ -84,7 +84,7 @@ Quagga.onDetected(function (result) {
                                 suggestedItemsArray.push(product);
                                 console.log(suggestedItemsArray);
                                 sessionStorage.setItem("suggestions", JSON.stringify(suggestedItemsArray));
-                                window.location.href = "/main";
+                                // window.location.href = "/main";
                             });
                         })
                     })

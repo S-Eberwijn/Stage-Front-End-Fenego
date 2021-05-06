@@ -8,7 +8,8 @@ export default class CustomerService {
             let filteredCustomers = [];
             let filteredCustomer = null;
             results.forEach(result => {
-                filteredCustomer = {
+                    filteredCustomer = {
+                    customerId: result['id'],
                     name: result.firstName,
                     img: result.custom.fields.Image
                 }
@@ -16,5 +17,28 @@ export default class CustomerService {
             });
             return filteredCustomers;
         })
+    }
+
+    getFavouritesOfCustomer(customerId) {
+        return this.customerDao.getFavourites()
+            .then(shoppingLists => {
+                let returnList;
+                for (let i = 0; i < shoppingLists.length; i++) {
+                   if(shoppingLists[i].customer['id'] === customerId) {
+                       returnList = shoppingLists[i];
+                       break;
+                   } else {
+                       returnList = "No shoppinglist found for customer";
+                   }
+                }
+                return returnList;
+            })
+    }
+
+    addFavourite(shoppingList, productId) {
+        this.customerDao.addFavourite(shoppingList, productId)
+            .then((result) => {
+                console.log("done :)")
+            })
     }
 }

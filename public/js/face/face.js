@@ -47,7 +47,7 @@ function getBlobURL(blob) {
     return URL.createObjectURL(blob);
 }
 
-/*---------------------------------------------------------------------*/
+
 
 async function start() {
     let titel = document.getElementById("titelElement");
@@ -73,6 +73,7 @@ async function start() {
         if (results[0]) {
             if (results[0].label != 'unknown') {
                 sessionStorage.setItem("customerName", `${results[0].label}`);
+                sessionStorage.setItem("customerId", `${ids[0]}`);
             };
         }
         let vidWrapper = document.getElementsByClassName("vidWrapper")[0];
@@ -83,7 +84,7 @@ async function start() {
         }, 3000);
     });
 }
-
+let ids = [];
 function loadLabeledImages() {
     const labels = [];
     const images = [];
@@ -94,6 +95,7 @@ function loadLabeledImages() {
         customers.forEach(customer => {
             labels.push(customer.name);
             images.push(customer.img);
+            ids.push(customer.customerId);
         });
         return Promise.all(labels.map(async label => {
             const descriptions = [];

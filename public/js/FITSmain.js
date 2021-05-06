@@ -71,7 +71,6 @@ let itemDescription = document.getElementById('itemDescription');
 let itemTags = document.getElementById('itemTags');
 let itemPrice = document.getElementById('itemPrice');
 
-
 window.onload = function () {
     carousels.forEach(carousel => {
         carousel.style.width = `${verticalSliders[0].getBoundingClientRect().width}px`;
@@ -427,3 +426,4 @@ function insertItemInCarousel(item) {
 
     return itemElement;
 }
+

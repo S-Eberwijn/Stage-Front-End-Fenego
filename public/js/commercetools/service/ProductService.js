@@ -7,6 +7,7 @@ export default class ProductService {
         return this.productDao.getProductById(id).then((result) => {
             return {
                 key: result.key,
+                productId: result['id'],
                 name: result.masterData.current.name["nl-NL"],
                 description: result.masterData.current.metaDescription["nl-NL"],
                 categories: result.masterData.current.categories,
@@ -19,6 +20,7 @@ export default class ProductService {
         return this.productDao.getProductByKey(key).then((result) => {
             return {
                 key: result.key,
+                productId: result['id'],
                 name: result.masterData.current.name["nl-NL"],
                 description: result.masterData.current.metaDescription["nl-NL"],
                 categories: result.masterData.current.categories,
@@ -34,6 +36,7 @@ export default class ProductService {
             results.forEach(result => {
                     filteredProduct =  {
                         key: result.key,
+                        productId: result['id'],
                         name: result.masterData.current.name["nl-NL"],
                         description: result.masterData.current.metaDescription["nl-NL"],
                         categories: result.masterData.current.categories,
