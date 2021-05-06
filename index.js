@@ -24,6 +24,9 @@ app.get('/standby', function (req, res) {
 app.get('/findego', function (req, res) {
     res.sendFile('findego.html', { root: `${__dirname}\\public` });
 });
+app.get('/face', function (req, res) {
+    res.sendFile('face.html', { root: `${__dirname}\\public` });
+});
 
 // Default every route except the above to serve the 404.html
 app.get('*', function (req, res) {
