@@ -50,18 +50,18 @@ export default class CustomerDAO {
 
         let returnResults = null;
         return this.client.execute(await request)
-            .then( result => {
-                    returnResults = result.body.results;
-                    return returnResults;
-                }
+            .then(result => {
+                returnResults = result.body.results;
+                return returnResults;
+            }
             )
             .catch(error => console.log(error));
     }
     async getFavourites() {
         //AKA ShoppingList
 
-        let request = this.bearerToken.then(() => {
-            // this.bearerToken = data.acces_token;
+        let request = this.getBearerToken().then(data => {
+            this.bearerToken = data.access_token;
             return request = {
                 uri: this.shoppinglistService.build(),
                 method: 'GET',
@@ -72,7 +72,7 @@ export default class CustomerDAO {
         });
         let returnResults = null;
         return this.client.execute(await request)
-            .then( result => {
+            .then(result => {
                 returnResults = result.body.results;
                 return returnResults;
             })
@@ -96,7 +96,7 @@ export default class CustomerDAO {
                 'Content-Type': 'application/json'
             }
         };
-        console.log( JSON.stringify(returnBody, null , 4))
+        console.log(JSON.stringify(returnBody, null, 4))
         console.log(returnBody);
         request.body = returnBody;
         await this.client.execute(request)

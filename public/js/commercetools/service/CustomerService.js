@@ -8,7 +8,7 @@ export default class CustomerService {
             let filteredCustomers = [];
             let filteredCustomer = null;
             results.forEach(result => {
-                    filteredCustomer = {
+                filteredCustomer = {
                     customerId: result['id'],
                     name: result.firstName,
                     img: result.custom.fields.Image
@@ -24,12 +24,12 @@ export default class CustomerService {
             .then(shoppingLists => {
                 let returnList;
                 for (let i = 0; i < shoppingLists.length; i++) {
-                   if(shoppingLists[i].customer['id'] === customerId) {
-                       returnList = shoppingLists[i];
-                       break;
-                   } else {
-                       returnList = "No shoppinglist found for customer";
-                   }
+                    if (shoppingLists[i].customer['id'] === customerId) {
+                        returnList = shoppingLists[i];
+                        break;
+                    } else {
+                        returnList = "No shoppinglist found for customer";
+                    }
                 }
                 return returnList;
             })

@@ -224,39 +224,39 @@ nextButtons.forEach(element => {
     })
 });
 
-iconHolders.forEach(iconHolder => {
-    iconHolder.addEventListener('transitionend', function () {
-        let oldIcon = iconHolder.querySelector('i');
-        let newIcon = document.createElement('i');
-        if (iconHolder.classList.contains('star')) {
-            if (oldIcon.classList.contains('far')) {
-                oldIcon.remove();
-                newIcon.className = 'fas fa-star fa-3x yellow';
-                iconHolder.appendChild(newIcon);
-            } else {
-                oldIcon.remove();
-                newIcon.className = 'far fa-star fa-3x';
-                iconHolder.appendChild(newIcon);
-            }
-        } else if (iconHolder.classList.contains('eye')) {
-            if (oldIcon.classList.contains('fa-eye-slash')) {
-                oldIcon.remove();
-                newIcon.className = 'far fa-eye fa-3x';
-                iconHolder.appendChild(newIcon);
-            } else {
-                oldIcon.remove();
-                newIcon.className = 'far fa-eye-slash fa-3x';
-                iconHolder.appendChild(newIcon);
-            }
-        } else if (iconHolder.classList.contains('trash')) {
-            if (oldIcon.classList.contains('far')) {
+// iconHolders.forEach(iconHolder => {
+//     iconHolder.addEventListener('transitionend', function () {
+//         let oldIcon = iconHolder.querySelector('i');
+//         let newIcon = document.createElement('i');
+//         if (iconHolder.classList.contains('star')) {
+//             if (oldIcon.classList.contains('far')) {
+//                 oldIcon.remove();
+//                 newIcon.className = 'fas fa-star fa-3x yellow';
+//                 iconHolder.appendChild(newIcon);
+//             } else {
+//                 oldIcon.remove();
+//                 newIcon.className = 'far fa-star fa-3x';
+//                 iconHolder.appendChild(newIcon);
+//             }
+//         } else if (iconHolder.classList.contains('eye')) {
+//             if (oldIcon.classList.contains('fa-eye-slash')) {
+//                 oldIcon.remove();
+//                 newIcon.className = 'far fa-eye fa-3x';
+//                 iconHolder.appendChild(newIcon);
+//             } else {
+//                 oldIcon.remove();
+//                 newIcon.className = 'far fa-eye-slash fa-3x';
+//                 iconHolder.appendChild(newIcon);
+//             }
+//         } else if (iconHolder.classList.contains('trash')) {
+//             if (oldIcon.classList.contains('far')) {
 
-            }
-        }
-        newIcon.classList.add('iconAni');
-        console.log('testing');
-    })
-})
+//             }
+//         }
+//         newIcon.classList.add('iconAni');
+//         console.log('testing');
+//     })
+// })
 
 function getCorrectCarousel(element) {
     if (element.parentElement.querySelector('.left')) {
@@ -429,4 +429,3 @@ function insertItemInCarousel(item) {
 
     return itemElement;
 }
-
