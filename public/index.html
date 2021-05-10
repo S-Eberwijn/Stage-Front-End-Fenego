@@ -5,10 +5,17 @@
     <meta charset="UTF-8">
     <title>FITS - Select</title>
     <link rel="stylesheet" href="./css/startscreen.css">
+    <link rel="stylesheet" href="./css/cursor.css">
     <link rel="stylesheet" href="./css/fontawesome-free-5.15.3-web/css/all.min.css">
+
+    <script src="https://cdn.jsdelivr.net/npm/@mediapipe/camera_utils/camera_utils.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@mediapipe/hands/hands.js" crossorigin="anonymous"></script>
 </head>
 
 <body>
+    <div id="cursorLeft"></div>
+    <video id="input_video" autoplay="true"></video>
+
     <div id="greeting" class="fadeOut">
         <img src="./images/Fits.png" height="90" width="160" />
         <h1>Find the perfect accessories for your outfits!</h1>
@@ -16,12 +23,12 @@
 
     <div id="wrapper" class="fadeIn">
         <a href="/findego">
-            <div class="mode"><i class="fas fa-fire fa-6x"></i>
+            <div id="Findego" class="mode"><i class="fas fa-fire fa-6x"></i>
                 <p>Findego</p>
             </div>
         </a>
         <a href="/main">
-            <div class="mode"><i class="fas fa-tshirt fa-6x"></i>
+            <div id="Main" class="mode"><i class="fas fa-tshirt fa-6x"></i>
                 <p>Fenego</p>
             </div>
         </a>
@@ -29,6 +36,8 @@
     </div>
 
     <script src="./js/startscreen.js" type="module"></script>
+    <script src="./js/startscreenVideo.js" type="module"></script>
+
 </body>
 
 </html>

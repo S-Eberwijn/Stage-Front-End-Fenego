@@ -1,0 +1,1 @@
+1. Access and check the favourites of a customer when an item is selected, so the customer can see if the product is already a favourite.

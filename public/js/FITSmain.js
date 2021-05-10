@@ -392,6 +392,9 @@ function loadItemIntoDetailedBox(item) {
     itemDescription.innerHTML = item.description;
     itemTags.innerHTML = item.categoriesNames.join(', ');
     itemPrice.innerHTML = item.price;
+
+
+
 }
 
 function hideSmallLineAndDetailedBox() {
