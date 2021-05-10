@@ -35,10 +35,14 @@ export default class CustomerService {
             })
     }
 
-    addFavourite(shoppingList, productId) {
-        this.customerDao.addFavourite(shoppingList, productId)
-            .then((result) => {
-                console.log("done :)")
-            })
+    async addFavourite(shoppingList, productId) {
+        await this.customerDao.addFavourite(shoppingList, productId)
+    }
+
+    async removeFavourite(customerId, favouriteId) {
+        await this.getFavouritesOfCustomer(customerId)
+            .then(async shoppingList => {
+                await this.customerDao.removeFavourite(shoppingList, favouriteId)
+            });
     }
 }

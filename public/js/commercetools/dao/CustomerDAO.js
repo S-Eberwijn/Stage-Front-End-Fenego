@@ -60,7 +60,7 @@ export default class CustomerDAO {
     async getFavourites() {
         //AKA ShoppingList
 
-        let request = this.getBearerToken().then(data => {
+        let request = this.getBearerToken().then((data) => {
             this.bearerToken = data.access_token;
             return request = {
                 uri: this.shoppinglistService.build(),
@@ -80,12 +80,40 @@ export default class CustomerDAO {
     }
 
     async addFavourite(shoppingList, productId) {
-        console.log(shoppingList.version)
         let returnBody = {
             version: shoppingList.version,
             actions: [{
                 action: "addLineItem",
                 productId: productId
+            }]
+        };
+        console.log("add");
+        console.log(shoppingList);
+        let request = {
+            uri: this.shoppinglistService.build() + "/" + shoppingList.id,
+            method: "POST",
+            headers: {
+                Authorization: `Bearer ${this.bearerToken}`,
+                'Content-Type': 'application/json'
+            }
+        };
+        request.body = JSON.stringify(returnBody);
+        await this.client.execute(request)
+    }
+
+    async removeFavourite(shoppingList, favouriteId){
+        let lineItemId;
+        for (let i = 0; i < shoppingList.lineItems.length; i++){
+            if (shoppingList.lineItems[i].productId === favouriteId) {
+                lineItemId = shoppingList.lineItems[i].id;
+                break;
+            }
+        }
+        let bodyData = {
+            version: shoppingList.version,
+            actions: [{
+                action: "removeLineItem",
+                lineItemId: lineItemId
             }]
         };
         let request = {
@@ -96,9 +124,8 @@ export default class CustomerDAO {
                 'Content-Type': 'application/json'
             }
         };
-        console.log(JSON.stringify(returnBody, null, 4))
-        console.log(returnBody);
-        request.body = returnBody;
+        console.log(JSON.stringify(bodyData));
+        request.body = bodyData;
         await this.client.execute(request)
     }
 
