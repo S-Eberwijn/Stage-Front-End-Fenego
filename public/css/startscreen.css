@@ -11,6 +11,7 @@ body {
     justify-content: center;
     align-items: center;
     height: 100vh;
+    overflow: hidden;
 }
 
 #greeting {
@@ -74,7 +75,10 @@ body {
     opacity: 0;
 }
 
-a:link, a:visited, a:hover, a:active {
+a:link,
+a:visited,
+a:hover,
+a:active {
     color: none;
     text-decoration: none;
 }
@@ -95,6 +99,21 @@ a:link, a:visited, a:hover, a:active {
     box-shadow: 0px 0px 20px #fff;
 }
 
+.mode.selecting {
+    animation: zoom 2s linear;
+}
+
+@keyframes zoom {
+    0% {
+        transform: scale(1);
+        box-shadow: 0px 0px 20px #fff;
+    }
+    100% {
+        transform: scale(1.2);
+        box-shadow: 0px 0px 20px #fff;
+    }
+}
+
 i {
     color: white;
 }
@@ -104,4 +123,17 @@ p {
     position: absolute;
     bottom: -3rem;
     color: white;
+}
+
+#input_video {
+    /*transform: rotateY(180deg);*/
+    /*-webkit-transform:rotateY(180deg); !* Safari and Chrome *!*/
+    /*-moz-transform:rotateY(180deg); !* Firefox *!*/
+    position: fixed;
+    right: 0;
+    bottom: 0;
+    min-width: 100%;
+    min-height: 100%;
+    z-index: -10;
+    visibility: hidden;
 }

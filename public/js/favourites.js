@@ -35,6 +35,7 @@ iconHolders.forEach(iconHolder => {
                 oldIcon.remove();
                 newIcon.className = 'far fa-star fa-3x';
                 iconHolder.appendChild(newIcon);
+                removeProductFromCustomerFavourites();
             }
         } else if (iconHolder.classList.contains('trash')) {
             if (oldIcon.classList.contains('far')) {
@@ -60,14 +61,27 @@ iconHolders.forEach(iconHolder => {
 })
 
 function addProductToCustomerFavourites() {
-    //TODO: Bug that people can select this in the background.
-    //TODO: Make the customerId dynamic
-    customerService.getFavouritesOfCustomer("d8727a5a-a13b-4edb-823c-e989000112e1").then(shoppingList => {
+    try {
+        let customerId = sessionStorage.getItem('customerId');
+        customerService.getFavouritesOfCustomer(customerId).then(shoppingList => {
+            let selectedProduct = document.querySelector('div.item.selected');
+            let productId = allAvailableItems.find(item => item.key == selectedProduct.id).productId;
+            customerService.addFavourite(shoppingList, productId);
+        });
+    } catch (error) {
+        console.log(error)
+    }
+}
+
+function removeProductFromCustomerFavourites() {
+    try {
+        let customerId = sessionStorage.getItem('customerId');
         let selectedProduct = document.querySelector('div.item.selected');
         let productId = allAvailableItems.find(item => item.key == selectedProduct.id).productId;
-        console.log(shoppingList);
-        customerService.addFavourite(shoppingList, productId);
-    });
+        customerService.removeFavourite(customerId, productId);
+    } catch (error) {
+        console.log(error)
+    }
 }
 
 function setProductSuggestions(selectedItem) {
@@ -93,7 +107,7 @@ function setProductSuggestions(selectedItem) {
                 product.categoriesNames = r;
                 suggestedItemsArray.push(product);
                 sessionStorage.setItem("suggestions", JSON.stringify(suggestedItemsArray));
-                //window.location.href = "/main";
+                window.location.href = "/main";
             });
         })
     })
