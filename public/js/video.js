@@ -12,11 +12,12 @@ let tutorialItemBox = document.querySelector('div.tutorialItemBox');
 
 let cursorY, cursorX;
 
+
 function setDelayOnEachElement(sections) {
     for (let index = 0; index < sections.length; index++) {
         const section = sections[index];
         section.style.animationDelay = `${index * 1.2}s`;
-        if (index == 2) setTimeout(function () { document.querySelector('div.tutorialItemBox div.tutorialCursor').classList.add('move') }, index * 1.2 * 1000);
+        if (index == 2) setTimeout(function() { document.querySelector('div.tutorialItemBox div.tutorialCursor').classList.add('move') }, index * 1.2 * 1000);
         section.classList.add('fadeIn');
     }
 }
@@ -25,19 +26,19 @@ function isHidden(el) {
     return (el.offsetParent === null)
 }
 
-let animationCheck = setInterval(function () {
+let animationCheck = setInterval(function() {
     if (isHidden(document.querySelector('div.tutorialWrapper'))) return clearInterval(animationCheck);
     if (!isColliding(tutorialCursor.getBoundingClientRect(), tutorialItemBox.getBoundingClientRect())) return tutorialItemBox.classList.remove('selecting');
     tutorialItemBox.classList.add('selecting');
 }, 750);
 
 sections.forEach(section => {
-    section.addEventListener('animationend', function () {
+    section.addEventListener('animationend', function() {
         section.style.opacity = 1;
     })
 });
 
-tutorialButton.addEventListener('transitionend', function () {
+tutorialButton.addEventListener('transitionend', function() {
     tutorialWrapper.style.display = 'none';
 })
 
@@ -54,7 +55,6 @@ function onResults(results) {
         tutorialWrapper.style.display = 'none';
     }
     //TODO: FIX THIS
-
 
 
     if (results.multiHandLandmarks !== undefined) {
@@ -83,9 +83,11 @@ function onResults(results) {
                     }
                 }
             });
-            iconHolders.forEach(iconHolder => {
-                isCollidingButton(cursor, iconHolder);
-            })
+            if (window.getComputedStyle(detailedBox).getPropertyValue("opacity") != "0") {
+                iconHolders.forEach(iconHolder => {
+                    isCollidingButton(cursor, iconHolder);
+                })
+            }
             buttons.forEach(button => {
                 isCollidingButton(cursor, button);
             });
@@ -124,7 +126,7 @@ hands.onResults(onResults);
  * Instantiate a camera. We'll feed each frame we receive into the solution.
  */
 const camera = new Camera(videoElement, {
-    onFrame: async () => {
+    onFrame: async() => {
         await hands.send({ image: videoElement });
     },
     width: 1280,
@@ -134,3 +136,7 @@ const camera = new Camera(videoElement, {
 setTimeout(() => {
     camera.start();
 }, 750);
+
+function isHidden(el) {
+    return (el.offsetParent === null)
+}

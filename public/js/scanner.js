@@ -5,7 +5,7 @@ let styleElem = document.head.appendChild(document.createElement("style"));
 const logger = document.querySelector('.logger');
 let logMessages = [];
 
-Quagga.init({}, function (err) {
+Quagga.init({}, function(err) {
     if (err) {
         console.log(err);
     }
@@ -20,21 +20,21 @@ Quagga.init({}, function (err) {
         -webkit-animation-name: r-rotate;}`;
     //Count down every second.
     let timeLeft = parseInt(countdown.innerHTML) - 1;
-    setInterval(function () {
+    setInterval(function() {
         if (timeLeft >= 0) countdown.innerHTML = timeLeft--;
     }, 1000);
 });
 
-Quagga.onProcessed(function (result) {
+Quagga.onProcessed(function(result) {
     let drawingCtx = Quagga.canvas.ctx.overlay,
         drawingCanvas = Quagga.canvas.dom.overlay;
 
     if (result) {
         if (result.boxes) {
             drawingCtx.clearRect(0, 0, parseInt(drawingCanvas.getAttribute("width")), parseInt(drawingCanvas.getAttribute("height")));
-            result.boxes.filter(function (box) {
+            result.boxes.filter(function(box) {
                 return box !== result.box;
-            }).forEach(function (box) {
+            }).forEach(function(box) {
                 Quagga.ImageDebug.drawPath(box, { x: 0, y: 1 }, drawingCtx, { color: "green", lineWidth: 2 });
             });
         }
@@ -53,7 +53,7 @@ let productService = new ProductService();
 
 let oldScannedBarcode;
 let barcodeCertainty = 0;
-Quagga.onDetected(function (result) {
+Quagga.onDetected(function(result) {
     let scannedBarcode = result.codeResult.code;
     console.log(scannedBarcode);
     if (oldScannedBarcode !== scannedBarcode) {
@@ -63,13 +63,12 @@ Quagga.onDetected(function (result) {
         barcodeCertainty++;
         if (barcodeCertainty === 75) {
             let alreadyScanned = false;
-            let suggestedItemsArray = [];
             addToLogger('Identified barcode...');
             addToLogger('Fetching product...');
             productService.getProductByKey(scannedBarcode).then(product => {
                 productService.getCategories(product.categories).then(r => {
                     let categoryIds = product.categories;
-                    product.categories = r;
+                    product.categoriesNames = r;
                     var code = JSON.parse(sessionStorage.getItem("barcodes")) || [];
                     code.forEach(pr => {
                         if (pr.key === product.key) return alreadyScanned = true;
@@ -77,17 +76,8 @@ Quagga.onDetected(function (result) {
                     if (alreadyScanned) return addToLogger('Already added this product!');
                     code.push(product);
                     sessionStorage.setItem("barcodes", JSON.stringify(code));
-                    productService.getSuggestions(categoryIds).then(products => {
-                        products.forEach(product => {
-                            productService.getCategories(product.categories).then(r => {
-                                product.categories = r;
-                                suggestedItemsArray.push(product);
-                                console.log(suggestedItemsArray);
-                                sessionStorage.setItem("suggestions", JSON.stringify(suggestedItemsArray));
-                                window.location.href = "/main";
-                            });
-                        })
-                    })
+                    setProductSuggestions(productService, categoryIds);
+
                 });
             })
         }
@@ -102,6 +92,22 @@ function addToLogger(message) {
 }
 
 //When the timer is at 0, return to home.
-countdown.addEventListener('animationend', function () {
+countdown.addEventListener('animationend', function() {
     window.location.href = "/main";
 });
+
+//double code, fix later
+function setProductSuggestions(productService, categoryIds) {
+    let suggestedItemsArray = [];
+
+    productService.getSuggestions(categoryIds).then(products => {
+        products.forEach(product => {
+            productService.getCategories(product.categories).then(r => {
+                product.categoriesNames = r;
+                suggestedItemsArray.push(product);
+                sessionStorage.setItem("suggestions", JSON.stringify(suggestedItemsArray));
+                window.location.href = "/main";
+            });
+        })
+    })
+}
