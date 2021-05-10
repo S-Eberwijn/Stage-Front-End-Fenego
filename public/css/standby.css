@@ -5,67 +5,29 @@
     cursor: none;
 }
 
-body, html {
+body,
+html {
     background-color: black;
     height: 100%;
     width: 100%;
-    margin: 0;
     overflow: hidden;
 }
 
 .wrapper {
+    position: relative;
     height: 100%;
     width: 100%;
     display: flex;
+    flex-direction: column;
+    align-items: center;
     justify-content: center;
-    padding-top: 50px;
 }
 
-i {
-    color: rgb(175, 175, 175);
-    z-index: 100;
-    opacity: 1;
-}
-
-.wave {
-    animation: wave-animation 5s infinite ease;
-}
-
-@keyframes wave-animation {
-    0% {
-        transform: rotate( 0.0deg);
-        opacity: 1;
-    }
-    10% {
-        transform: rotate(14.0deg)
-    }
-    /* The following five values can be played with to make the waving more or less extreme */
-    20% {
-        transform: rotate(-8.0deg)
-    }
-    30% {
-        transform: rotate(14.0deg)
-    }
-    40% {
-        transform: rotate(-4.0deg)
-    }
-    50% {
-        transform: rotate(10.0deg);
-        opacity: 1;
-    }
-    60% {
-        transform: rotate( 0.0deg);
-        opacity: 1;
-    }
-    80% {
-        opacity: 0.1;
-    }
-    /* Reset for the last half to pause */
-    90% {
-        opacity: 0.1;
-    }
-    100% {
-        opacity: 1;
-        transform: rotate( 0.0deg)
-    }
+#clock {
+    position: absolute;
+    width: auto;
+    color: white;
+    font-size: 16px;
+    font-size: 30vw;
+    opacity: 0.85;
 }
