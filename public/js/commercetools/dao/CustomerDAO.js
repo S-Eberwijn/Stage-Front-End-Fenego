@@ -37,7 +37,16 @@ console.log(this.customerService.build())
 
     }
     async getCustomers() {
-
+        let request = this.getBearerToken().then(data => {
+            this.bearerToken = data.access_token;
+            return request = {
+                uri: this.customerService.build(),
+                method: 'GET',
+                headers: {
+                    Authorization: `Bearer ${this.bearerToken}`,
+                },
+            };
+        });
 
         let returnResults = null;
         return this.client.execute(await request)
