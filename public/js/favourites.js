@@ -1,5 +1,9 @@
 import CustomerService from "./commercetools/service/CustomerService.js";
-// let customerService = new CustomerService();
+import ProductService from "./commercetools/service/ProductService.js";
+
+
+let customerService = new CustomerService();
+let productService = new ProductService();
 // customerService.getFavouritesOfCustomer("d8727a5a-a13b-4edb-823c-e989000112e1")
 //     .then(async shoppingList => {
 //         let productId = "a22ec04f-8afd-4622-b7d4-351c334159eb";
@@ -14,12 +18,11 @@ import CustomerService from "./commercetools/service/CustomerService.js";
 //                             }
 //                         )
 //
-// <<<<<<< Updated upstream
+//
 let iconHolders = document.querySelectorAll('.iconHolder');
-console.log(iconHolders)
 
 iconHolders.forEach(iconHolder => {
-    iconHolder.addEventListener('transitionend', function () {
+    iconHolder.addEventListener('transitionend', function() {
         let oldIcon = iconHolder.querySelector('i');
         let newIcon = document.createElement('i');
         if (iconHolder.classList.contains('star')) {
@@ -33,18 +36,22 @@ iconHolders.forEach(iconHolder => {
                 newIcon.className = 'far fa-star fa-3x';
                 iconHolder.appendChild(newIcon);
             }
-        } else if (iconHolder.classList.contains('eye')) {
-            if (oldIcon.classList.contains('fa-eye-slash')) {
-                oldIcon.remove();
-                newIcon.className = 'far fa-eye fa-3x';
-                iconHolder.appendChild(newIcon);
-            } else {
-                oldIcon.remove();
-                newIcon.className = 'far fa-eye-slash fa-3x';
-                iconHolder.appendChild(newIcon);
-            }
         } else if (iconHolder.classList.contains('trash')) {
             if (oldIcon.classList.contains('far')) {
+                document.getElementById('detailedBox').style.opacity = '0';
+                document.getElementById('smallLine').style.opacity = '0';
+                let selectedItem = document.querySelector('div.item.selected');
+                let carouselOfSelectedItem = selectedItem.parentElement.parentElement.parentElement;
+                if (carouselOfSelectedItem.className.includes('left')) {
+                    setProductSuggestions(selectedItem);
+                } else if (carouselOfSelectedItem.className.includes('right')) {
+                    suggestedItems = suggestedItems.filter(function(value, index, arr) {
+                        return value.key != selectedItem.id;
+                    });
+                    sessionStorage.setItem('suggestions', JSON.stringify(suggestedItems));
+                }
+                selectedItem.parentElement.removeChild(selectedItem);
+
 
             }
         }
@@ -63,4 +70,31 @@ function addProductToCustomerFavourites() {
     });
 }
 
+function setProductSuggestions(selectedItem) {
+    scannedItems = scannedItems.filter(function(value, index, arr) {
+        return value.key != selectedItem.id;
+    });
+    sessionStorage.setItem('barcodes', JSON.stringify(scannedItems));
+    if (scannedItems.length === 0) return sessionStorage.setItem("suggestions", JSON.stringify([]));
 
+    let categories = [];
+    for (let productIndex = 0; productIndex < scannedItems.length; productIndex++) {
+        const item = scannedItems[productIndex];
+        for (let categoryIndex = 0; categoryIndex < item.length; categoryIndex++) {
+            const categorie = item[categoryIndex];
+            categories.push(categorie);
+        }
+    }
+
+    productService.getSuggestions(categories).then(products => {
+        let suggestedItemsArray = [];
+        products.forEach(product => {
+            productService.getCategories(product.categories).then(r => {
+                product.categoriesNames = r;
+                suggestedItemsArray.push(product);
+                sessionStorage.setItem("suggestions", JSON.stringify(suggestedItemsArray));
+                //window.location.href = "/main";
+            });
+        })
+    })
+}

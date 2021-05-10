@@ -9,4 +9,4 @@ let greeterAnimationTime = 4000;
 let scannedItems = JSON.parse(sessionStorage.getItem("barcodes")) || [];
 let suggestedItems = JSON.parse(sessionStorage.getItem("suggestions")) || [];
 let allAvailableItems = scannedItems.concat(suggestedItems);
-allAvailableItems = allAvailableItems.filter(function (item) { return (item != null) })
+allAvailableItems = allAvailableItems.filter(function(item) { return (item != null) });
