@@ -97,7 +97,7 @@
 }
 
 .iconHolder.selecting {
-    transition: background-color 500ms linear;
+    transition: background-color 1500ms linear;
     background-color: #e32636 !important;
 }
 
