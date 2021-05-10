@@ -74,7 +74,7 @@ async function start() {
             sessionStorage.setItem("customerName", bestMatch.label);
             for(let i = 0; i < customerList.length; i++) {
                 if (customerList[i].name === bestMatch.label) {
-                    sessionStorage.setItem("customerId", bestMatch.label);
+                    sessionStorage.setItem("customerId", customerList[i].customerId);
                 }
             }
         }
