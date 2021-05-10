@@ -73,6 +73,9 @@ export default class ProductDAO {
         const request = {
             uri: this.productsService.build() + "?limit=400", //max 500
             method: 'GET',
+            headers: {
+                Authorization: `Bearer ${this.bearerToken}`,
+            }
         };
         let returnResults = null;
         return this.client.execute(request)
