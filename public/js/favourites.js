@@ -4,6 +4,7 @@ import ProductService from "./commercetools/service/ProductService.js";
 
 let customerService = new CustomerService();
 let productService = new ProductService();
+console.log(await customerService.createShoppingListForCustomer("7ebfda8a-2f88-4bb5-b196-d9f88fa288c6"))
 // customerService.getFavouritesOfCustomer("d8727a5a-a13b-4edb-823c-e989000112e1")
 //     .then(async shoppingList => {
 //         let productId = "a22ec04f-8afd-4622-b7d4-351c334159eb";
