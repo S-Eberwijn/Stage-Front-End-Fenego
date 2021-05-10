@@ -96,7 +96,7 @@ export default class CustomerDAO {
                 Authorization: `Bearer ${this.bearerToken}`,
                 'Content-Type': 'application/json'
             }
-        };
+        }; 
         request.body = JSON.stringify(returnBody);
         await this.client.execute(request)
     }
