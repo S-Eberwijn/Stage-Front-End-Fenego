@@ -21,18 +21,24 @@ export default class CustomerService {
 
     getFavouritesOfCustomer(customerId) {
         return this.customerDao.getFavourites()
-            .then(shoppingLists => {
-                let returnList;
+            .then(async shoppingLists => {
+                let returnList = [];
                 for (let i = 0; i < shoppingLists.length; i++) {
                     if (shoppingLists[i].customer['id'] === customerId) {
                         returnList = shoppingLists[i];
                         break;
-                    } else {
-                        returnList = "No shoppinglist found for customer";
                     }
+                }
+                if (returnList.length === 0) {
+                    returnList = await this.createShoppingListForCustomer()
                 }
                 return returnList;
             })
+    }
+
+    async createShoppingListForCustomer(customerId) {
+        let returnList = this.customerDao.createShoppingListForCustomer(customerId).then((r) => {return r});
+        return returnList;
     }
 
     async addFavourite(shoppingList, productId) {

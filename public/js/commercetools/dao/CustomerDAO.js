@@ -26,7 +26,7 @@ export default class CustomerDAO {
         });
         this.customerService = this.requestBuilder.customers;
         this.shoppinglistService = this.requestBuilder.shoppingLists;
-
+console.log(this.customerService.build())
     }
     async getBearerToken() {
         let request = CommercetoolsSdkAuth.default._buildRequest(this.authClient.config, this.authClient.BASE_AUTH_FLOW_URI);
@@ -37,16 +37,7 @@ export default class CustomerDAO {
 
     }
     async getCustomers() {
-        let request = this.getBearerToken().then(data => {
-            this.bearerToken = data.access_token;
-            return request = {
-                uri: this.customerService.build(),
-                method: 'GET',
-                headers: {
-                    Authorization: `Bearer ${this.bearerToken}`,
-                },
-            };
-        });
+
 
         let returnResults = null;
         return this.client.execute(await request)
@@ -124,9 +115,71 @@ export default class CustomerDAO {
                 'Content-Type': 'application/json'
             }
         };
-        console.log(JSON.stringify(bodyData));
         request.body = bodyData;
         await this.client.execute(request)
+    }
+// {
+//     "version": {{shopping-list-version}},
+// "actions": [
+//     {
+//         "action" : "setCustomer",
+//         "customer" : {
+//             "typeId" : "customer",
+//             "id" : "7ebfda8a-2f88-4bb5-b196-d9f88fa288c6"
+//         }
+//     }
+// ]
+// }
+    async createShoppingListForCustomer(customerId) {
+        let newList;
+        await this.createShoppingList().then((r) => {newList = r.body;})
+        let bodyData = {
+            version: newList.version,
+            actions: [{
+                action: "setCustomer",
+                lineItemId: customerId
+            }]
+        };
+        let request = this.getBearerToken().then(data => {
+            this.bearerToken = data.access_token;
+            return request = {
+                uri: this.shoppinglistService.build() + "/" + newList.id,
+                method: 'POST',
+                headers: {
+                    Authorization: `Bearer ${this.bearerToken}`,
+                    'Content-Type': 'application/json'
+                },
+                body: bodyData
+            };
+        });
+
+        let returnResults = null;
+        return await this.client.execute(await request)
+            .then(result => {
+                returnResults = result.body;
+                return returnResults;
+            })
+            .catch(error => console.log(error));
+    }
+
+    async createShoppingList() {
+        let request = this.getBearerToken().then(data => {
+            this.bearerToken = data.access_token;
+            return request = {
+                uri: this.shoppinglistService.build(),
+                method: 'POST',
+                headers: {
+                    Authorization: `Bearer ${this.bearerToken}`,
+                    'Content-Type': 'application/json'
+                },
+                body: {
+                    name: {
+                        en: "Made by mirror"
+                    }
+                }
+            };
+        });
+        return await this.client.execute(await request)
     }
 
 }
