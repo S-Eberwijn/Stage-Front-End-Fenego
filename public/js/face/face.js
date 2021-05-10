@@ -2,6 +2,7 @@ const vid = document.querySelector("video");
 let i = 4; //countdown in 10 seconds
 let blobURL;
 import CustomerService from "../commercetools/service/CustomerService.js";
+
 let customerService = new CustomerService();
 
 Promise.all([
@@ -18,7 +19,6 @@ Promise.all([
             let intervalid = setInterval(function () {
                 if (i == 0) {
                     takeASnap().then(blob => {
-                        console.log(getBlobURL(blob))
                         blobURL = getBlobURL(blob);
                         document.getElementById('pop_up').style.display = 'block';
                         document.getElementById('spinning-circle').style.display = 'block';
@@ -53,29 +53,32 @@ async function start() {
     let titel = document.getElementById("titelElement");
     titel.innerHTML = "Bezig met identificeren!";
     const labeledFaceDescriptors = await loadLabeledImages();
-    const faceMatcher = new faceapi.FaceMatcher(labeledFaceDescriptors, 0.6)
     let image, canvas;
     if (image) image.remove()
     if (canvas) canvas.remove()
     image = document.createElement("img");
     image.src = blobURL;
     image.addEventListener('load', async () => {
-        canvas = faceapi.createCanvasFromMedia(image)
-        const displaySize = { width: image.width, height: image.height }
-        faceapi.matchDimensions(canvas, displaySize)
-        const detections = await faceapi.detectAllFaces(image).withFaceLandmarks().withFaceDescriptors()
-        const resizedDetections = faceapi.resizeResults(detections, displaySize)
-        const results = resizedDetections.map(d => faceMatcher.findBestMatch(d.descriptor))
-        results.forEach((result, i) => {
-            console.log(result);
-        });
+        const faceMatcher = new faceapi.FaceMatcher(labeledFaceDescriptors)
+
+        const singleResult = await faceapi
+            .detectSingleFace(image)
+            .withFaceLandmarks()
+            .withFaceDescriptor()
+
         sessionStorage.setItem("customerName", "Anoniempje");
-        if (results[0]) {
-            if (results[0].label != 'unknown') {
-                sessionStorage.setItem("customerName", `${results[0].label}`);
-                sessionStorage.setItem("customerId", `${ids[0]}`);
-            };
+
+        if (singleResult) {
+            const bestMatch = faceMatcher.findBestMatch(singleResult.descriptor)
+
+            sessionStorage.setItem("customerName", bestMatch.label);
+            for(let i = 0; i < customerList.length; i++) {
+                if (customerList[i].name === bestMatch.label) {
+                    sessionStorage.setItem("customerId", bestMatch.label);
+                }
+            }
         }
+
         let vidWrapper = document.getElementsByClassName("vidWrapper")[0];
         vidWrapper.parentElement.removeChild(vidWrapper);
         titel.innerHTML = `Welkom ${sessionStorage.getItem("customerName")}!`;
@@ -85,25 +88,28 @@ async function start() {
     });
 }
 let ids = [];
-function loadLabeledImages() {
+let customerList;
+
+async function loadLabeledImages() {
     const labels = [];
     const images = [];
-    let counter = 0;
-    let customers;
-    customers = customerService.getAllCustomers();
-    return customers.then(customers => {
-        customers.forEach(customer => {
-            labels.push(customer.name);
-            images.push(customer.img);
-            ids.push(customer.customerId);
-        });
-        return Promise.all(labels.map(async label => {
+    ;
+    return await customerService.getAllCustomers().then(async customers => {
+        customerList = customers;
+        let counter = -1;
+        for (let i = 0; i < customers.length; i++) {
+            labels.push(customers[i].name);
+            images.push(customers[i].img);
+            ids.push(customers[i].customerId);
+        }
+        return await Promise.all(labels.map(async label => {
             const descriptions = [];
+            counter = counter + 1;
             const img = await faceapi.fetchImage(images[counter]);
             const detections = await faceapi.detectSingleFace(img).withFaceLandmarks().withFaceDescriptor();
             descriptions.push(detections.descriptor);
-            counter++;
-            return new faceapi.LabeledFaceDescriptors(label, descriptions)
+            return await new faceapi.LabeledFaceDescriptors(label, descriptions)
         }))
     });
+
 }
