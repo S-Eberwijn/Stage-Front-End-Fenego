@@ -1,6 +1,8 @@
 const videoElement = document.getElementById("input_video");
 const cursor = document.getElementById("cursorLeft");
 const modes = document.querySelectorAll('div.mode');
+const wrapper = document.querySelector('#wrapper');
+
 let cursorY, cursorX;
 
 function onResults(results) {
@@ -14,12 +16,17 @@ function onResults(results) {
             cursor.style.left = cursorX + "%";
             cursor.style.top = cursorY + "%";
 
-            modes.forEach(mode => {
-                isCollidingButton(cursor, mode);
-            });
+
+
+            if (window.getComputedStyle(wrapper).getPropertyValue("opacity") != "0") {
+                modes.forEach(mode => {
+                    isCollidingButton(cursor, mode);
+                })
+            }
             idleTimer = setInterval(redirectToStandby, 120000);
         }
     }
+
 }
 
 modes.forEach(mode => {
