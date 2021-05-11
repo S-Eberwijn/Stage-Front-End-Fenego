@@ -1,12 +1,3 @@
-// function redirectToStandby() { console.log('idle'); }
-// var idleTimer = setInterval(redirectToStandby, 1000);
-// 2 mins = 120000(ms)
-
-// Then, later at some future time, 
-// to restart a new 4 second interval starting at this exact moment in time
-
-//clearInterval(idleTimer);
-// myTimer = setInterval(myFn, 4000);
 const videoElement = document.getElementById("input_video");
 let handDetectionCounter = 0;
 

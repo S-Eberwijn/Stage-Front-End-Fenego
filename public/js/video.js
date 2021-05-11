@@ -70,6 +70,8 @@ function onResults(results) {
 
     if (results.multiHandLandmarks !== undefined) {
         if (results.multiHandLandmarks[0] !== undefined) {
+            clearInterval(idleTimer);
+
             cursor.style.display = "block";
             cursorX = results.multiHandLandmarks[0][12].x * 150;
             cursorY = results.multiHandLandmarks[0][12].y * 150;
@@ -104,6 +106,8 @@ function onResults(results) {
             });
             isCollidingButton(cursor, tutorialButton);
             isCollidingButton(cursor, helpButton);
+            idleTimer = setInterval(redirectToStandby, 120000);
+
         }
     }
 }

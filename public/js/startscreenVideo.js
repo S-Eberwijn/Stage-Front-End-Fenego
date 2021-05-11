@@ -3,10 +3,10 @@ const cursor = document.getElementById("cursorLeft");
 const modes = document.querySelectorAll('div.mode');
 let cursorY, cursorX;
 
-
 function onResults(results) {
     if (results.multiHandLandmarks !== undefined) {
         if (results.multiHandLandmarks[0] !== undefined) {
+            clearInterval(idleTimer);
             cursor.style.display = "block";
             cursorX = results.multiHandLandmarks[0][12].x * 150;
             cursorY = results.multiHandLandmarks[0][12].y * 150;
@@ -17,12 +17,13 @@ function onResults(results) {
             modes.forEach(mode => {
                 isCollidingButton(cursor, mode);
             });
+            idleTimer = setInterval(redirectToStandby, 120000);
         }
     }
 }
 
 modes.forEach(mode => {
-    mode.addEventListener('animationend', function() {
+    mode.addEventListener('animationend', function () {
         if (mode.id.toLowerCase().includes('findego')) {
             console.log('findego');
             window.location.href = "/findego";
@@ -64,7 +65,7 @@ hands.onResults(onResults);
  * Instantiate a camera. We'll feed each frame we receive into the solution.
  */
 const camera = new Camera(videoElement, {
-    onFrame: async() => {
+    onFrame: async () => {
         await hands.send({ image: videoElement });
     },
     width: 1280,
