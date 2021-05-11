@@ -3,6 +3,7 @@ const cursorRightElement = document.getElementById("cursorRight");
 const spinner = document.getElementById("spinner");
 const buttons = document.querySelectorAll('.arrow');
 const cursor = document.getElementById("cursorLeft");
+const helpButton = document.getElementById('help');
 
 let sections = document.querySelectorAll('div.tutorialWrapper section');
 let tutorialWrapper = document.querySelector('div.tutorialWrapper');
@@ -17,45 +18,55 @@ function setDelayOnEachElement(sections) {
     for (let index = 0; index < sections.length; index++) {
         const section = sections[index];
         section.style.animationDelay = `${index * 1.2}s`;
-        if (index == 2) setTimeout(function() { document.querySelector('div.tutorialItemBox div.tutorialCursor').classList.add('move') }, index * 1.2 * 1000);
+        if (index == 2) setTimeout(function () { document.querySelector('div.tutorialItemBox div.tutorialCursor').classList.add('move') }, index * 1.2 * 1000);
         section.classList.add('fadeIn');
     }
 }
 
-function isHidden(el) {
-    return (el.offsetParent === null)
-}
-
-let animationCheck = setInterval(function() {
+let animationCheck = setInterval(function () {
     if (isHidden(document.querySelector('div.tutorialWrapper'))) return clearInterval(animationCheck);
     if (!isColliding(tutorialCursor.getBoundingClientRect(), tutorialItemBox.getBoundingClientRect())) return tutorialItemBox.classList.remove('selecting');
     tutorialItemBox.classList.add('selecting');
 }, 750);
 
 sections.forEach(section => {
-    section.addEventListener('animationend', function() {
+    section.addEventListener('animationend', function () {
         section.style.opacity = 1;
     })
 });
 
-tutorialButton.addEventListener('transitionend', function() {
+tutorialButton.addEventListener('transitionend', function () {
     tutorialWrapper.style.display = 'none';
+    helpButton.classList.remove('selected')
+    sections.forEach(section => {
+        section.style.opacity = 0
+    })
 })
+helpButton.addEventListener('transitionend', function () {
+    helpButton.classList.add('selected');
+    tutorialWrapper.style.display = 'flex';
 
+})
 function onResults(results) {
-    if (isFirstTime) {
-        spinnerElement.parentNode.removeChild(spinnerElement);
+    spinnerElement.style.display = 'none';
+    mainElement.classList.add('fadeIn');
+    mainElement.style.opacity = 1;
+    if (isFirstTime.includes('true')) {
+
         setDelayOnEachElement(sections)
         tutorialButton.style.opacity = 1;
+        helpButton.classList.add('selected')
+        tutorialWrapper.style.display = 'flex';
 
-        mainElement.classList.add('fadeIn');
-        mainElement.style.opacity = 1;
-        isFirstTime = sessionStorage.setItem('isFirstTime', false);
-    } else if (scannedItems) {
+        isFirstTime = 'false'
+        sessionStorage.setItem('isFirstTime', isFirstTime)
+    } else if (helpButton.className.includes('selected')) {
+        tutorialButton.style.opacity = 1;
+        tutorialWrapper.style.display = 'flex';
+        setDelayOnEachElement(sections)
+    } else {
         tutorialWrapper.style.display = 'none';
     }
-    //TODO: FIX THIS
-
 
     if (results.multiHandLandmarks !== undefined) {
         if (results.multiHandLandmarks[0] !== undefined) {
@@ -92,6 +103,7 @@ function onResults(results) {
                 isCollidingButton(cursor, button);
             });
             isCollidingButton(cursor, tutorialButton);
+            isCollidingButton(cursor, helpButton);
         }
     }
 }
@@ -126,7 +138,7 @@ hands.onResults(onResults);
  * Instantiate a camera. We'll feed each frame we receive into the solution.
  */
 const camera = new Camera(videoElement, {
-    onFrame: async() => {
+    onFrame: async () => {
         await hands.send({ image: videoElement });
     },
     width: 1280,

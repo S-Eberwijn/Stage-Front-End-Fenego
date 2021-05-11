@@ -22,7 +22,7 @@ let productService = new ProductService();
 let iconHolders = document.querySelectorAll('.iconHolder');
 
 iconHolders.forEach(iconHolder => {
-    iconHolder.addEventListener('transitionend', function() {
+    iconHolder.addEventListener('transitionend', function () {
         let oldIcon = iconHolder.querySelector('i');
         let newIcon = document.createElement('i');
         if (iconHolder.classList.contains('star')) {
@@ -46,7 +46,7 @@ iconHolders.forEach(iconHolder => {
                 if (carouselOfSelectedItem.className.includes('left')) {
                     setProductSuggestions(selectedItem);
                 } else if (carouselOfSelectedItem.className.includes('right')) {
-                    suggestedItems = suggestedItems.filter(function(value, index, arr) {
+                    suggestedItems = suggestedItems.filter(function (value, index, arr) {
                         return value.key != selectedItem.id;
                     });
                     sessionStorage.setItem('suggestions', JSON.stringify(suggestedItems));
@@ -85,11 +85,14 @@ function removeProductFromCustomerFavourites() {
 }
 
 function setProductSuggestions(selectedItem) {
-    scannedItems = scannedItems.filter(function(value, index, arr) {
+    scannedItems = scannedItems.filter(function (value, index, arr) {
         return value.key != selectedItem.id;
     });
     sessionStorage.setItem('barcodes', JSON.stringify(scannedItems));
-    if (scannedItems.length === 0) return sessionStorage.setItem("suggestions", JSON.stringify([]));
+    if (scannedItems.length === 0) {
+        sessionStorage.setItem("suggestions", JSON.stringify([]));
+        return window.location.href = "/main";
+    }
 
     let categories = [];
     for (let productIndex = 0; productIndex < scannedItems.length; productIndex++) {
@@ -106,8 +109,9 @@ function setProductSuggestions(selectedItem) {
             productService.getCategories(product.categories).then(r => {
                 product.categoriesNames = r;
                 suggestedItemsArray.push(product);
-                sessionStorage.setItem("suggestions", JSON.stringify(suggestedItemsArray));
-                window.location.href = "/main";
+                new Promise((resolve, reject) => { resolve(sessionStorage.setItem("suggestions", JSON.stringify(suggestedItemsArray))) }).then(() => {
+                    window.location.href = "/main";
+                })
             });
         })
     })

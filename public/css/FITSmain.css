@@ -267,6 +267,11 @@ section.fadeIn {
 }
 
 #tutorialButton.selecting {
-    transition: background-color 500ms linear;
+    transition: background-color 1000ms linear;
     background-color: #e32636 !important;
+}
+
+#help.selecting {
+    transition: color 1000ms linear;
+    color: #e32636 !important;
 }
