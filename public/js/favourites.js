@@ -50,8 +50,11 @@ function addProductToCustomerFavourites() {
         let customerId = sessionStorage.getItem('customerId');
         customerService.getFavouritesOfCustomer(customerId).then(shoppingList => {
             let selectedProduct = document.querySelector('div.item.selected');
-            let productId = allAvailableItems.find(item => item.key == selectedProduct.id).productId;
-            customerService.addItemToList(shoppingList, productId);
+            let product = allAvailableItems.find(item => item.key == selectedProduct.id);
+            customerService.addItemToList(shoppingList, product.productId);
+            product.isFavourite = true;
+            sessionStorage.setItem('barcodes', JSON.stringify(scannedItems));
+            sessionStorage.setItem('suggestions', JSON.stringify(suggestedItems));
         });
     } catch (error) {
         console.log(error)
@@ -64,8 +67,11 @@ function removeProductFromCustomerFavourites() {
     try {
         let customerId = sessionStorage.getItem('customerId');
         let selectedProduct = document.querySelector('div.item.selected');
-        let productId = allAvailableItems.find(item => item.key == selectedProduct.id).productId;
-        customerService.removeFavourite(customerId, productId);
+        let product = allAvailableItems.find(item => item.key == selectedProduct.id);
+        customerService.removeFavourite(customerId, product.productId);
+        product.isFavourite = false;
+        sessionStorage.setItem('barcodes', JSON.stringify(scannedItems));
+        sessionStorage.setItem('suggestions', JSON.stringify(suggestedItems));
     } catch (error) {
         console.log(error)
     }

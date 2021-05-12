@@ -10,7 +10,6 @@ body {
     padding: 10%;
 }
 
-
 /* Stacked Cards component css */
 
 .no-transition {
@@ -45,8 +44,7 @@ body {
     transition: all 400ms ease;
 }
 
-.stackedcards .stackedcards-container>*,
-.stackedcards-overlay {
+.stackedcards .stackedcards-container>*, .stackedcards-overlay {
     position: absolute;
     width: 100%;
     /* set 100% */
@@ -57,9 +55,7 @@ body {
     border-radius: 10px;
 }
 
-.stackedcards-overlay.left>div,
-.stackedcards-overlay.right>div,
-.stackedcards-overlay.top>div {
+.stackedcards-overlay.left>div, .stackedcards-overlay.right>div, .stackedcards-overlay.top>div {
     width: 100%;
     height: 100%;
     -webkit-box-align: center;
@@ -73,9 +69,7 @@ body {
     justify-content: center;
 }
 
-.stackedcards-overlay.left,
-.stackedcards-overlay.right,
-.stackedcards-overlay.top {
+.stackedcards-overlay.left, .stackedcards-overlay.right, .stackedcards-overlay.top {
     -webkit-box-align: center;
     -ms-flex-align: center;
     align-items: center;
@@ -100,20 +94,18 @@ body {
 }
 
 .stackedcards-overlay.top {
-    background: #E38568;
+    background: rgb(130, 203, 248);
 }
 
 .stackedcards-overlay.right {
-    background: #7BB3C5;
+    background: rgb(21, 184, 21);
 }
 
 .stackedcards-overlay.left {
-    background: #E58D93;
+    background: rgb(255, 99, 71);
 }
 
-.stackedcards-overlay.left:empty,
-.stackedcards-overlay.right:empty,
-.stackedcards-overlay.top:empty {
+.stackedcards-overlay.left:empty, .stackedcards-overlay.right:empty, .stackedcards-overlay.top:empty {
     display: none !important;
 }
 
@@ -133,9 +125,7 @@ body {
     transform-origin: top;
 }
 
-.stackedcards-bottom,
-.stackedcards-top,
-.stackedcards-none {
+.stackedcards-bottom, .stackedcards-top, .stackedcards-none {
     background: #fff;
     /* set card background background */
     height: 100%;
@@ -145,7 +135,6 @@ body {
     position: relative;
     display: block;
 }
-
 
 /* global actions buttons*/
 
@@ -159,9 +148,7 @@ body {
     justify-content: space-evenly;
 }
 
-.top-action,
-.right-action,
-.left-action {
+.top-action, .right-action, .left-action {
     width: 5rem;
     height: 5rem;
     border-radius: 50%;
@@ -178,17 +165,16 @@ body {
     /*TODO: Maybe make smaller*/
     width: 5rem;
     height: 5rem;
-    background: #E38568;
+    background: rgb(130, 203, 248);
 }
 
 .right-action {
-    background: #7BB3C5;
+    background: rgb(21, 184, 21);
 }
 
 .left-action {
-    background: #E58D93;
+    background: rgb(255, 99, 71);
 }
-
 
 /* elements on stacked cards */
 
