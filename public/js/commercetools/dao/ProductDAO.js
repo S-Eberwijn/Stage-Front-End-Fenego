@@ -69,14 +69,17 @@ export default class ProductDAO {
             .catch(error => console.log(error));
     }
 
-    getProducts() {
-        const request = {
-            uri: this.productsService.build() + "?limit=400", //max 500
-            method: 'GET',
-            headers: {
-                Authorization: `Bearer ${this.bearerToken}`,
-            }
-        };
+    async getProducts() {
+        let request = this.getBearerToken().then((data) => {
+            this.bearerToken = data.access_token;
+            return request = {
+                uri: this.productsService.build() + "?limit=400", //max 500
+                method: 'GET',
+                headers: {
+                    Authorization: `Bearer ${this.bearerToken}`,
+                }
+            };
+        })
         let returnResults = null;
         return this.client.execute(request)
             .then(
