@@ -81,7 +81,7 @@ export default class ProductDAO {
             };
         })
         let returnResults = null;
-        return this.client.execute(request)
+        return this.client.execute(await request)
             .then(
                 result => {
                     returnResults = result.body.results;
