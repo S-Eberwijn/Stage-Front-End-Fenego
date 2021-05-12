@@ -6,6 +6,11 @@ let customerService = new CustomerService();
 let productService = new ProductService();
 let iconHolders = document.querySelectorAll('.iconHolder');
 
+// setTimeout(async () => {
+//     await productService.getAllOutfits().then(list => console.log(list));
+//
+// }, 5000);
+
 iconHolders.forEach(iconHolder => {
     iconHolder.addEventListener('transitionend', function () {
         let oldIcon = iconHolder.querySelector('i');
