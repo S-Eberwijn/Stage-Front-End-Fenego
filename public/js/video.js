@@ -44,6 +44,8 @@ tutorialButton.addEventListener('transitionend', function () {
 })
 helpButton.addEventListener('transitionend', function () {
     helpButton.classList.add('selected');
+    hideSmallLineAndDetailedBox();
+    deselectAllSelectedItems();
     tutorialWrapper.style.display = 'flex';
 
 })

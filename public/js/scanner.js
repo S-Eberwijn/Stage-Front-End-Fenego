@@ -98,7 +98,7 @@ function addToLogger(message) {
 
 //When the timer is at 0, return to home.
 
-countdown.addEventListener('animationend', function() {
+countdown.addEventListener('animationend', function () {
     window.location.href = "/main";
 });
 
@@ -112,7 +112,7 @@ function setProductSuggestions(productService, categoryIds) {
                 product.categoriesNames = r;
                 suggestedItemsArray.push(product);
                 sessionStorage.setItem("suggestions", JSON.stringify(suggestedItemsArray));
-                // window.location.href = "/main";
+                window.location.href = "/main";
             });
         })
     })
