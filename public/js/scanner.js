@@ -99,7 +99,7 @@ function addToLogger(message) {
 //When the timer is at 0, return to home.
 
 countdown.addEventListener('animationend', function () {
-    window.location.href = "/main";
+    // window.location.href = "/main";
 });
 
 //double code, fix later

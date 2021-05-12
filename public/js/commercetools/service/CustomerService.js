@@ -24,6 +24,7 @@ export default class CustomerService {
             .then(async shoppingLists => {
                 let returnList = [];
                 for (let i = 0; i < shoppingLists.length; i++) {
+
                     if (shoppingLists[i].customer['id'] === customerId
                     && shoppingLists[i].name.en === "favouritesList") {
                         returnList = shoppingLists[i];

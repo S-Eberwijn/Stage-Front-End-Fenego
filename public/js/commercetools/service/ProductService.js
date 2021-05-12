@@ -1,5 +1,5 @@
 import ProductDAO from '../dao/ProductDAO.js';
-import CustomerService from "./CustomerService";
+import CustomerService from "./CustomerService.js";
 export default class ProductService {
     constructor() {
         this.productDao = new ProductDAO();
@@ -32,11 +32,13 @@ export default class ProductService {
         });
     }
     getAllProducts() {
-        return this.productDao.getProducts().then(results => {
+        return this.productDao.getProducts().then(async results => {
             let filteredProducts = [];
             let filteredProduct = null;
-            results.forEach(result => {
-                    filteredProduct =  {
+            for (const result of results) {
+                let fav = await this.isFavourite(result['id']);
+
+                filteredProduct =  {
                         key: result.key,
                         productId: result['id'],
                         name: result.masterData.current.name["nl-NL"],
@@ -44,10 +46,10 @@ export default class ProductService {
                         categories: result.masterData.current.categories,
                         price: "€" + result.masterData.current.masterVariant.prices[0].value.centAmount / 100,
                         img: result.masterData.current.masterVariant.images[0].url,
-                        isFavourite: this.isFavourite(result['id'])
+                        isFavourite: fav
                     };
                     filteredProducts.push(filteredProduct);
-            });
+            }
             return filteredProducts;
         });
     }
@@ -77,15 +79,17 @@ export default class ProductService {
         return categories;
     }
 
-    isFavourite(productId) {
+    async isFavourite(productId) {
         let customerId = sessionStorage.getItem('customerId');
-        let favourites = this.customerService.getFavouritesOfCustomer(customerId);
-        favourites.lineItems.forEach(favourite => {
-            if (favourite.productId === productId) {
-                return true;
-            }
-        });
-        return false;
+        return await this.customerService.getFavouritesOfCustomer(customerId).then(favourites => {
+            favourites.lineItems.forEach(favourite => {
+                if (favourite.productId === productId) {
+                    return true;
+                }
+            });
+            return false;
+        })
+
     }
 
 
