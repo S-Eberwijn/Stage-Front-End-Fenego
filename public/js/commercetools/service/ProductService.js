@@ -1,7 +1,9 @@
 import ProductDAO from '../dao/ProductDAO.js';
+import CustomerService from "./CustomerService";
 export default class ProductService {
     constructor() {
         this.productDao = new ProductDAO();
+        this.customerService = new CustomerService();
     }
     getProductById(id) {
         return this.productDao.getProductById(id).then((result) => {
@@ -42,6 +44,7 @@ export default class ProductService {
                         categories: result.masterData.current.categories,
                         price: "€" + result.masterData.current.masterVariant.prices[0].value.centAmount / 100,
                         img: result.masterData.current.masterVariant.images[0].url,
+                        isFavourite: this.isFavourite(result['id'])
                     };
                     filteredProducts.push(filteredProduct);
             });
@@ -72,6 +75,17 @@ export default class ProductService {
             categories.push(categoryName);
         }
         return categories;
+    }
+
+    isFavourite(productId) {
+        let customerId = sessionStorage.getItem('customerId');
+        let favourites = this.customerService.getFavouritesOfCustomer(customerId);
+        favourites.lineItems.forEach(favourite => {
+            if (favourite.productId === productId) {
+                return true;
+            }
+        });
+        return false;
     }
 
 
