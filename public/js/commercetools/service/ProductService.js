@@ -64,6 +64,7 @@ export default class ProductService {
         });
         return filteredProducts.slice(0, 20);
     }
+
     async getCategories(categoryIds) {
         let categories = [];
         for (const categoryId of categoryIds) {
@@ -72,4 +73,6 @@ export default class ProductService {
         }
         return categories;
     }
+
+
 }

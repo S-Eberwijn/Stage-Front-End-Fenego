@@ -20,29 +20,33 @@ export default class CustomerService {
     }
 
     getFavouritesOfCustomer(customerId) {
-        return this.customerDao.getFavourites()
+        return this.customerDao.getShoppingLists()
             .then(async shoppingLists => {
                 let returnList = [];
                 for (let i = 0; i < shoppingLists.length; i++) {
-                    if (shoppingLists[i].customer['id'] === customerId) {
+                    if (shoppingLists[i].customer['id'] === customerId
+                    && shoppingLists[i].name.en === "favouritesList") {
                         returnList = shoppingLists[i];
                         break;
                     }
                 }
                 if (returnList.length === 0) {
-                    returnList = await this.createShoppingListForCustomer()
+                    returnList = await this.createShoppingListForCustomer(customerId, "favouritesList")
                 }
                 return returnList;
             })
     }
 
-    async createShoppingListForCustomer(customerId) {
-        let returnList = this.customerDao.createShoppingListForCustomer(customerId).then((r) => {return r});
-        return returnList;
+
+    async createShoppingListForCustomer(customerId, listType) {
+        console.log(customerId);
+        let returnList = this.customerDao.createShoppingListForCustomer(customerId, listType).then((r) => {return r});
+        console.log(returnList);
+        return await returnList;
     }
 
-    async addFavourite(shoppingList, productId) {
-        await this.customerDao.addFavourite(shoppingList, productId)
+    async addItemToList(shoppingList, productId) {
+        await this.customerDao.addItemToList(shoppingList, productId)
     }
 
     async removeFavourite(customerId, favouriteId) {
@@ -50,5 +54,25 @@ export default class CustomerService {
             .then(async shoppingList => {
                 await this.customerDao.removeFavourite(shoppingList, favouriteId)
             });
+    }
+
+    getScannedItemsList(customerId) { //History of scanned items of customer
+        return this.customerDao.getShoppingLists()
+            .then(async shoppingLists => {
+                let returnList = [];
+                for (let i = 0; i < shoppingLists.length; i++) {
+                    if (shoppingLists[i].customer['id'] === customerId
+                        && shoppingLists[i].name.en === "scannedList") {
+                        console.log("ja toch");
+                        returnList = shoppingLists[i];
+                        break;
+                    }
+                }
+                if (returnList.length === 0) {
+                    returnList = await this.createShoppingListForCustomer(customerId, "scannedList")
+                }
+                return returnList;
+            })
+
     }
 }

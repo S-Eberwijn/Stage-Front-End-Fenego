@@ -1,4 +1,8 @@
+import CustomerService from "./commercetools/service/CustomerService.js";
 import ProductService from "./commercetools/service/ProductService.js";
+
+
+let customerService = new CustomerService();
 let countdown = document.querySelector('.count');
 
 let styleElem = document.head.appendChild(document.createElement("style"));
@@ -76,6 +80,7 @@ Quagga.onDetected(function (result) {
                     if (alreadyScanned) return addToLogger('Already added this product!');
                     code.push(product);
                     sessionStorage.setItem("barcodes", JSON.stringify(code));
+                    addProductToScannedItems(product.productId);
                     setProductSuggestions(productService, categoryIds);
 
                 });
@@ -92,7 +97,8 @@ function addToLogger(message) {
 }
 
 //When the timer is at 0, return to home.
-countdown.addEventListener('animationend', function () {
+
+countdown.addEventListener('animationend', function() {
     window.location.href = "/main";
 });
 
@@ -106,8 +112,19 @@ function setProductSuggestions(productService, categoryIds) {
                 product.categoriesNames = r;
                 suggestedItemsArray.push(product);
                 sessionStorage.setItem("suggestions", JSON.stringify(suggestedItemsArray));
-                window.location.href = "/main";
+                // window.location.href = "/main";
             });
         })
     })
+}
+
+function addProductToScannedItems(productId) {
+    try {
+        let customerId = sessionStorage.getItem('customerId');
+        customerService.getScannedItemsList(customerId).then(shoppingList => {
+            customerService.addItemToList(shoppingList, productId);
+        });
+    } catch (error) {
+        console.log(error)
+    }
 }

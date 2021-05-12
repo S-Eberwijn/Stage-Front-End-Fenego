@@ -57,7 +57,7 @@ console.log(this.customerService.build())
             )
             .catch(error => console.log(error));
     }
-    async getFavourites() {
+    async getShoppingLists() {
         //AKA ShoppingList
 
         let request = this.getBearerToken().then((data) => {
@@ -79,7 +79,7 @@ console.log(this.customerService.build())
             .catch(error => console.log(error));
     }
 
-    async addFavourite(shoppingList, productId) {
+    async addItemToList(shoppingList, productId) {
         let returnBody = {
             version: shoppingList.version,
             actions: [{
@@ -87,8 +87,6 @@ console.log(this.customerService.build())
                 productId: productId
             }]
         };
-        console.log("add");
-        console.log(shoppingList);
         let request = {
             uri: this.shoppinglistService.build() + "/" + shoppingList.id,
             method: "POST",
@@ -127,28 +125,22 @@ console.log(this.customerService.build())
         request.body = bodyData;
         await this.client.execute(request)
     }
-// {
-//     "version": {{shopping-list-version}},
-// "actions": [
-//     {
-//         "action" : "setCustomer",
-//         "customer" : {
-//             "typeId" : "customer",
-//             "id" : "7ebfda8a-2f88-4bb5-b196-d9f88fa288c6"
-//         }
-//     }
-// ]
-// }
-    async createShoppingListForCustomer(customerId) {
+    async createShoppingListForCustomer(customerId, listType) {
+        console.log("yesyes?")
         let newList;
-        await this.createShoppingList().then((r) => {newList = r.body;})
+        await this.createShoppingList(listType).then((r) => {newList = r.body;})
         let bodyData = {
             version: newList.version,
             actions: [{
                 action: "setCustomer",
-                lineItemId: customerId
+                customer: {
+                    typeId: "customer",
+                    id: customerId
+                }
             }]
         };
+        console.log(customerId);
+        console.log(bodyData);
         let request = this.getBearerToken().then(data => {
             this.bearerToken = data.access_token;
             return request = {
@@ -171,7 +163,8 @@ console.log(this.customerService.build())
             .catch(error => console.log(error));
     }
 
-    async createShoppingList() {
+    async createShoppingList(listType) {
+        //listname should be "favouritesList" or "scannedList"
         let request = this.getBearerToken().then(data => {
             this.bearerToken = data.access_token;
             return request = {
@@ -183,7 +176,7 @@ console.log(this.customerService.build())
                 },
                 body: {
                     name: {
-                        en: "Made by mirror"
+                        en: listType
                     }
                 }
             };

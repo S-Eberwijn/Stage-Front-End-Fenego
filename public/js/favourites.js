@@ -4,21 +4,6 @@ import ProductService from "./commercetools/service/ProductService.js";
 
 let customerService = new CustomerService();
 let productService = new ProductService();
-// customerService.getFavouritesOfCustomer("d8727a5a-a13b-4edb-823c-e989000112e1")
-//     .then(async shoppingList => {
-//         let productId = "a22ec04f-8afd-4622-b7d4-351c334159eb";
-//         await customerService.addFavourite(shoppingList, productId)
-//             .then(customerService.getFavouritesOfCustomer("d8727a5a-a13b-4edb-823c-e989000112e1")
-//                 .then(async shoppingList => {
-//                     await customerService.removeFavourite("d8727a5a-a13b-4edb-823c-e989000112e1", "a22ec04f-8afd-4622-b7d4-351c334159eb")
-//                         .then(async () => {
-//                                 await customerService.getFavouritesOfCustomer("d8727a5a-a13b-4edb-823c-e989000112e1")
-//                                     .then(shoppingList => {
-//                                     })
-//                             }
-//                         )
-//
-//
 let iconHolders = document.querySelectorAll('.iconHolder');
 
 iconHolders.forEach(iconHolder => {
@@ -66,12 +51,14 @@ function addProductToCustomerFavourites() {
         customerService.getFavouritesOfCustomer(customerId).then(shoppingList => {
             let selectedProduct = document.querySelector('div.item.selected');
             let productId = allAvailableItems.find(item => item.key == selectedProduct.id).productId;
-            customerService.addFavourite(shoppingList, productId);
+            customerService.addItemToList(shoppingList, productId);
         });
     } catch (error) {
         console.log(error)
     }
 }
+
+
 
 function removeProductFromCustomerFavourites() {
     try {
@@ -116,3 +103,4 @@ function setProductSuggestions(selectedItem) {
         })
     })
 }
+
