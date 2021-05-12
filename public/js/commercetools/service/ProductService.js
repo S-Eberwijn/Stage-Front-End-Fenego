@@ -18,8 +18,9 @@ export default class ProductService {
             };
         });
     }
-    getProductByKey(key) {
-        return this.productDao.getProductByKey(key).then((result) => {
+    async getProductByKey(key) {
+        return this.productDao.getProductByKey(key).then(async (result) => {
+            let favouriteBool = await this.isFavourite(result['id']);
             return {
                 key: result.key,
                 productId: result['id'],
@@ -28,6 +29,7 @@ export default class ProductService {
                 categories: result.masterData.current.categories,
                 price: "€" + result.masterData.current.masterVariant.prices[0].value.centAmount / 100,
                 img: result.masterData.current.masterVariant.images[0].url,
+                isFavourite: favouriteBool
             };
         });
     }
@@ -36,7 +38,7 @@ export default class ProductService {
             let filteredProducts = [];
             let filteredProduct = null;
             for (const result of results) {
-                let fav = await this.isFavourite(result['id']);
+                let favouriteBool = await this.isFavourite(result['id']);
 
                 filteredProduct =  {
                         key: result.key,
@@ -46,7 +48,7 @@ export default class ProductService {
                         categories: result.masterData.current.categories,
                         price: "€" + result.masterData.current.masterVariant.prices[0].value.centAmount / 100,
                         img: result.masterData.current.masterVariant.images[0].url,
-                        isFavourite: fav
+                        isFavourite: favouriteBool
                     };
                     filteredProducts.push(filteredProduct);
             }
