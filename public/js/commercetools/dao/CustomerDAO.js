@@ -87,16 +87,19 @@ console.log(this.customerService.build())
                 productId: productId
             }]
         };
-        let request = {
-            uri: this.shoppinglistService.build() + "/" + shoppingList.id,
-            method: "POST",
-            headers: {
-                Authorization: `Bearer ${this.bearerToken}`,
-                'Content-Type': 'application/json'
-            }
-        }; 
+        let request = this.getBearerToken().then((dataà) => {
+            this.bearerToken = data.access_token;
+            return request = {
+                uri: this.shoppinglistService.build() + "/" + shoppingList.id,
+                method: "POST",
+                headers: {
+                    Authorization: `Bearer ${this.bearerToken}`,
+                    'Content-Type': 'application/json'
+                }
+            };
+        });
         request.body = JSON.stringify(returnBody);
-        await this.client.execute(request)
+        await this.client.execute(await request)
     }
 
     async removeFavourite(shoppingList, favouriteId){
