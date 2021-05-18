@@ -33,7 +33,7 @@ body, html {
 
 .card {
     transform-origin: bottom center;
-    animation-duration: 1s;
+    animation-duration: 0.1s;
     animation-timing-function: ease;
     animation-iteration-count: 1;
     position: absolute;

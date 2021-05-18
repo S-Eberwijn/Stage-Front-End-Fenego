@@ -67,7 +67,6 @@ export default class ProductService {
             for (const result of results) {
 
                 if (result.productType.id === this.outfitType) {
-                    console.log(result);
                     let categories, model, season, references;
                     result.masterData.current.masterVariant.attributes.forEach(attribute => {
                         switch (attribute.name) {
@@ -85,7 +84,7 @@ export default class ProductService {
                                 break;
                         }
                     });
-                    filteredOutfit = {
+                    filteredOutfit =  {
                         outfitId: result['id'],
                         price: "€" + result.masterData.current.masterVariant.prices[0].value.centAmount / 100,
                         name: result.masterData.current.name["nl-NL"],
