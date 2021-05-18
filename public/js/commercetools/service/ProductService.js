@@ -42,7 +42,7 @@ export default class ProductService {
             for (const result of results) {
                 if (result.productType.id === this.productType) {
                     let favouriteBool = await this.isFavourite(result['id']);
-                    filteredProduct =  {
+                    filteredProduct = {
                         key: result.key,
                         productId: result['id'],
                         name: result.masterData.current.name["nl-NL"],
@@ -70,7 +70,7 @@ export default class ProductService {
                     console.log(result);
                     let categories, model, season, references;
                     result.masterData.current.masterVariant.attributes.forEach(attribute => {
-                        switch(attribute.name) {
+                        switch (attribute.name) {
                             case "style":
                                 categories = attribute;
                                 break;
@@ -85,8 +85,9 @@ export default class ProductService {
                                 break;
                         }
                     });
-                    filteredOutfit =  {
+                    filteredOutfit = {
                         outfitId: result['id'],
+                        price: "€" + result.masterData.current.masterVariant.prices[0].value.centAmount / 100,
                         name: result.masterData.current.name["nl-NL"],
                         description: result.masterData.current.metaDescription["nl-NL"],
                         categories: categories,
@@ -107,7 +108,7 @@ export default class ProductService {
         let products = await this.getAllProducts();
         let filteredProducts = products.filter((pr) => {
             let prCategories = [];
-            for(let cat of pr.categories) {
+            for (let cat of pr.categories) {
                 prCategories.push(cat.id);
             }
             for (const categoryId of categoryIds) {

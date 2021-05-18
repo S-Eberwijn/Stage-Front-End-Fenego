@@ -6,17 +6,27 @@
     <meta charset="utf-8">
     <title>FITS-Tinder</title>
     <link rel="stylesheet" href="./css/findego.css">
+
     <link rel='shortcut icon' type='image/x-icon' href='./favicon.ico' />
 
     <link rel="stylesheet" href="./css/fontawesome-free-5.15.3-web/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/@mediapipe/camera_utils/camera_utils.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@mediapipe/hands/hands.js" crossorigin="anonymous"></script>
+    <script src="https://unpkg.com/@commercetools/sdk-client/dist/sdk-client.umd.min.js"></script>
+    <script src="https://unpkg.com/@commercetools/sdk-auth/dist/sdk-auth.umd.js"></script>
+    <script src="https://unpkg.com/@commercetools/api-request-builder/dist/api-request-builder.umd.min.js"></script>
+    <script src="https://unpkg.com/@commercetools/sdk-middleware-http/dist/sdk-middleware-http.umd.min.js"></script>
 
 </head>
 
 <body>
+    <video id="input_video" autoplay="true"></video>
     <div class="wrapper">
         <div class="card-stack">
         </div>
         <div class="global-actions">
+            <hr />
+            <div id="cursor"></div>
             <div class="left-action"><i class="fas fa-times fa-3x"></i></div>
             <div class="right-action"><i class="fas fa-heart fa-2x"></i></div>
         </div>
@@ -24,11 +34,10 @@
 
 
 
-    <script src="https://unpkg.com/@commercetools/sdk-client/dist/sdk-client.umd.min.js"></script>
-    <script src="https://unpkg.com/@commercetools/sdk-auth/dist/sdk-auth.umd.js"></script>
-    <script src="https://unpkg.com/@commercetools/api-request-builder/dist/api-request-builder.umd.min.js"></script>
-    <script src="https://unpkg.com/@commercetools/sdk-middleware-http/dist/sdk-middleware-http.umd.min.js"></script>
     <script src="./js/findego.js" type="module"></script>
+    <script src="./js/redirectToStandby.js"></script>
+    <script src="./js/findegoVideo.js" type="module"></script>
+
 
 </body>
 

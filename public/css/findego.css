@@ -37,6 +37,7 @@ body, html {
     animation-timing-function: ease;
     animation-iteration-count: 1;
     position: absolute;
+    display: flex;
     width: 500px;
     height: 95%;
     background-color: white;
@@ -44,6 +45,65 @@ body, html {
     background-size: 100% 100%;
     background-repeat: no-repeat;
     border: 2px solid white;
+    overflow: hidden;
+}
+
+.card>.card-information {
+    height: 10%;
+    width: 100%;
+    background: linear-gradient(0deg, rgba(0, 0, 0, 0.8) 0%, rgba(0, 0, 0, 0.5) 100%);
+    background-clip: padding-box;
+    align-self: flex-end;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    padding: 10px;
+}
+
+.card>.card-overlay {
+    height: 100%;
+    width: 100%;
+    position: absolute;
+    z-index: 100;
+    opacity: 0;
+    display: flex;
+    justify-content: center;
+    transition: opacity 600ms ease;
+}
+
+.card-overlay>i {
+    align-self: center;
+    color: white;
+}
+
+.card-overlay.right {
+    background: rgb(21, 184, 21, 0.7);
+    opacity: 1;
+}
+
+.card-overlay.left {
+    background: rgb(255, 99, 71, 0.7);
+    opacity: 1;
+}
+
+.card-information>p.outfitName {
+    font-size: 2vh;
+    font-weight: bolder;
+    color: white;
+}
+
+.card-information>p.outfitDescription {
+    font-size: 1.5vh;
+    font-weight: normal;
+    color: white;
+}
+
+.card-information>p.outfitPrice {
+    position: absolute;
+    font-size: 2vh;
+    font-weight: normal;
+    color: white;
+    align-self: flex-end;
 }
 
 .card.swipe-left {
@@ -60,11 +120,23 @@ body, html {
     display: -webkit-inline-box;
     display: -ms-inline-flexbox;
     display: inline-flex;
+    align-items: center;
     width: 500px;
-    justify-content: space-evenly;
+    justify-content: space-between;
+    position: relative;
 }
 
-.top-action, .right-action, .left-action {
+.global-actions>hr {
+    justify-self: center;
+    width: 95%;
+    height: 0.5rem;
+    background-color: gray;
+    border: none;
+    position: absolute;
+    z-index: 10;
+}
+
+.right-action, .left-action {
     width: 5rem;
     height: 5rem;
     border-radius: 50%;
@@ -74,7 +146,23 @@ body, html {
     justify-content: center;
     text-transform: uppercase;
     font-weight: 500;
+    z-index: 20;
     color: #fff;
+}
+
+.right-action.selecting, .left-action.selecting {
+    animation: zoom-animation 1s ease 1;
+}
+
+@keyframes zoom-animation {
+    0% {
+        transform: scale(1);
+        box-shadow: 0px 0px 20px #fff;
+    }
+    100% {
+        transform: scale(1.2);
+        box-shadow: 0px 0px 20px #fff;
+    }
 }
 
 .right-action {
@@ -101,4 +189,31 @@ body, html {
     100% {
         transform: translate(-10%, -5%) rotate(-15deg);
     }
+}
+
+#cursor {
+    background: white;
+    border-radius: 100%;
+    height: 3rem;
+    width: 3rem;
+    pointer-events: none;
+    position: absolute;
+    justify-self: center;
+    z-index: 25;
+    transition: 200ms ease-in-out;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+#input_video {
+    /*transform: rotateY(180deg);*/
+    /*-webkit-transform:rotateY(180deg); !* Safari and Chrome *!*/
+    /*-moz-transform:rotateY(180deg); !* Firefox *!*/
+    position: fixed;
+    right: 0;
+    bottom: 0;
+    min-width: 100%;
+    min-height: 100%;
+    z-index: -10;
+    visibility: visible;
 }
