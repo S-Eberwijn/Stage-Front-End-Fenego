@@ -1,5 +1,8 @@
 var express = require('express');
 var favicon = require('serve-favicon');
+// var open = require('open');
+var childProcess = require('child_process');
+
 
 var app = express();
 
@@ -36,3 +39,6 @@ app.get('*', function (req, res) {
 app.listen(3000, function () {
     console.log("Listening on port 3000!")
 });
+
+// open('http://localhost:3000'); //open normal tab
+childProcess.exec('start chrome --kiosk http;//localhost:3000'); //open in kiosk mode, ctrl+W to close or close in taskbar 2nd screen

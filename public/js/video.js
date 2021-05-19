@@ -14,6 +14,7 @@ let tutorialItemBox = document.querySelector('div.tutorialItemBox');
 let cursorY, cursorX;
 
 
+
 function setDelayOnEachElement(sections) {
     for (let index = 0; index < sections.length; index++) {
         const section = sections[index];
@@ -49,6 +50,8 @@ helpButton.addEventListener('transitionend', function () {
     tutorialWrapper.style.display = 'flex';
 
 })
+
+
 function onResults(results) {
     spinnerElement.style.display = 'none';
     mainElement.classList.add('fadeIn');
