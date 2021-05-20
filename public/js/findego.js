@@ -17,7 +17,7 @@ let isCursorLocked = false;
 let cursorX;
 
 let productService = new ProductService();
-const MAX_OUTFITS = 1;
+const MAX_OUTFITS = 40;
 let zIndexCounter = 999;
 let stylesMap = new Map();
 let chosenOutfits = [];
@@ -173,7 +173,6 @@ swipeRightButton.addEventListener('click', function () {
 });
 
 function adjustScore(selectedOutfit, scoreAdjustment) {
-    console.log(selectedOutfit)
     selectedOutfit.categories.value.forEach(style => {
         if (stylesMap.get(style['en-US']) === undefined) {
             stylesMap.set(style['en-US'], scoreAdjustment);
@@ -188,13 +187,23 @@ function getWinningOutfit() {
 
     let popularStyle = highToLow[0][0];
     let secondStyle = highToLow[1][0];
+    let thirdStyle = highToLow[2][0];
 
     let popularList = chosenOutfits.filter(outfit => filterOneStyle(outfit, popularStyle));
     let twoStyleList = chosenOutfits.filter(outfit => filterTwoStyles(outfit, popularStyle, secondStyle));
+    let thirdStyleList = chosenOutfits.filter(outfit => filterThreeStyles(outfit, popularStyle, secondStyle, thirdStyle));
 
-    console.log(twoStyleList);
+    if (thirdStyleList.length === 0) {
+        if (twoStyleList.length === 0) {
+            return Array(popularList[Math.floor(Math.random() * popularList.length)]);
 
-    return twoStyleList;
+        } else {
+            return Array(twoStyleList[Math.floor(Math.random() * twoStyleList.length)]);
+
+        }
+    } else {
+        return Array(thirdStyleList[Math.floor(Math.random() * thirdStyleList.length)]);
+    }
 }
 
 function filterOneStyle(outfit, popularStyle) {

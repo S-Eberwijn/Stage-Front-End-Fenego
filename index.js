@@ -46,7 +46,7 @@ app.get('/face', function (req, res) {
     res.sendFile('face.html', { root: `${__dirname}\\public` });
 });
 app.get('/run', function (req, res) {
-    run();
+    // run();
 });
 
 // Default every route except the above to serve the 404.html
