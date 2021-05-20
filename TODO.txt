@@ -1,1 +1,2 @@
-1. Access and check the favourites of a customer when an item is selected, so the customer can see if the product is already a favourite.
+1. Make it so the user always gets to see a winning outfit on Findego.
+2. Make it so the user always gets to see ONE winning outfit.

@@ -1,84 +1,181 @@
 import ProductService from "./commercetools/service/ProductService.js";
 
-let cardStack = document.querySelector('div.card-stack');
-let zIndexCounter = 999;
-let stylesMap = new Map();
-let outfitsList = [];
-
+const videoElement = document.getElementById("input_video");
+const cursor = document.getElementById("cursor");
+const globalActionsElement = document.querySelector('div.global-actions');
 const swipeRightButton = document.querySelector(".global-actions .right-action");
 const swipeLeftButton = document.querySelector(".global-actions .left-action");
+let cardStack = document.querySelector('div.card-stack');
 
+let heartIcon = document.createElement('i');
+heartIcon.className = "fas fa-heart fa-5x";
 
+let crossIcon = document.createElement('i');
+crossIcon.className = "fas fa-times fa-6x";
+
+let isCursorLocked = false;
+let cursorX;
+
+let productService = new ProductService();
+const MAX_OUTFITS = 1;
+let zIndexCounter = 999;
+let stylesMap = new Map();
+let chosenOutfits = [];
+let isShowingWinner = false;
+
+var resetCursorTimer = setInterval(resetCursor, 750);
 
 
 window.onload = async function () {
-    let productService = new ProductService();
     await productService.getAllOutfits().then(outfits => {
-        for (let index = 0; index < outfits.length; index++) {
-            const outfit = outfits[index];
-            let cardElement = document.createElement('div')
-            cardElement.classList.add('card');
-            cardElement.style.zIndex = zIndexCounter;
-            cardElement.style.backgroundImage = `url(${outfit.img})`;
-
-            let cardOverlayElement = document.createElement('div');
-            cardOverlayElement.classList.add('card-overlay');
-
-            let cardInformationElement = document.createElement('div');
-            cardInformationElement.classList.add('card-information');
-
-            let cardOutfitNameElement = document.createElement('p');
-            cardOutfitNameElement.classList.add('outfitName');
-            cardOutfitNameElement.innerHTML = outfit.name;
-
-            let cardOutfitDescriptionElement = document.createElement('p');
-            cardOutfitDescriptionElement.classList.add('outfitDescription');
-            cardOutfitDescriptionElement.innerHTML = outfit.description;
-
-            let cardOutfitPriceElement = document.createElement('p');
-            cardOutfitPriceElement.classList.add('outfitPrice');
-            cardOutfitPriceElement.innerHTML = outfit.price.replace('.', ',');
-
-            cardStack.appendChild(cardElement);
-            cardElement.appendChild(cardOverlayElement);
-            cardElement.appendChild(cardInformationElement);
-            cardInformationElement.appendChild(cardOutfitNameElement);
-            cardInformationElement.appendChild(cardOutfitDescriptionElement);
-            cardInformationElement.appendChild(cardOutfitPriceElement);
-
-            outfitsList.push(outfit);
-
-            cardElement.addEventListener('animationend', function () {
-                cardElement.parentElement.removeChild(cardElement);
-            });
-            zIndexCounter--;
-        }
+        let randomlyChosenOutfits = outfits.sort((a, b) => 0.5 - Math.random()).slice(0, MAX_OUTFITS);
+        createCardElementWithOutfit(randomlyChosenOutfits);
     });
 }
 
-swipeLeftButton.addEventListener('click', function () {
-    let swipedElement = document.querySelector('div.card-stack div.card');
-    let selectedOutfit = outfitsList.find(outfit => outfit.outfitId === swipedElement.id);
-    adjustScore(selectedOutfit, -1);
-    swipedElement.classList.add('swipe-left');
+function onResults(results) {
+    if (results.multiHandLandmarks !== undefined) {
+        if (results.multiHandLandmarks[0] !== undefined) {
+            //clearInterval(idleTimer);
+            clearInterval(resetCursorTimer)
 
+            cursorX = results.multiHandLandmarks[0][12].x * 150;
+            cursorX = 125 - cursorX;
+
+            if (isCursorLocked) return;
+
+            if (cursorX > 7 && cursorX < 93) {
+                cursor.style.left = cursorX + "%";
+            } else if (cursorX <= 7) {
+                cursor.style.left = 8 + "%";
+            } else if (cursorX >= 93) {
+                cursor.style.left = 92 + "%";
+            }
+
+            if (!window.getComputedStyle(globalActionsElement).getPropertyValue("visibility") != "hidden") {
+                isCollidingButton(cursor, swipeLeftButton);
+                isCollidingButton(cursor, swipeRightButton);
+            }
+
+            //idleTimer = setInterval(redirectToStandby, 120000);
+            resetCursorTimer = setInterval(resetCursor, 750);
+        }
+    }
+}
+
+function resetCursor() { cursor.style.left = `${50}%` }
+
+function isColliding(a, b) {
+    return !(
+        ((a.y + a.height) < (b.y)) ||
+        (a.y > (b.y + b.height)) ||
+        ((a.x + a.width) < b.x) ||
+        (a.x > (b.x + b.width))
+    );
+}
+
+function isCollidingButton(cursor, button) {
+    if (isColliding(cursor.getBoundingClientRect(), button.getBoundingClientRect()) && !button.classList.contains('disabled')) {
+        button.classList.add('selecting');
+    } else {
+        if (button.classList.contains('selecting')) {
+            button.classList.remove('selecting');
+        }
+    }
+}
+
+const hands = new Hands({
+    locateFile: (file) => {
+        return `https://cdn.jsdelivr.net/npm/@mediapipe/hands@0.1/${file}`;
+    }
+});
+
+hands.onResults(onResults);
+
+/**
+ * Instantiate a camera. We'll feed each frame we receive into the solution.
+ */
+const camera = new Camera(videoElement, {
+    onFrame: async () => {
+        await hands.send({ image: videoElement });
+    },
+    width: 1280,
+    height: 720
+});
+
+setTimeout(() => {
+    camera.start();
+}, 750);
+
+
+//This is for motion control
+swipeLeftButton.addEventListener('animationend', function () {
+    let cardToSwipe = document.querySelector('div.card-stack div.card');
+    if (!cardToSwipe) return console.log('no cards left to swipe');
+    cardToSwipe.classList.add('swipe-left');
+    cardToSwipe.querySelector('.card-overlay').appendChild(crossIcon)
+    cardToSwipe.querySelector('.card-overlay').classList.add('left');
+
+    let selectedOutfit = chosenOutfits.find(outfit => outfit.outfitId === cardToSwipe.id);
+    adjustScore(selectedOutfit, -1);
+
+    resetCursor();
+    isCursorLocked = true;
+    setTimeout(() => { isCursorLocked = false }, 1000);
+});
+swipeRightButton.addEventListener('animationend', function () {
+    let cardToSwipe = document.querySelector('div.card-stack div.card');
+    if (!cardToSwipe) return console.log('no cards to swipe left');
+    cardToSwipe.classList.add('swipe-right');
+    cardToSwipe.querySelector('.card-overlay').appendChild(heartIcon)
+    cardToSwipe.querySelector('.card-overlay').classList.add('right');
+
+    let selectedOutfit = chosenOutfits.find(outfit => outfit.outfitId === cardToSwipe.id);
+    adjustScore(selectedOutfit, 1);
+
+    resetCursor();
+    isCursorLocked = true;
+    setTimeout(() => { isCursorLocked = false }, 1000);
+});
+
+
+
+
+swipeLeftButton.addEventListener('click', function () {
+    let cardToSwipe = document.querySelector('div.card-stack div.card');
+    if (!cardToSwipe) return console.log('no cards left to swipe');
+    cardToSwipe.classList.add('swipe-left');
+    cardToSwipe.querySelector('.card-overlay').appendChild(crossIcon)
+    cardToSwipe.querySelector('.card-overlay').classList.add('left');
+
+    let selectedOutfit = chosenOutfits.find(outfit => outfit.outfitId === cardToSwipe.id);
+    adjustScore(selectedOutfit, -1);
+
+    resetCursor();
+    isCursorLocked = true;
+    setTimeout(() => { isCursorLocked = false }, 1000);
 });
 
 swipeRightButton.addEventListener('click', function () {
-    let swipedElement = document.querySelector('div.card-stack div.card');
-    if(swipedElement !== null) {
-        let selectedOutfit = outfitsList.find(outfit => outfit.outfitId === swipedElement.id);
-        adjustScore(selectedOutfit, 1);
-        swipedElement.classList.add('swipe-right');
-    } else {
-        getWinningOutfit()
-    }
+    let cardToSwipe = document.querySelector('div.card-stack div.card');
+    if (!cardToSwipe) return console.log('no cards to swipe left');
+    cardToSwipe.classList.add('swipe-right');
+    cardToSwipe.querySelector('.card-overlay').appendChild(heartIcon)
+    cardToSwipe.querySelector('.card-overlay').classList.add('right');
+
+    let selectedOutfit = chosenOutfits.find(outfit => outfit.outfitId === cardToSwipe.id);
+    adjustScore(selectedOutfit, 1);
+
+    resetCursor();
+    isCursorLocked = true;
+    setTimeout(() => { isCursorLocked = false }, 1000);
 
 });
 
 function adjustScore(selectedOutfit, scoreAdjustment) {
+    console.log(selectedOutfit)
     selectedOutfit.categories.value.forEach(style => {
-        if(stylesMap.get(style['en-US']) === undefined) {
+        if (stylesMap.get(style['en-US']) === undefined) {
             stylesMap.set(style['en-US'], scoreAdjustment);
         } else {
             stylesMap.set(style['en-US'], stylesMap.get(style['en-US']) + scoreAdjustment);
@@ -91,19 +188,13 @@ function getWinningOutfit() {
 
     let popularStyle = highToLow[0][0];
     let secondStyle = highToLow[1][0];
-    let thirdStyle = highToLow[2][0];
-    console.log(highToLow);
-    console.log(popularStyle);
-    console.log(secondStyle);
-    let popularList = outfitsList.filter(outfit => filterOneStyle(outfit, popularStyle));
-    let twoStyleList = outfitsList.filter(outfit => filterTwoStyles(outfit, popularStyle, secondStyle));
-    let thirdStyleList = outfitsList.filter(outfit => filterThreeStyles(outfit, popularStyle, secondStyle, thirdStyle));
-    console.log(popularList);
+
+    let popularList = chosenOutfits.filter(outfit => filterOneStyle(outfit, popularStyle));
+    let twoStyleList = chosenOutfits.filter(outfit => filterTwoStyles(outfit, popularStyle, secondStyle));
+
     console.log(twoStyleList);
-    console.log(thirdStyleList);
+
     return twoStyleList;
-
-
 }
 
 function filterOneStyle(outfit, popularStyle) {
@@ -121,11 +212,10 @@ function filterTwoStyles(outfit, popularStyle, secondStyle) {
     let score = 0;
     for (let i = 0; i < styles.length; i++) {
         if (styles[i]['en-US'] === popularStyle
-        || styles[i]['en-US'] === secondStyle) {
+            || styles[i]['en-US'] === secondStyle) {
             score++;
         }
     }
-
     return score === 2;
 }
 
@@ -134,11 +224,110 @@ function filterThreeStyles(outfit, popularStyle, secondStyle, thirdStyle) {
     let score = 0;
     for (let i = 0; i < styles.length; i++) {
         if (styles[i]['en-US'] === popularStyle
-        || styles[i]['en-US'] === secondStyle
-        || styles[i]['en-US'] === thirdStyle) {
+            || styles[i]['en-US'] === secondStyle
+            || styles[i]['en-US'] === thirdStyle) {
             score++;
         }
     }
-
     return score === 3;
+}
+
+function createCardElementWithOutfit(outfits) {
+    for (let index = 0; index < outfits.length; index++) {
+        const outfit = outfits[index];
+        let cardElement = document.createElement('div')
+        cardElement.classList.add('card');
+        cardElement.id = outfit.outfitId;
+        cardElement.style.zIndex = zIndexCounter;
+        cardElement.style.backgroundImage = `url(${outfit.img})`;
+
+        let cardOverlayElement = document.createElement('div');
+        cardOverlayElement.classList.add('card-overlay');
+
+        let cardInformationElement = document.createElement('div');
+        cardInformationElement.classList.add('card-information');
+
+        let cardOutfitNameElement = document.createElement('p');
+        cardOutfitNameElement.classList.add('outfitName');
+        cardOutfitNameElement.innerHTML = outfit.name;
+
+        let cardOutfitDescriptionElement = document.createElement('p');
+        cardOutfitDescriptionElement.classList.add('outfitDescription');
+        cardOutfitDescriptionElement.innerHTML = outfit.description;
+
+        let cardOutfitPriceElement = document.createElement('p');
+        cardOutfitPriceElement.classList.add('outfitPrice');
+        cardOutfitPriceElement.innerHTML = outfit.price.replace('.', ',');
+
+        if (isShowingWinner) {
+            cardElement.classList.add('winner');
+
+            cardStack.appendChild(cardElement);
+            cardElement.appendChild(cardOverlayElement);
+            cardElement.appendChild(cardInformationElement);
+            cardInformationElement.appendChild(cardOutfitNameElement);
+            cardInformationElement.appendChild(cardOutfitDescriptionElement);
+            cardInformationElement.appendChild(cardOutfitPriceElement);
+            setTimeout(function () {
+                cardElement.classList.add('slideRight');
+                let topPercentage = 5;
+                let startTimeTransition = 250;
+
+                outfit.references.forEach(item => {
+                    productService.getProductById(item.id).then(product => {
+                        let itemContainer = document.createElement('div');
+                        itemContainer.classList.add('item-container');
+                        itemContainer.style.top = `${topPercentage}%`;
+
+
+                        let itemImage = document.createElement('img');
+                        itemImage.src = product.img;
+
+                        let itemName = document.createElement('p');
+                        itemName.classList.add('itemName')
+                        itemName.innerHTML = product.name;
+
+                        let itemPrice = document.createElement('p');
+                        itemPrice.classList.add('itemPrice')
+                        itemPrice.innerHTML = product.price;
+
+                        cardStack.appendChild(itemContainer);
+                        itemContainer.appendChild(itemImage);
+                        itemContainer.appendChild(itemName);
+                        itemContainer.appendChild(itemPrice);
+
+                        setTimeout(function () {
+                            itemContainer.classList.add('slideLeft');
+                        }, startTimeTransition)
+
+                        topPercentage += 20;
+                        startTimeTransition += 250;
+                    })
+                })
+
+            }, 1000)
+        } else {
+            cardStack.appendChild(cardElement);
+            cardElement.appendChild(cardOverlayElement);
+            cardElement.appendChild(cardInformationElement);
+            cardInformationElement.appendChild(cardOutfitNameElement);
+            cardInformationElement.appendChild(cardOutfitDescriptionElement);
+            cardInformationElement.appendChild(cardOutfitPriceElement);
+        }
+
+        cardElement.addEventListener('animationend', function () {
+
+            cardElement.parentElement.removeChild(cardElement);
+            console.log('deleted card: ' + cardElement.id)
+            console.log(cardStack.children.length)
+            if (cardStack.children.length === 0) {
+                isShowingWinner = true;
+                globalActionsElement.remove();
+                createCardElementWithOutfit(getWinningOutfit())
+            }
+
+        });
+        zIndexCounter--;
+    }
+    chosenOutfits = outfits;
 }

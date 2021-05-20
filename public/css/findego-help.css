@@ -4,180 +4,81 @@
     font-family: 'Poppins', sans-serif;
 }
 
-body {
+body, html {
     background-color: black;
     overflow: hidden;
-    padding: 10%;
+    height: 100vh;
+    width: 100vw;
 }
 
-/* Stacked Cards component css */
-
-.no-transition {
-    -webkit-transition: none ! important;
-    -o-transition: none ! important;
-    transition: none ! important;
-}
-
-.stackedcards-overflow {
-    overflow-y: hidden !important;
-}
-
-.stackedcards.init {
-    opacity: 0;
-    /* set the opacity to 0 if you want a fade-in effect to stacked cards on page load */
-}
-
-.stackedcards {
-    position: relative;
-}
-
-.stackedcards * {
-    -webkit-user-select: none;
-    -moz-user-select: none;
-    -ms-user-select: none;
-    user-select: none;
-}
-
-.stackedcards--animatable {
-    -webkit-transition: all 400ms ease;
-    -o-transition: all 400ms ease;
-    transition: all 400ms ease;
-}
-
-.stackedcards .stackedcards-container>*, .stackedcards-overlay {
-    position: absolute;
-    width: 100%;
-    /* set 100% */
-    height: 300px;
-    /* set 100% */
-    will-change: transform, opacity;
-    top: 0;
-    border-radius: 10px;
-}
-
-.stackedcards-overlay.left>div, .stackedcards-overlay.right>div, .stackedcards-overlay.top>div {
-    width: 100%;
+.wrapper {
     height: 100%;
-    -webkit-box-align: center;
-    -ms-flex-align: center;
-    align-items: center;
-    display: -webkit-box;
-    display: -ms-flexbox;
+    width: 70%;
     display: flex;
-    -webkit-box-pack: center;
-    -ms-flex-pack: center;
-    justify-content: center;
-}
-
-.stackedcards-overlay.left, .stackedcards-overlay.right, .stackedcards-overlay.top {
-    -webkit-box-align: center;
-    -ms-flex-align: center;
-    align-items: center;
-    display: -webkit-box;
-    display: -ms-flexbox;
-    display: flex;
-    -webkit-box-pack: center;
-    -ms-flex-pack: center;
-    justify-content: center;
-    left: 0;
-    opacity: 0;
-    top: 0;
-    height: 100%;
-    font-size: 24px;
-    /* this style was added only for better preview */
-    text-transform: uppercase;
-    /* this style was added only for better preview */
-    font-weight: 500;
-    /* this style was added only for better preview */
-    color: #fff;
-    /* this style was added only for better preview */
-}
- 
-.stackedcards-overlay.top {
-    background: rgb(130, 203, 248);
-}
-
-.stackedcards-overlay.right {
-    background: rgb(21, 184, 21);
-}
-
-.stackedcards-overlay.left {
-    background: rgb(255, 99, 71);
-}
-
-.stackedcards-overlay.left:empty, .stackedcards-overlay.right:empty, .stackedcards-overlay.top:empty {
-    display: none !important;
-}
-
-.stackedcards-overlay-hidden {
-    display: none;
-}
-
-.stackedcards-origin-bottom {
-    -webkit-transform-origin: bottom;
-    -ms-transform-origin: bottom;
-    transform-origin: bottom;
-}
-
-.stackedcards-origin-top {
-    -webkit-transform-origin: top;
-    -ms-transform-origin: top;
-    transform-origin: top;
-}
-
-.stackedcards-bottom, .stackedcards-top, .stackedcards-none {
-    background: #fff;
-    /* set card background background */
-    height: 100%;
-}
-
-.stackedcards .stackedcards-container> :nth-child(1) {
-    position: relative;
-    display: block;
-}
-
-/* global actions buttons*/
-
-.global-actions {
-    display: -webkit-inline-box;
-    display: -ms-inline-flexbox;
-    display: inline-flex;
-    width: 100%;
-    margin: auto;
-    margin-top: 10px;
+    flex-direction: column;
     justify-content: space-evenly;
-}
-
-.top-action, .right-action, .left-action {
-    width: 5rem;
-    height: 5rem;
-    border-radius: 50%;
-    display: flex;
-    flex-direction: row;
     align-items: center;
-    justify-content: center;
-    text-transform: uppercase;
-    font-weight: 500;
-    color: #fff;
+    margin: auto;
 }
 
-.top-action {
-    /*TODO: Maybe make smaller*/
-    width: 5rem;
-    height: 5rem;
-    background: rgb(130, 203, 248);
+/* entire container, keeps perspective */
+
+.card-stack {
+    perspective: 1000px;
 }
 
-.right-action {
-    background: rgb(21, 184, 21);
+/* flip the pane when hovered */
+
+.card-stack.flip .card {
+    transform: rotateY(-180deg);
 }
 
-.left-action {
-    background: rgb(255, 99, 71);
+.card-stack, .front, .back {
+    width: 500px;
+    height: 480px;
 }
 
-/* elements on stacked cards */
+/* flip speed goes here */
 
-.card-item {
-    background: #FFFFFF;
+.card-absolute {
+    width: 100%;
+    height: 100%;
+    position: relative;
+}
+
+.card {
+    transition: 1750ms;
+    transform-style: preserve-3d;
+    position: relative;
+}
+
+#one {
+    background-image: url("https://c.files.bbci.co.uk/12A9B/production/_111434467_gettyimages-1143489763.jpg");
+}
+
+#two {
+    background-image: url("https://th.bing.com/th/id/OIP.p-9HZ4I7CTukxmhdX67adgHaI1?pid=ImgDet&w=178&h=212&c=7");
+}
+
+/* hide back of pane during swap */
+
+.front, .back {
+    backface-visibility: hidden;
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+
+/* front pane, placed above back */
+
+.front {
+    z-index: 2;
+    /* for firefox 31 */
+    transform: rotateY(0deg);
+}
+
+/* back, initially hidden pane */
+
+.back {
+    transform: rotateY(-180deg);
 }
