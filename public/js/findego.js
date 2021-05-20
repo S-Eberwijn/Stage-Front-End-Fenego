@@ -3,6 +3,7 @@ import ProductService from "./commercetools/service/ProductService.js";
 const videoElement = document.getElementById("input_video");
 const cursor = document.getElementById("cursor");
 const globalActionsElement = document.querySelector('div.global-actions');
+const homeButtonElement = document.getElementById('home');
 const swipeRightButton = document.querySelector(".global-actions .right-action");
 const swipeLeftButton = document.querySelector(".global-actions .left-action");
 let cardStack = document.querySelector('div.card-stack');
@@ -14,10 +15,10 @@ let crossIcon = document.createElement('i');
 crossIcon.className = "fas fa-times fa-6x";
 
 let isCursorLocked = false;
-let cursorX;
+let cursorX, cursorY;
 
 let productService = new ProductService();
-const MAX_OUTFITS = 40;
+const MAX_OUTFITS = 5;
 let zIndexCounter = 999;
 let stylesMap = new Map();
 let chosenOutfits = [];
@@ -38,24 +39,26 @@ function onResults(results) {
         if (results.multiHandLandmarks[0] !== undefined) {
             //clearInterval(idleTimer);
             clearInterval(resetCursorTimer)
-
-            cursorX = results.multiHandLandmarks[0][12].x * 150;
-            cursorX = 125 - cursorX;
-
             if (isCursorLocked) return;
 
-            if (cursorX > 7 && cursorX < 93) {
-                cursor.style.left = cursorX + "%";
-            } else if (cursorX <= 7) {
-                cursor.style.left = 8 + "%";
-            } else if (cursorX >= 93) {
-                cursor.style.left = 92 + "%";
-            }
+            cursor.style.display = "block";
+
+            cursorX = results.multiHandLandmarks[0][12].x * 150;
+            cursorY = results.multiHandLandmarks[0][12].y * 150;
+
+            cursorX = 125 - cursorX;
+
+
+            cursor.style.left = `${cursorX}%`
+            cursor.style.top = `${cursorY}%`
+
 
             if (!window.getComputedStyle(globalActionsElement).getPropertyValue("visibility") != "hidden") {
                 isCollidingButton(cursor, swipeLeftButton);
                 isCollidingButton(cursor, swipeRightButton);
             }
+
+            isCollidingButton(cursor, homeButtonElement);
 
             //idleTimer = setInterval(redirectToStandby, 120000);
             resetCursorTimer = setInterval(resetCursor, 750);
@@ -63,7 +66,7 @@ function onResults(results) {
     }
 }
 
-function resetCursor() { cursor.style.left = `${50}%` }
+function resetCursor() { cursor.style.display = `none` }
 
 function isColliding(a, b) {
     return !(
@@ -107,7 +110,13 @@ setTimeout(() => {
     camera.start();
 }, 750);
 
+homeButtonElement.addEventListener('transitionend', function () {
+    window.location.href = "/";
+})
 
+homeButtonElement.addEventListener('click', function () {
+    window.location.href = "/";
+})
 //This is for motion control
 swipeLeftButton.addEventListener('animationend', function () {
     let cardToSwipe = document.querySelector('div.card-stack div.card');
@@ -271,12 +280,17 @@ function createCardElementWithOutfit(outfits) {
         if (isShowingWinner) {
             cardElement.classList.add('winner');
 
+
             cardStack.appendChild(cardElement);
             cardElement.appendChild(cardOverlayElement);
             cardElement.appendChild(cardInformationElement);
             cardInformationElement.appendChild(cardOutfitNameElement);
             cardInformationElement.appendChild(cardOutfitDescriptionElement);
             cardInformationElement.appendChild(cardOutfitPriceElement);
+            setTimeout(function () {
+                cardElement.classList.add('fadeIn');
+
+            }, 250)
             setTimeout(function () {
                 cardElement.classList.add('slideRight');
                 let topPercentage = 5;

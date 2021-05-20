@@ -24,7 +24,10 @@ body, html {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
+    align-content: center;
     align-items: center;
+    text-align: center;
+    vertical-align: middle;
 }
 
 #clock {
@@ -33,8 +36,26 @@ body, html {
     text-align: center;
 }
 
-#help {
-    color: lightgrey;
+#topBar i {
+    height: 50px;
+    width: 50px;
+    color: white;
+    border: 2px solid white;
+    border-radius: 100%;
+    position: relative;
+}
+
+#topBar i.selecting {
+    transition: color 1000ms linear, border 1000ms linear;
+    color: #e32636 !important;
+    border: 2px solid #e32636;
+}
+
+#topBar i::before {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
 }
 
 .wrapper {
@@ -270,10 +291,3 @@ section.fadeIn {
     transition: background-color 1000ms linear;
     background-color: #e32636 !important;
 }
-
-#help.selecting {
-    transition: color 1000ms linear;
-    color: #e32636 !important;
-}
-
-

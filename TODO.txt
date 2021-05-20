@@ -1,2 +1,3 @@
 1. Make it so the user always gets to see a winning outfit on Findego.
 2. Make it so the user always gets to see ONE winning outfit.
+3. Make the outfit image the right aspect ratio, so they dont look stretched.

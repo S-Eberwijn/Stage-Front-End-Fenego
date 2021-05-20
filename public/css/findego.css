@@ -22,8 +22,8 @@ body, html {
 }
 
 .card-stack {
-    height: 70%;
-    width: 50%;
+    height: 68%;
+    width: 45%;
     position: relative;
     display: flex;
     flex-direction: column;
@@ -46,9 +46,8 @@ body, html {
     background-repeat: no-repeat;
     border: 2px solid white;
     overflow: hidden;
+    transition: opacity 1s;
 }
-
-.card.winner {}
 
 .card .card-information {
     height: 10%;
@@ -124,7 +123,8 @@ body, html {
     display: inline-flex;
     align-items: center;
     width: 500px;
-    justify-content: space-between;
+    margin-bottom: 50px;
+    justify-content: space-evenly;
     position: relative;
 }
 
@@ -207,21 +207,40 @@ body, html {
     border: 2px solid white;
 }
 
-.card.winner.slideRight {
-    transition: all 2s 250ms;
-    transform: translate(65%, 0%);
-}
-
 .item-container.slideLeft {
-    transition: all 2s;
+    transition: transform 2s;
     transform: translate(-65%, 0%);
 }
 
+.card.winner {
+    opacity: 0;
+}
+
+.card.winner.fadeIn {
+    opacity: 1;
+}
+
 .card.winner::before {
-    content: 'Match gevonden';
+    content: '✓ \A Match!';
+    white-space: pre;
+    word-wrap: break-word;
     position: absolute;
     color: white;
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 8vw;
+    font-weight: bolder;
+    width: 100%;
+    height: 100%;
+    z-index: 100;
+    background: linear-gradient(180deg, rgba(0, 132, 255, 0.6) 0%, rgba(0, 132, 255, 0.3) 100%);
+}
 
+.card.winner.slideRight {
+    transition: transform 2s 500ms;
+    transform: translate(65%, 0%);
 }
 
 .item-container img {
@@ -250,21 +269,43 @@ body, html {
     pointer-events: none;
     position: absolute;
     justify-self: center;
-    z-index: 25;
+    z-index: 1000;
     transition: 200ms ease-in-out;
     left: 50%;
     transform: translateX(-50%);
+    display: none;
 }
 
 #input_video {
     /*transform: rotateY(180deg);*/
     /*-webkit-transform:rotateY(180deg); !* Safari and Chrome *!*/
     /*-moz-transform:rotateY(180deg); !* Firefox *!*/
-    position: fixed;
+    position: absolute;
     right: 0;
     bottom: 0;
     min-width: 100%;
     min-height: 100%;
     z-index: -10;
-    visibility: visible;
+    display: none;
+    visibility: hidden;
+}
+
+.sidebar {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+    padding: 10px;
+}
+
+.sidebar i {
+    color: white;
+    border: 2px solid white;
+    border-radius: 100%;
+    padding: 10px;
+}
+
+.sidebar i.selecting {
+    transition: color 1s linear, border 1s linear;
+    color: #e32636;
+    border: 2px solid #e32636;
 }

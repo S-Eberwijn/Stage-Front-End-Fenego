@@ -4,6 +4,8 @@ const spinner = document.getElementById("spinner");
 const buttons = document.querySelectorAll('.arrow');
 const cursor = document.getElementById("cursorLeft");
 const helpButton = document.getElementById('help');
+const homeButtonElement = document.getElementById('home');
+
 
 let sections = document.querySelectorAll('div.tutorialWrapper section');
 let tutorialWrapper = document.querySelector('div.tutorialWrapper');
@@ -48,7 +50,9 @@ helpButton.addEventListener('transitionend', function () {
     hideSmallLineAndDetailedBox();
     deselectAllSelectedItems();
     tutorialWrapper.style.display = 'flex';
-
+})
+homeButtonElement.addEventListener('transitionend', function () {
+    window.location.href = "/";
 })
 
 
@@ -111,6 +115,7 @@ function onResults(results) {
             });
             isCollidingButton(cursor, tutorialButton);
             isCollidingButton(cursor, helpButton);
+            isCollidingButton(cursor, homeButtonElement);
             idleTimer = setInterval(redirectToStandby, 120000);
 
         }
