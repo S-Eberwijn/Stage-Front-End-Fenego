@@ -1,8 +1,22 @@
 var express = require('express');
 var favicon = require('serve-favicon');
-// var open = require('open');
 var childProcess = require('child_process');
+const { spawn } = require('child_process')
+const logOutput = (name) => (data) => console.log(`[${name}] ${data.toString()}`);
+let pythonProcess;
+function run() {
+    pythonProcess = spawn('python', ['python/media/main.py',"mediapipe","cv2","pypiwin32"]);
 
+    pythonProcess.stdout.on(
+        'data',
+        logOutput('stdout')
+    );
+
+    pythonProcess.stderr.on(
+        'data',
+        logOutput('stderr')
+    );
+};
 
 var app = express();
 
@@ -15,6 +29,7 @@ app.get('/', function (req, res) {
 });
 
 app.get('/barcode', function (req, res) {
+    pythonProcess.kill('SIGTERM');
     res.sendFile('barcode.html', { root: `${__dirname}\\public` });
 });
 
@@ -30,6 +45,9 @@ app.get('/findego', function (req, res) {
 app.get('/face', function (req, res) {
     res.sendFile('face.html', { root: `${__dirname}\\public` });
 });
+app.get('/run', function (req, res) {
+    run();
+});
 
 // Default every route except the above to serve the 404.html
 app.get('*', function (req, res) {
@@ -40,5 +58,5 @@ app.listen(3000, function () {
     console.log("Listening on port 3000!")
 });
 
-// open('http://localhost:3000'); //open normal tab
-childProcess.exec('start chrome --kiosk http;//localhost:3000'); //open in kiosk mode, ctrl+W to close or close in taskbar 2nd screen
+
+childProcess.exec('start chrome --kiosk http;//localhost:3000/run'); //open in kiosk mode, ctrl+W to close or close in taskbar 2nd screen

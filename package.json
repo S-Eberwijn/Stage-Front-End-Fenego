@@ -4,7 +4,8 @@
   "description": "FITS - Find the perfect accessoires for you outfits!",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "postinstall": "pip install mediapipe"
   },
   "repository": {
     "type": "git",
@@ -22,10 +23,12 @@
     "@commercetools/sdk-client": "^2.1.2",
     "@commercetools/sdk-middleware-http": "^6.0.11",
     "@fortawesome/fontawesome-free": "^5.15.3",
+    "@mediapipe/hands": "^0.3.1620248595",
     "child_process": "^1.0.2",
     "express": "^4.17.1",
     "isomorphic-fetch": "^3.0.0",
     "open": "^8.0.9",
+    "python-shell": "^3.0.0",
     "serve-favicon": "^2.5.0"
   }
 }
