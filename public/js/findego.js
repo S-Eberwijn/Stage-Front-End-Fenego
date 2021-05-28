@@ -15,7 +15,7 @@ let crossIcon = document.createElement('i');
 crossIcon.className = "fas fa-times fa-6x";
 
 let isCursorLocked = false;
-let cursorX, cursorY;
+// let cursorX, cursorY;
 
 let productService = new ProductService();
 const MAX_OUTFITS = 5;
@@ -27,98 +27,110 @@ let isShowingWinner = false;
 var resetCursorTimer = setInterval(resetCursor, 750);
 
 
-window.onload = async function () {
+window.onload = async function() {
     await productService.getAllOutfits().then(outfits => {
         let randomlyChosenOutfits = outfits.sort((a, b) => 0.5 - Math.random()).slice(0, MAX_OUTFITS);
         createCardElementWithOutfit(randomlyChosenOutfits);
     });
 }
 
-function onResults(results) {
-    if (results.multiHandLandmarks !== undefined) {
-        if (results.multiHandLandmarks[0] !== undefined) {
-            //clearInterval(idleTimer);
-            clearInterval(resetCursorTimer)
-            if (isCursorLocked) return;
+document.addEventListener('mousemove', e => {
+    clearInterval(resetCursorTimer)
+    if (isCursorLocked) return;
 
-            cursor.style.display = "block";
+    //TODO: Now that 'hover' is being used, make it so the user cant select global actions when a card is being swiped.
+    cursor.setAttribute('style', `top: ${e.pageY}px; left: ${e.pageX}px; display: block;`);
 
-            cursorX = results.multiHandLandmarks[0][12].x * 150;
-            cursorY = results.multiHandLandmarks[0][12].y * 150;
+    resetCursorTimer = setInterval(resetCursor, 750);
 
-            cursorX = 125 - cursorX;
+})
 
 
-            cursor.style.left = `${cursorX}%`
-            cursor.style.top = `${cursorY}%`
+// function onResults(results) {
+//     if (results.multiHandLandmarks !== undefined) {
+//         if (results.multiHandLandmarks[0] !== undefined) {
+//             //clearInterval(idleTimer);
+//             clearInterval(resetCursorTimer)
+//             if (isCursorLocked) return;
+
+//             cursor.style.display = "block";
+
+//             cursorX = results.multiHandLandmarks[0][12].x * 150;
+//             cursorY = results.multiHandLandmarks[0][12].y * 150;
+
+//             cursorX = 125 - cursorX;
 
 
-            if (!window.getComputedStyle(globalActionsElement).getPropertyValue("visibility") != "hidden") {
-                isCollidingButton(cursor, swipeLeftButton);
-                isCollidingButton(cursor, swipeRightButton);
-            }
+//             cursor.style.left = `${cursorX}%`
+//             cursor.style.top = `${cursorY}%`
 
-            isCollidingButton(cursor, homeButtonElement);
 
-            //idleTimer = setInterval(redirectToStandby, 120000);
-            resetCursorTimer = setInterval(resetCursor, 750);
-        }
-    }
-}
+//             if (!window.getComputedStyle(globalActionsElement).getPropertyValue("visibility") != "hidden") {
+//                 isCollidingButton(cursor, swipeLeftButton);
+//                 isCollidingButton(cursor, swipeRightButton);
+//             }
+
+//             isCollidingButton(cursor, homeButtonElement);
+
+//             //idleTimer = setInterval(redirectToStandby, 120000);
+//             resetCursorTimer = setInterval(resetCursor, 750);
+//         }
+//     }
+// }
 
 function resetCursor() { cursor.style.display = `none` }
 
-function isColliding(a, b) {
-    return !(
-        ((a.y + a.height) < (b.y)) ||
-        (a.y > (b.y + b.height)) ||
-        ((a.x + a.width) < b.x) ||
-        (a.x > (b.x + b.width))
-    );
-}
+// function isColliding(a, b) {
+//     return !(
+//         ((a.y + a.height) < (b.y)) ||
+//         (a.y > (b.y + b.height)) ||
+//         ((a.x + a.width) < b.x) ||
+//         (a.x > (b.x + b.width))
+//     );
+// }
 
-function isCollidingButton(cursor, button) {
-    if (isColliding(cursor.getBoundingClientRect(), button.getBoundingClientRect()) && !button.classList.contains('disabled')) {
-        button.classList.add('selecting');
-    } else {
-        if (button.classList.contains('selecting')) {
-            button.classList.remove('selecting');
-        }
-    }
-}
+// function isCollidingButton(cursor, button) {
+//     if (isColliding(cursor.getBoundingClientRect(), button.getBoundingClientRect()) && !button.classList.contains('disabled')) {
+//         button.classList.add('selecting');
+//     } else {
+//         if (button.classList.contains('selecting')) {
+//             button.classList.remove('selecting');
+//         }
+//     }
+// }
 
-const hands = new Hands({
-    locateFile: (file) => {
-        return `https://cdn.jsdelivr.net/npm/@mediapipe/hands@0.1/${file}`;
-    }
-});
+// const hands = new Hands({
+//     locateFile: (file) => {
+//         return `https://cdn.jsdelivr.net/npm/@mediapipe/hands@0.1/${file}`;
+//     }
+// });
 
-hands.onResults(onResults);
+// hands.onResults(onResults);
 
 /**
  * Instantiate a camera. We'll feed each frame we receive into the solution.
  */
-const camera = new Camera(videoElement, {
-    onFrame: async () => {
-        await hands.send({ image: videoElement });
-    },
-    width: 1280,
-    height: 720
-});
+// const camera = new Camera(videoElement, {
+//     onFrame: async() => {
+//         await hands.send({ image: videoElement });
+//     },
+//     width: 1280,
+//     height: 720
+// });
 
-setTimeout(() => {
-    camera.start();
-}, 750);
+// setTimeout(() => {
+//     camera.start();
+// }, 750);
 
-homeButtonElement.addEventListener('transitionend', function () {
+homeButtonElement.addEventListener('transitionend', function() {
     window.location.href = "/";
 })
 
-homeButtonElement.addEventListener('click', function () {
-    window.location.href = "/";
-})
-//This is for motion control
-swipeLeftButton.addEventListener('animationend', function () {
+homeButtonElement.addEventListener('click', function() {
+        window.location.href = "/";
+    })
+    //This is for motion control
+swipeLeftButton.addEventListener('animationend', function() {
     let cardToSwipe = document.querySelector('div.card-stack div.card');
     if (!cardToSwipe) return console.log('no cards left to swipe');
     cardToSwipe.classList.add('swipe-left');
@@ -132,7 +144,7 @@ swipeLeftButton.addEventListener('animationend', function () {
     isCursorLocked = true;
     setTimeout(() => { isCursorLocked = false }, 1000);
 });
-swipeRightButton.addEventListener('animationend', function () {
+swipeRightButton.addEventListener('animationend', function() {
     let cardToSwipe = document.querySelector('div.card-stack div.card');
     if (!cardToSwipe) return console.log('no cards to swipe left');
     cardToSwipe.classList.add('swipe-right');
@@ -150,7 +162,7 @@ swipeRightButton.addEventListener('animationend', function () {
 
 
 
-swipeLeftButton.addEventListener('click', function () {
+swipeLeftButton.addEventListener('click', function() {
     let cardToSwipe = document.querySelector('div.card-stack div.card');
     if (!cardToSwipe) return console.log('no cards left to swipe');
     cardToSwipe.classList.add('swipe-left');
@@ -165,7 +177,7 @@ swipeLeftButton.addEventListener('click', function () {
     setTimeout(() => { isCursorLocked = false }, 1000);
 });
 
-swipeRightButton.addEventListener('click', function () {
+swipeRightButton.addEventListener('click', function() {
     let cardToSwipe = document.querySelector('div.card-stack div.card');
     if (!cardToSwipe) return console.log('no cards to swipe left');
     cardToSwipe.classList.add('swipe-right');
@@ -229,8 +241,8 @@ function filterTwoStyles(outfit, popularStyle, secondStyle) {
     let styles = outfit.categories.value;
     let score = 0;
     for (let i = 0; i < styles.length; i++) {
-        if (styles[i]['en-US'] === popularStyle
-            || styles[i]['en-US'] === secondStyle) {
+        if (styles[i]['en-US'] === popularStyle ||
+            styles[i]['en-US'] === secondStyle) {
             score++;
         }
     }
@@ -241,9 +253,9 @@ function filterThreeStyles(outfit, popularStyle, secondStyle, thirdStyle) {
     let styles = outfit.categories.value;
     let score = 0;
     for (let i = 0; i < styles.length; i++) {
-        if (styles[i]['en-US'] === popularStyle
-            || styles[i]['en-US'] === secondStyle
-            || styles[i]['en-US'] === thirdStyle) {
+        if (styles[i]['en-US'] === popularStyle ||
+            styles[i]['en-US'] === secondStyle ||
+            styles[i]['en-US'] === thirdStyle) {
             score++;
         }
     }
@@ -287,11 +299,11 @@ function createCardElementWithOutfit(outfits) {
             cardInformationElement.appendChild(cardOutfitNameElement);
             cardInformationElement.appendChild(cardOutfitDescriptionElement);
             cardInformationElement.appendChild(cardOutfitPriceElement);
-            setTimeout(function () {
+            setTimeout(function() {
                 cardElement.classList.add('fadeIn');
 
             }, 250)
-            setTimeout(function () {
+            setTimeout(function() {
                 cardElement.classList.add('slideRight');
                 let topPercentage = 5;
                 let startTimeTransition = 250;
@@ -319,7 +331,7 @@ function createCardElementWithOutfit(outfits) {
                         itemContainer.appendChild(itemName);
                         itemContainer.appendChild(itemPrice);
 
-                        setTimeout(function () {
+                        setTimeout(function() {
                             itemContainer.classList.add('slideLeft');
                         }, startTimeTransition)
 
@@ -338,7 +350,7 @@ function createCardElementWithOutfit(outfits) {
             cardInformationElement.appendChild(cardOutfitPriceElement);
         }
 
-        cardElement.addEventListener('animationend', function () {
+        cardElement.addEventListener('animationend', function() {
 
             cardElement.parentElement.removeChild(cardElement);
             console.log('deleted card: ' + cardElement.id)

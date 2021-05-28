@@ -2,9 +2,11 @@
 * {
     margin: 0;
     font-family: 'Poppins', sans-serif;
+    cursor: none;
 }
 
-body, html {
+body,
+html {
     background-color: black;
     overflow: hidden;
     height: 100%;
@@ -38,8 +40,8 @@ body, html {
     animation-iteration-count: 1;
     position: absolute;
     display: flex;
-    width: 100%;
     height: 100%;
+    width: 95%;
     background-color: white;
     border-radius: 5%;
     background-size: 100% 100%;
@@ -115,6 +117,7 @@ body, html {
     animation-name: swipe-right;
 }
 
+
 /* global actions buttons*/
 
 .global-actions {
@@ -138,7 +141,8 @@ body, html {
     z-index: 10;
 }
 
-.right-action, .left-action {
+.right-action,
+.left-action {
     width: 5rem;
     height: 5rem;
     border-radius: 50%;
@@ -152,7 +156,10 @@ body, html {
     color: #fff;
 }
 
-.right-action.selecting, .left-action.selecting {
+.right-action:hover,
+.left-action:hover,
+.right-action.selecting,
+.left-action.selecting {
     animation: zoom-animation 1s ease 1;
 }
 
@@ -197,7 +204,7 @@ body, html {
     margin: 3%;
     position: absolute;
     height: 75px;
-    width: 95%;
+    width: 92%;
     left: 0;
     display: flex;
     flex-direction: row;
@@ -270,9 +277,8 @@ body, html {
     position: absolute;
     justify-self: center;
     z-index: 1000;
-    transition: 200ms ease-in-out;
-    left: 50%;
-    transform: translateX(-50%);
+    /* transition: 200ms ease-in-out; */
+    transform: translate(-50%, -50%);
     display: none;
 }
 
@@ -304,6 +310,7 @@ body, html {
     padding: 10px;
 }
 
+.sidebar i:hover,
 .sidebar i.selecting {
     transition: color 1s linear, border 1s linear;
     color: #e32636;
