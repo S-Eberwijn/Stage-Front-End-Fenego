@@ -22,6 +22,11 @@ function run() {
 var app = express();
 
 app.use(express.static('public'));
+
+var platformPath = `${__dirname}\\\\public`;
+if (process.platform === "linux") {
+    platformPath = `${__dirname}\/public`
+}
 app.use(favicon(__dirname + '/public/favicon.ico'));
 
 
@@ -29,30 +34,33 @@ app.get('/', function(req, res) {
     res.sendFile('index.html', { root: `${__dirname}` });
 });
 
+
+
 app.get('/barcode', function(req, res) {
-    //pythonProcess.kill('SIGTERM');
-    res.sendFile('barcode.html', { root: `${__dirname}\\public` });
+    pythonProcess.kill('SIGTERM');
+    res.sendFile('barcode.html', { root: platformPath });
 });
 
 app.get('/main', function(req, res) {
-    res.sendFile('FITSmain.html', { root: `${__dirname}\\public` });
+    res.sendFile('FITSmain.html', { root: platformPath });
 });
 app.get('/standby', function(req, res) {
-    res.sendFile('standby.html', { root: `${__dirname}\\public` });
+    res.sendFile('standby.html', { root: platformPath });
 });
 app.get('/findego', function(req, res) {
-    res.sendFile('findego.html', { root: `${__dirname}\\public` });
+    res.sendFile('findego.html', { root: platformPath });
 });
 app.get('/face', function(req, res) {
-    res.sendFile('face.html', { root: `${__dirname}\\public` });
+    res.sendFile('face.html', { root: platformPath });
 });
 app.get('/run', function(req, res) {
-    // run();
+    run();
 });
 
 // Default every route except the above to serve the 404.html
 app.get('*', function(req, res) {
-    res.sendFile('404.html', { root: `${__dirname}\\public` });
+    res.sendFile('404.html', { root: platformPath });
+
 });
 
 app.listen(3000, function() {
