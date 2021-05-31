@@ -29,8 +29,7 @@
     color: rgb(129, 129, 129);
 }
 
-.arrow.selecting,
-.arrow:not(.disabled):hover {
+.arrow.selecting, .arrow:not(.disabled):hover {
     transition: color 1s linear;
     color: #e32636 !important;
 }
@@ -91,14 +90,14 @@
     display: flex;
     justify-content: center;
     align-items: center;
+    z-index: 1;
 }
 
 #detailedBoxContent>div.iconHolder>i {
     color: white;
 }
 
-.iconHolder.selecting,
-.iconHolder:hover {
+.iconHolder.selecting, .iconHolder:hover {
     transition: background-color 1500ms linear;
     background-color: #e32636 !important;
 }
@@ -156,8 +155,7 @@ div.iconHolder.right {
     border-color: crimson;
 }
 
-.item.selecting,
-.item:not(.selected):hover {
+.item.selecting, .item:not(.selected):hover {
     /*animation: bg 2000ms cubic-bezier(0.19, 1, 0.22, 1) 1;*/
     animation: inner-border 2000ms cubic-bezier(.11, .11, .78, .76) 1;
     background-repeat: no-repeat;
