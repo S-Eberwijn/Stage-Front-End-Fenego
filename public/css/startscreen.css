@@ -29,6 +29,15 @@ body {
     z-index: 10;
 }
 
+#greeting img {
+    height: 50%;
+    width: auto;
+}
+
+#greeting h1 {
+    font-size: 4rem;
+}
+
 #greeting.fadeOut {
     animation-delay: 4s;
 }
@@ -85,10 +94,9 @@ a:active {
 }
 
 .mode {
-    height: 10rem;
-    width: 10rem;
+    height: 14rem;
+    width: 14rem;
     border: 3px solid white;
-    outline: 20px solid #00483b;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -129,18 +137,26 @@ p {
     color: white;
 }
 
-#input_video {
+
+/* #input_video {
     /*transform: rotateY(180deg);*/
-    /*-webkit-transform:rotateY(180deg); !* Safari and Chrome *!*/
-    /*-moz-transform:rotateY(180deg); !* Firefox *!*/
-    position: fixed;
-    right: 0;
-    bottom: 0;
-    min-width: 100%;
-    min-height: 100%;
-    z-index: -10;
-    visibility: hidden;
-}
+
+
+/*-webkit-transform:rotateY(180deg); !* Safari and Chrome *!*/
+
+
+/*-moz-transform:rotateY(180deg); !* Firefox *!*/
+
+
+/* position: fixed;
+right: 0;
+bottom: 0;
+min-width: 100%;
+min-height: 100%;
+z-index: -10;
+visibility: hidden;
+
+} */
 
 #cursor {
     background: white;
@@ -154,16 +170,4 @@ p {
     transform: translate(-50%, -50%);
     /* transition: 200ms ease-in-out; */
     display: none;
-}
-
-#cursor::before {
-    content: '';
-    position: absolute;
-    width: 40%;
-    height: 40%;
-    border-radius: 50%;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    background-color: grey;
 }

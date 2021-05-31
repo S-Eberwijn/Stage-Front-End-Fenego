@@ -19,11 +19,11 @@ let spinnerElement = document.getElementById("spinner");
 
 
 
-spinnerElement.onanimationend = (e) => {
-    spinnerElement.parentNode.removeChild(spinnerElement);
-    // mainElement.classList.add('fadeIn');
-    // mainElement.style.opacity = "1";
-};
+// spinnerElement.onanimationend = (e) => {
+//     spinnerElement.parentNode.removeChild(spinnerElement);
+//     // mainElement.classList.add('fadeIn');
+//     // mainElement.style.opacity = "1";
+// };
 
 mainElement.onanimationend = (e) => {
     mainElement.style.opacity = "1";
@@ -51,7 +51,7 @@ let itemDescription = document.getElementById('itemDescription');
 let itemTags = document.getElementById('itemTags');
 let itemPrice = document.getElementById('itemPrice');
 
-window.onload = function () {
+window.onload = function() {
     carousels.forEach(carousel => {
         carousel.style.width = `${verticalSliders[0].getBoundingClientRect().width}px`;
 
@@ -119,7 +119,14 @@ window.onload = function () {
         item.style.marginBottom = `${ITEMS_MARGIN / 2}px`;
 
 
-        item.addEventListener("animationend", function () {
+        item.addEventListener("animationend", function() {
+            let isVisible = false;
+            for (let index = 0; index < MAX_VISIBLE_ITEMS; index++) {
+                if (item.parentElement.children[index] === item) {
+                    isVisible = true;
+                }
+            }
+            if (!isVisible) return;
             document.querySelectorAll('.item.selected').forEach(item => { item.classList.toggle('selected') });
             item.classList.toggle('selected');
             if (item.querySelector('p').innerHTML === 'Scan Item') {
@@ -135,14 +142,14 @@ window.onload = function () {
     });
 };
 
-detailedBoxContentLoader.addEventListener('animationend', function () {
+detailedBoxContentLoader.addEventListener('animationend', function() {
     detailedBoxContent.style.opacity = 1;
     detailedBoxContentLoader.classList.remove('animate1');
 });
 
 //Adds an event listener to every previous-button for when a transition ends.
 previousButtons.forEach(element => {
-    element.addEventListener("transitionend", function () {
+    element.addEventListener("transitionend", function() {
         hideSmallLineAndDetailedBox();
         deselectAllSelectedItems();
         if (!carouselIsMoving) {
@@ -150,14 +157,14 @@ previousButtons.forEach(element => {
             var carousel = getCorrectCarousel(element);
             var rowHeight = getDistanceBetweenElements(carousel.querySelectorAll('div.item')[0], carousel.querySelectorAll('div.item')[1]);
             rotateForward(carousel);
-            animate(carousel, -rowHeight, 0, function () {
+            animate(carousel, -rowHeight, 0, function() {
                 carousel.style.top = '0';
                 carouselIsMoving = false;
             });
-            var rotateCarousel = setInterval(function () {
+            var rotateCarousel = setInterval(function() {
                 if ((rgb2hex(window.getComputedStyle(element, null).getPropertyValue('color')) === '#e32636')) {
                     rotateForward(carousel);
-                    animate(carousel, -rowHeight, 0, function () {
+                    animate(carousel, -rowHeight, 0, function() {
                         carousel.style.top = '0';
                         carouselIsMoving = false;
                     });
@@ -171,7 +178,7 @@ previousButtons.forEach(element => {
 
 //Adds an event listener to every next-button for when a transition ends.
 nextButtons.forEach(element => {
-    element.addEventListener("transitionend", function () {
+    element.addEventListener("transitionend", function() {
         hideSmallLineAndDetailedBox();
         deselectAllSelectedItems();
         if (!carouselIsMoving) {
@@ -179,14 +186,14 @@ nextButtons.forEach(element => {
             var carousel = getCorrectCarousel(element);
             var rowHeight = getDistanceBetweenElements(carousel.querySelectorAll('div.item')[0], carousel.querySelectorAll('div.item')[1]);
             //TODO: While element is color red, set interval for scrolling through items.
-            animate(carousel, 0, -rowHeight, function () {
+            animate(carousel, 0, -rowHeight, function() {
                 carousel.style.top = '0';
                 rotateBackward(carousel);
                 carouselIsMoving = false;
             });
-            var rotateCarousel = setInterval(function () {
+            var rotateCarousel = setInterval(function() {
                 if ((rgb2hex(window.getComputedStyle(element, null).getPropertyValue('color')) === '#e32636')) {
-                    animate(carousel, 0, -rowHeight, function () {
+                    animate(carousel, 0, -rowHeight, function() {
                         carousel.style.top = '0';
                         rotateBackward(carousel);
                         carouselIsMoving = false;
@@ -201,39 +208,6 @@ nextButtons.forEach(element => {
     })
 });
 
-// iconHolders.forEach(iconHolder => {
-//     iconHolder.addEventListener('transitionend', function () {
-//         let oldIcon = iconHolder.querySelector('i');
-//         let newIcon = document.createElement('i');
-//         if (iconHolder.classList.contains('star')) {
-//             if (oldIcon.classList.contains('far')) {
-//                 oldIcon.remove();
-//                 newIcon.className = 'fas fa-star fa-3x yellow';
-//                 iconHolder.appendChild(newIcon);
-//             } else {
-//                 oldIcon.remove();
-//                 newIcon.className = 'far fa-star fa-3x';
-//                 iconHolder.appendChild(newIcon);
-//             }
-//         } else if (iconHolder.classList.contains('eye')) {
-//             if (oldIcon.classList.contains('fa-eye-slash')) {
-//                 oldIcon.remove();
-//                 newIcon.className = 'far fa-eye fa-3x';
-//                 iconHolder.appendChild(newIcon);
-//             } else {
-//                 oldIcon.remove();
-//                 newIcon.className = 'far fa-eye-slash fa-3x';
-//                 iconHolder.appendChild(newIcon);
-//             }
-//         } else if (iconHolder.classList.contains('trash')) {
-//             if (oldIcon.classList.contains('far')) {
-
-//             }
-//         }
-//         newIcon.classList.add('iconAni');
-//         console.log('testing');
-//     })
-// })
 
 function getCorrectCarousel(element) {
     if (element.parentElement.querySelector('.left')) {
@@ -248,7 +222,7 @@ function animate(carousel, begin, end, finalTask) {
         duration = CAROUSEL_ANIMATION_TIME,
         startTime = Date.now();
     carousel.style.top = begin + 'px';
-    var animateInterval = window.setInterval(function () {
+    var animateInterval = window.setInterval(function() {
         var t = Date.now() - startTime;
         if (t >= duration) {
             window.clearInterval(animateInterval);

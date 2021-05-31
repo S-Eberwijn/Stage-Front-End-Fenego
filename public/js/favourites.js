@@ -7,7 +7,9 @@ let productService = new ProductService();
 let iconHolders = document.querySelectorAll('.iconHolder');
 
 iconHolders.forEach(iconHolder => {
-    iconHolder.addEventListener('transitionend', function () {
+    iconHolder.addEventListener('transitionend', function() {
+        if (window.getComputedStyle(detailedBox).getPropertyValue("opacity").includes('0')) return;
+
         let oldIcon = iconHolder.querySelector('i');
         let newIcon = document.createElement('i');
         if (iconHolder.classList.contains('star')) {
@@ -31,7 +33,7 @@ iconHolders.forEach(iconHolder => {
                 if (carouselOfSelectedItem.className.includes('left')) {
                     setProductSuggestions(selectedItem);
                 } else if (carouselOfSelectedItem.className.includes('right')) {
-                    suggestedItems = suggestedItems.filter(function (value, index, arr) {
+                    suggestedItems = suggestedItems.filter(function(value, index, arr) {
                         return value.key != selectedItem.id;
                     });
                     sessionStorage.setItem('suggestions', JSON.stringify(suggestedItems));
@@ -78,7 +80,7 @@ function removeProductFromCustomerFavourites() {
 }
 
 function setProductSuggestions(selectedItem) {
-    scannedItems = scannedItems.filter(function (value, index, arr) {
+    scannedItems = scannedItems.filter(function(value, index, arr) {
         return value.key != selectedItem.id;
     });
     sessionStorage.setItem('barcodes', JSON.stringify(scannedItems));
@@ -109,4 +111,3 @@ function setProductSuggestions(selectedItem) {
         })
     })
 }
-

@@ -29,12 +29,9 @@ if (process.platform === "linux") {
 }
 app.use(favicon(__dirname + '/public/favicon.ico'));
 
-
 app.get('/', function(req, res) {
     res.sendFile('index.html', { root: `${__dirname}` });
 });
-
-
 
 app.get('/barcode', function(req, res) {
     pythonProcess.kill('SIGTERM');
@@ -45,6 +42,7 @@ app.get('/main', function(req, res) {
     res.sendFile('FITSmain.html', { root: platformPath });
 });
 app.get('/standby', function(req, res) {
+    run();
     res.sendFile('standby.html', { root: platformPath });
 });
 app.get('/findego', function(req, res) {
@@ -60,7 +58,6 @@ app.get('/run', function(req, res) {
 // Default every route except the above to serve the 404.html
 app.get('*', function(req, res) {
     res.sendFile('404.html', { root: platformPath });
-
 });
 
 app.listen(3000, function() {
@@ -68,4 +65,4 @@ app.listen(3000, function() {
 });
 
 
-childProcess.exec('start chrome --kiosk http;//localhost:3000/'); //open in kiosk mode, ctrl+W to close or close in taskbar 2nd screen
+childProcess.exec('start chrome --kiosk http;//localhost:3000/standby'); //open in kiosk mode, ctrl+W to close or close in taskbar 2nd screen

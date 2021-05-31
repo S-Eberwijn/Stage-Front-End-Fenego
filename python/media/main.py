@@ -1,8 +1,8 @@
 import os
 import sys
-os.system('python3 -m pip install {}'.format(sys.argv[1]))
-os.system('python3 -m pip install {}'.format(sys.argv[2]))
-os.system('python3 -m pip install {}'.format(sys.argv[3]))
+os.system('python -m pip install {}'.format(sys.argv[1]))
+os.system('python -m pip install {}'.format(sys.argv[2]))
+os.system('python -m pip install {}'.format(sys.argv[3]))
 import mediapipe as mp
 import cv2
 import win32api, win32con
@@ -13,7 +13,7 @@ import win32api, win32con
 mp_drawing = mp.solutions.drawing_utils
 mp_hands = mp.solutions.hands
 
-cap = cv2.VideoCapture(1)
+cap = cv2.VideoCapture(0)
 with mp_hands.Hands(
         min_detection_confidence=0.5,
         min_tracking_confidence=0.5) as hands:

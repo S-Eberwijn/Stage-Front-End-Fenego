@@ -212,6 +212,7 @@ html {
     color: white;
     text-align: left;
     border: 2px solid white;
+    overflow: hidden;
 }
 
 .item-container.slideLeft {
@@ -282,11 +283,18 @@ html {
     display: none;
 }
 
-#input_video {
+
+/* #input_video {
     /*transform: rotateY(180deg);*/
-    /*-webkit-transform:rotateY(180deg); !* Safari and Chrome *!*/
-    /*-moz-transform:rotateY(180deg); !* Firefox *!*/
-    position: absolute;
+
+
+/*-webkit-transform:rotateY(180deg); !* Safari and Chrome *!*/
+
+
+/*-moz-transform:rotateY(180deg); !* Firefox *!*/
+
+
+/* position: absolute;
     right: 0;
     bottom: 0;
     min-width: 100%;
@@ -295,6 +303,7 @@ html {
     display: none;
     visibility: hidden;
 }
+*/
 
 .sidebar {
     display: flex;

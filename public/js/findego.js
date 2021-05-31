@@ -1,6 +1,6 @@
 import ProductService from "./commercetools/service/ProductService.js";
 
-const videoElement = document.getElementById("input_video");
+// const videoElement = document.getElementById("input_video");
 const cursor = document.getElementById("cursor");
 const globalActionsElement = document.querySelector('div.global-actions');
 const homeButtonElement = document.getElementById('home');
@@ -38,7 +38,6 @@ document.addEventListener('mousemove', e => {
     clearInterval(resetCursorTimer)
     if (isCursorLocked) return;
 
-    //TODO: Now that 'hover' is being used, make it so the user cant select global actions when a card is being swiped.
     cursor.setAttribute('style', `top: ${e.pageY}px; left: ${e.pageX}px; display: block;`);
 
     resetCursorTimer = setInterval(resetCursor, 750);
