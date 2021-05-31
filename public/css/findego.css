@@ -5,8 +5,7 @@
     cursor: none;
 }
 
-body,
-html {
+body, html {
     background-color: black;
     overflow: hidden;
     height: 100%;
@@ -117,7 +116,6 @@ html {
     animation-name: swipe-right;
 }
 
-
 /* global actions buttons*/
 
 .global-actions {
@@ -141,8 +139,7 @@ html {
     z-index: 10;
 }
 
-.right-action,
-.left-action {
+.right-action, .left-action {
     width: 5rem;
     height: 5rem;
     border-radius: 50%;
@@ -156,10 +153,7 @@ html {
     color: #fff;
 }
 
-.right-action:hover,
-.left-action:hover,
-.right-action.selecting,
-.left-action.selecting {
+.right-action:hover, .left-action:hover, .right-action.selecting, .left-action.selecting {
     animation: zoom-animation 1s ease 1;
 }
 
@@ -278,21 +272,17 @@ html {
     position: absolute;
     justify-self: center;
     z-index: 1000;
-    /* transition: 200ms ease-in-out; */
+    transition: 200ms ease-in-out;
     transform: translate(-50%, -50%);
     display: none;
 }
 
-
 /* #input_video {
     /*transform: rotateY(180deg);*/
 
-
 /*-webkit-transform:rotateY(180deg); !* Safari and Chrome *!*/
 
-
 /*-moz-transform:rotateY(180deg); !* Firefox *!*/
-
 
 /* position: absolute;
     right: 0;
@@ -319,8 +309,7 @@ html {
     padding: 10px;
 }
 
-.sidebar i:hover,
-.sidebar i.selecting {
+.sidebar i:hover, .sidebar i.selecting {
     transition: color 1s linear, border 1s linear;
     color: #e32636;
     border: 2px solid #e32636;

@@ -168,6 +168,6 @@ visibility: hidden;
     justify-self: center;
     z-index: 1000;
     transform: translate(-50%, -50%);
-    /* transition: 200ms ease-in-out; */
+    transition: 200ms ease-in-out;
     display: none;
 }
