@@ -3,11 +3,23 @@ import ProductService from "./commercetools/service/ProductService.js";
 
 
 let customerService = new CustomerService();
-let countdown = document.querySelector('.count');
 
 let styleElem = document.head.appendChild(document.createElement("style"));
 const logger = document.querySelector('.logger');
+let cursor = document.getElementById('cursor');
 let logMessages = [];
+
+document.addEventListener('mousemove', e => {
+    clearInterval(idleTimer);
+
+    cursor.setAttribute('style', `top: ${e.pageY}px; left: ${e.pageX}px; display: block;`);
+
+    idleTimer = setInterval(redirectToStandby, 120000);
+});
+
+document.getElementById('backButton').addEventListener('transitionend', function () {
+    window.location.href = '/main';
+})
 
 Quagga.init({}, function (err) {
     if (err) {
@@ -22,11 +34,6 @@ Quagga.init({}, function (err) {
         ` + `.r-half::before {
         -webkit-transform-origin: center left;
         -webkit-animation-name: r-rotate;}`;
-    //Count down every second.
-    let timeLeft = parseInt(countdown.innerHTML) - 1;
-    setInterval(function () {
-        if (timeLeft >= 0) countdown.innerHTML = timeLeft--;
-    }, 1000);
 });
 
 Quagga.onProcessed(function (result) {
@@ -71,6 +78,7 @@ Quagga.onDetected(function (result) {
             addToLogger('Fetching product...');
             productService.getProductByKey(scannedBarcode).then(product => {
                 productService.getCategories(product.categories).then(r => {
+                    //TODO: make it so suggestion is based on all scanned items categories
                     let categoryIds = product.categories;
                     product.categoriesNames = r;
                     var code = JSON.parse(sessionStorage.getItem("barcodes")) || [];
@@ -96,11 +104,6 @@ function addToLogger(message) {
     logger.innerHTML = `${logMessages.slice(logMessages.length - 3, logMessages.length).join('<br/>')}`;
 }
 
-//When the timer is at 0, return to home.
-
-countdown.addEventListener('animationend', function () {
-    // window.location.href = "/main";
-});
 
 //double code, fix later
 function setProductSuggestions(productService, categoryIds) {

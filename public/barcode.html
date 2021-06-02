@@ -8,15 +8,13 @@
 </head>
 
 <body>
+    <div id="cursor"></div>
+
     <div class="wrapper">
         <section class="container">
             <h1>Scan uw barcode</h1>
             <div id="interactive" class="viewport">
-                <div class="timer">
-                    <div class="count">20</div>
-                    <div class="l-half l-rotation"></div>
-                    <div class="r-half r-rotation"></div>
-                </div>
+                <div id="backButton"></div>
             </div>
             <p class="logger"></p>
         </section>
@@ -29,6 +27,7 @@
     <script src="https://unpkg.com/@commercetools/api-request-builder/dist/api-request-builder.umd.min.js"></script>
     <script src="https://unpkg.com/@commercetools/sdk-middleware-http/dist/sdk-middleware-http.umd.min.js"></script>
 
+    <script src="./js/redirectToStandby.js"></script>
 
     <script src="./js/quagga.min.js"></script>
     <script src="./js/scanner.js" type="module"></script>
