@@ -13,7 +13,7 @@ import win32api, win32con
 mp_drawing = mp.solutions.drawing_utils
 mp_hands = mp.solutions.hands
 
-cap = cv2.VideoCapture(0)
+cap = cv2.VideoCapture(1)
 with mp_hands.Hands(
         min_detection_confidence=0.5,
         min_tracking_confidence=0.5) as hands:

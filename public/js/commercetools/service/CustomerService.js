@@ -1,7 +1,7 @@
 import CustomerDAO from "../dao/CustomerDAO.js";
 export default class CustomerService {
-    constructor() {
-        this.customerDao = new CustomerDAO();
+    constructor(ctApiHost, ctAuthHost) {
+        this.customerDao = new CustomerDAO(ctApiHost, ctAuthHost);
     }
     getAllCustomers() {
         return this.customerDao.getCustomers().then(results => {

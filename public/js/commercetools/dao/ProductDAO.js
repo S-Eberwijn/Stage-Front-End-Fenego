@@ -3,19 +3,19 @@ export default class ProductDAO {
         this.client = CommercetoolsSdkClient.createClient({
             middlewares: [
                 CommercetoolsSdkMiddlewareHttp.createHttpMiddleware({
-                    host: "https://api.europe-west1.gcp.commercetools.com"
+                    host: CT_API_HOST
                 }),
             ],
         });
         this.authClient = new CommercetoolsSdkAuth.default({
-            host: "https://auth.europe-west1.gcp.commercetools.com",
-            projectkey: "stage-pxl-20",
+            host: CT_AUTH_HOST,
+            projectkey: PROJ_KEY,
             disableRefreshToken: false,
             credentials: {
-                clientId: "tesYg1HdkwOXngl3oCECKlAE",
-                clientSecret: "8Lo4p0N9mW7xIDE7a4c8WUBvT2BibS1d"
+                clientId: CLIENT_ID,
+                clientSecret: CLIENT_SECRET
             },
-            scopes: ['manage_project:stage-pxl-20']
+            scopes: [`manage_project:${PROJ_KEY}`]
 
         })
         this.bearerToken = "";
@@ -24,7 +24,7 @@ export default class ProductDAO {
         });
 
         this.requestBuilder = CommercetoolsApiRequestBuilder.createRequestBuilder({
-            projectKey: 'stage-pxl-20',
+            projectKey: PROJ_KEY,
             features: [CommercetoolsApiRequestBuilder.features.queryLocation]
         });
         this.productsService = this.requestBuilder.products;

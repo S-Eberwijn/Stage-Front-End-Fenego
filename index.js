@@ -34,7 +34,7 @@ app.get('/', function(req, res) {
 });
 
 app.get('/barcode', function(req, res) {
-    pythonProcess.kill('SIGTERM');
+    // pythonProcess.kill('SIGTERM');
     res.sendFile('barcode.html', { root: platformPath });
 });
 
