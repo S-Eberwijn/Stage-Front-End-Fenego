@@ -104,7 +104,6 @@ function addToLogger(message) {
 }
 
 
-//double code, fix later
 function setProductSuggestions(productService, categoryIds) {
     let suggestedItemsArray = [];
 

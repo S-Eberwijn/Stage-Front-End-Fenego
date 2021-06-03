@@ -1,10 +1,8 @@
 const greeting = document.getElementById('greeting');
-const videoElement = document.getElementById("input_video");
 const cursor = document.getElementById("cursor");
 const modes = document.querySelectorAll('div.mode');
 const wrapper = document.querySelector('#wrapper');
 
-let cursorY, cursorX;
 
 document.addEventListener('mousemove', e => {
     clearInterval(idleTimer);

@@ -1,6 +1,5 @@
 let mainElement = document.getElementById("main");
 let greeting = document.getElementById("greeting");
-let spinnerElement = document.getElementById("spinner");
 
 
 mainElement.onanimationend = (e) => {

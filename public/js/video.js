@@ -1,5 +1,3 @@
-const videoElement = document.getElementById("input_video");
-const cursorRightElement = document.getElementById("cursorRight");
 const spinner = document.getElementById("spinner");
 const buttons = document.querySelectorAll('.arrow');
 const cursor = document.getElementById("cursorLeft");
@@ -13,7 +11,6 @@ let tutorialButton = document.querySelector('#tutorialButton');
 let tutorialCursor = document.querySelector('div.tutorialItemBox div.tutorialCursor');
 let tutorialItemBox = document.querySelector('div.tutorialItemBox');
 
-let cursorY, cursorX;
 
 document.addEventListener('mousemove', e => {
     clearInterval(idleTimer);
@@ -40,7 +37,7 @@ window.addEventListener("DOMContentLoaded", function() {
     } else {
         tutorialWrapper.style.display = 'none';
     }
-})
+});
 
 function setDelayOnEachElement(sections) {
     for (let index = 0; index < sections.length; index++) {
@@ -77,24 +74,6 @@ helpButton.addEventListener('transitionend', function() {
 homeButtonElement.addEventListener('transitionend', function() {
     window.location.href = "/";
 });
-
-//TODO: IMPORTANT BUG, FIX
-//             if (window.getComputedStyle(detailedBox).getPropertyValue("opacity") != "0") {
-//                 iconHolders.forEach(iconHolder => {
-//                     isCollidingButton(cursor, iconHolder);
-//                 })
-//             }
-//             buttons.forEach(button => {
-//                 isCollidingButton(cursor, button);
-//             });
-//             isCollidingButton(cursor, tutorialButton);
-//             isCollidingButton(cursor, helpButton);
-//             isCollidingButton(cursor, homeButtonElement);
-//             idleTimer = setInterval(redirectToStandby, 120000);
-
-//         }
-//     }
-// }
 
 function isColliding(a, b) {
     return !(
