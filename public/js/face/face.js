@@ -54,8 +54,8 @@ async function start() {
     titel.innerHTML = "Bezig met identificeren!";
     const labeledFaceDescriptors = await loadLabeledImages();
     let image, canvas;
-    if (image) image.remove()
-    if (canvas) canvas.remove()
+    if (image) image.remove();
+    if (canvas) canvas.remove();
     image = document.createElement("img");
     image.src = blobURL;
     image.addEventListener('load', async () => {
@@ -64,7 +64,7 @@ async function start() {
         const singleResult = await faceapi
             .detectSingleFace(image)
             .withFaceLandmarks()
-            .withFaceDescriptor()
+            .withFaceDescriptor();
 
         sessionStorage.setItem("customerName", "Anoniempje");
 
@@ -93,7 +93,6 @@ let customerList;
 async function loadLabeledImages() {
     const labels = [];
     const images = [];
-    ;
     return await customerService.getAllCustomers().then(async customers => {
         customerList = customers;
         let counter = -1;

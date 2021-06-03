@@ -12,7 +12,7 @@ export default class CustomerService {
                     customerId: result['id'],
                     name: result.firstName,
                     img: result.custom.fields.Image
-                }
+                };
                 filteredCustomers.push(filteredCustomer);
             });
             return filteredCustomers;
@@ -40,9 +40,7 @@ export default class CustomerService {
 
 
     async createShoppingListForCustomer(customerId, listType) {
-        console.log(customerId);
         let returnList = this.customerDao.createShoppingListForCustomer(customerId, listType).then((r) => {return r});
-        console.log(returnList);
         return await returnList;
     }
 
@@ -64,7 +62,6 @@ export default class CustomerService {
                 for (let i = 0; i < shoppingLists.length; i++) {
                     if (shoppingLists[i].customer['id'] === customerId
                         && shoppingLists[i].name.en === "scannedList") {
-                        console.log("ja toch");
                         returnList = shoppingLists[i];
                         break;
                     }

@@ -16,10 +16,10 @@ export default class CustomerDAO {
                 clientSecret: CLIENT_SECRET
             },
             scopes: [`manage_project:${PROJ_KEY}`]
-        })
+        });
         this.bearerToken = this.getBearerToken().then(data => {
             this.bearerToken = data.access_token;
-        })
+        });
         this.requestBuilder = CommercetoolsApiRequestBuilder.createRequestBuilder({
             projectKey: PROJ_KEY,
             features: [CommercetoolsApiRequestBuilder.features.queryLocation]
@@ -32,9 +32,6 @@ export default class CustomerDAO {
         let processedRequest = this.authClient._process(request);
 
         return await processedRequest;
-    }
-    getCustomerById(customerId) {
-
     }
     async getCustomers() {
         let request = this.getBearerToken().then(data => {
@@ -58,8 +55,6 @@ export default class CustomerDAO {
             .catch(error => console.log(error));
     }
     async getShoppingLists() {
-        //AKA ShoppingList
-
         let request = this.getBearerToken().then((data) => {
             this.bearerToken = data.access_token;
             return request = {
@@ -126,7 +121,6 @@ export default class CustomerDAO {
         await this.client.execute(request)
     }
     async createShoppingListForCustomer(customerId, listType) {
-        console.log("yesyes?")
         let newList;
         await this.createShoppingList(listType).then((r) => {newList = r.body;})
         let bodyData = {
@@ -139,8 +133,6 @@ export default class CustomerDAO {
                 }
             }]
         };
-        console.log(customerId);
-        console.log(bodyData);
         let request = this.getBearerToken().then(data => {
             this.bearerToken = data.access_token;
             return request = {
@@ -164,7 +156,7 @@ export default class CustomerDAO {
     }
 
     async createShoppingList(listType) {
-        //listname should be "favouritesList" or "scannedList"
+        //listType should be "favouritesList" or "scannedList"
         let request = this.getBearerToken().then(data => {
             this.bearerToken = data.access_token;
             return request = {

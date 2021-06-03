@@ -64,72 +64,19 @@ tutorialButton.addEventListener('transitionend', function() {
     sections.forEach(section => {
         section.style.opacity = 0
     })
-})
+});
 helpButton.addEventListener('transitionend', function() {
     hideSmallLineAndDetailedBox();
     deselectAllSelectedItems();
     tutorialWrapper.style.display = 'flex';
     sections.forEach(section => {
         section.style.opacity = 1
-    })
+    });
     tutorialButton.style.opacity = 1;
-})
+});
 homeButtonElement.addEventListener('transitionend', function() {
     window.location.href = "/";
-})
-
-
-// function onResults(results) {
-//     spinnerElement.style.display = 'none';
-//     mainElement.classList.add('fadeIn');
-//     mainElement.style.opacity = 1;
-//     if (isFirstTime.includes('true')) {
-
-//         setDelayOnEachElement(sections)
-//         tutorialButton.style.opacity = 1;
-//         helpButton.classList.add('selected')
-//         tutorialWrapper.style.display = 'flex';
-
-//         isFirstTime = 'false'
-//         sessionStorage.setItem('isFirstTime', isFirstTime)
-//     } else if (helpButton.className.includes('selected')) {
-//         tutorialButton.style.opacity = 1;
-//         tutorialWrapper.style.display = 'flex';
-//         setDelayOnEachElement(sections)
-//     } else {
-//         tutorialWrapper.style.display = 'none';
-//     }
-
-//     if (results.multiHandLandmarks !== undefined) {
-//         if (results.multiHandLandmarks[0] !== undefined) {
-//             clearInterval(idleTimer);
-
-//             cursor.style.display = "block";
-//             cursorX = results.multiHandLandmarks[0][12].x * 150;
-//             cursorY = results.multiHandLandmarks[0][12].y * 150;
-//             cursorX = 100 - cursorX;
-//             cursor.style.left = cursorX + "%";
-//             cursor.style.top = cursorY + "%";
-
-
-
-//             items.forEach(item => {
-//                 if (isColliding(cursor.getBoundingClientRect(), item.getBoundingClientRect())) {
-//                     if (!item.classList.contains('selected')) {
-//                         for (let index = 0; index < MAX_VISIBLE_ITEMS; index++) {
-//                             if (item.parentElement.children[index] === item) {
-//                                 if (!carouselIsMoving) {
-//                                     item.classList.add('selecting');
-//                                 }
-//                             }
-//                         }
-//                     }
-//                 } else {
-//                     if (item.classList.contains('selecting')) {
-//                         item.classList.remove('selecting');
-//                     }
-//                 }
-//             });
+});
 
 //TODO: IMPORTANT BUG, FIX
 //             if (window.getComputedStyle(detailedBox).getPropertyValue("opacity") != "0") {
@@ -157,38 +104,6 @@ function isColliding(a, b) {
         (a.x > (b.x + b.width))
     );
 }
-
-// function isCollidingButton(cursor, button) {
-//     if (isColliding(cursor.getBoundingClientRect(), button.getBoundingClientRect()) && !button.classList.contains('disabled')) {
-//         button.classList.add('selecting');
-//     } else {
-//         if (button.classList.contains('selecting')) {
-//             button.classList.remove('selecting');
-//         }
-//     }
-// }
-
-// const hands = new Hands({
-//     locateFile: (file) => {
-//         return `https://cdn.jsdelivr.net/npm/@mediapipe/hands@0.1/${file}`;
-//     }
-// });
-// hands.onResults(onResults);
-
-/**
- * Instantiate a camera. We'll feed each frame we receive into the solution.
- */
-// const camera = new Camera(videoElement, {
-//     onFrame: async () => {
-//         await hands.send({ image: videoElement });
-//     },
-//     width: 1280,
-//     height: 720
-// });
-
-// setTimeout(() => {
-//     camera.start();
-// }, 750);
 
 function isHidden(el) {
     return (el.offsetParent === null)

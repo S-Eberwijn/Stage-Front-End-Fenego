@@ -1,6 +1,6 @@
-var express = require('express');
-var favicon = require('serve-favicon');
-var childProcess = require('child_process');
+let express = require('express');
+let favicon = require('serve-favicon');
+let childProcess = require('child_process');
 const { spawn } = require('child_process')
 const logOutput = (name) => (data) => console.log(`[${name}] ${data.toString()}`);
 let pythonProcess;
@@ -34,7 +34,7 @@ app.get('/', function(req, res) {
 });
 
 app.get('/barcode', function(req, res) {
-    // pythonProcess.kill('SIGTERM');
+    // pythonProcess.kill('SIGTERM'); //Used to exit python script, in case only 1 cam available
     res.sendFile('barcode.html', { root: platformPath });
 });
 

@@ -66,7 +66,6 @@ let oldScannedBarcode;
 let barcodeCertainty = 0;
 Quagga.onDetected(function (result) {
     let scannedBarcode = result.codeResult.code;
-    console.log(scannedBarcode);
     if (oldScannedBarcode !== scannedBarcode) {
         oldScannedBarcode = scannedBarcode;
         barcodeCertainty = 0;

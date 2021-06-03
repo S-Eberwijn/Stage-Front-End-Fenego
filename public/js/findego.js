@@ -24,7 +24,7 @@ let stylesMap = new Map();
 let chosenOutfits = [];
 let isShowingWinner = false;
 
-var resetCursorTimer = setInterval(resetCursor, 750);
+let resetCursorTimer = setInterval(resetCursor, 750);
 
 
 window.onload = async function() {
@@ -32,7 +32,7 @@ window.onload = async function() {
         let randomlyChosenOutfits = outfits.sort((a, b) => 0.5 - Math.random()).slice(0, MAX_OUTFITS);
         createCardElementWithOutfit(randomlyChosenOutfits);
     });
-}
+};
 
 document.addEventListener('mousemove', e => {
     clearInterval(resetCursorTimer)
@@ -41,94 +41,17 @@ document.addEventListener('mousemove', e => {
     cursor.setAttribute('style', `top: ${e.pageY}px; left: ${e.pageX}px; display: block;`);
 
     resetCursorTimer = setInterval(resetCursor, 750);
+});
 
-})
-
-
-// function onResults(results) {
-//     if (results.multiHandLandmarks !== undefined) {
-//         if (results.multiHandLandmarks[0] !== undefined) {
-//             //clearInterval(idleTimer);
-//             clearInterval(resetCursorTimer)
-//             if (isCursorLocked) return;
-
-//             cursor.style.display = "block";
-
-//             cursorX = results.multiHandLandmarks[0][12].x * 150;
-//             cursorY = results.multiHandLandmarks[0][12].y * 150;
-
-//             cursorX = 125 - cursorX;
-
-
-//             cursor.style.left = `${cursorX}%`
-//             cursor.style.top = `${cursorY}%`
-
-
-//             if (!window.getComputedStyle(globalActionsElement).getPropertyValue("visibility") != "hidden") {
-//                 isCollidingButton(cursor, swipeLeftButton);
-//                 isCollidingButton(cursor, swipeRightButton);
-//             }
-
-//             isCollidingButton(cursor, homeButtonElement);
-
-//             //idleTimer = setInterval(redirectToStandby, 120000);
-//             resetCursorTimer = setInterval(resetCursor, 750);
-//         }
-//     }
-// }
 
 function resetCursor() { cursor.style.display = `none` }
 
-// function isColliding(a, b) {
-//     return !(
-//         ((a.y + a.height) < (b.y)) ||
-//         (a.y > (b.y + b.height)) ||
-//         ((a.x + a.width) < b.x) ||
-//         (a.x > (b.x + b.width))
-//     );
-// }
-
-// function isCollidingButton(cursor, button) {
-//     if (isColliding(cursor.getBoundingClientRect(), button.getBoundingClientRect()) && !button.classList.contains('disabled')) {
-//         button.classList.add('selecting');
-//     } else {
-//         if (button.classList.contains('selecting')) {
-//             button.classList.remove('selecting');
-//         }
-//     }
-// }
-
-// const hands = new Hands({
-//     locateFile: (file) => {
-//         return `https://cdn.jsdelivr.net/npm/@mediapipe/hands@0.1/${file}`;
-//     }
-// });
-
-// hands.onResults(onResults);
-
-/**
- * Instantiate a camera. We'll feed each frame we receive into the solution.
- */
-// const camera = new Camera(videoElement, {
-//     onFrame: async() => {
-//         await hands.send({ image: videoElement });
-//     },
-//     width: 1280,
-//     height: 720
-// });
-
-// setTimeout(() => {
-//     camera.start();
-// }, 750);
-
 homeButtonElement.addEventListener('transitionend', function() {
     window.location.href = "/";
-})
-
+});
 homeButtonElement.addEventListener('click', function() {
         window.location.href = "/";
-    })
-    //This is for motion control
+    });
 swipeLeftButton.addEventListener('animationend', function() {
     let cardToSwipe = document.querySelector('div.card-stack div.card');
     if (!cardToSwipe) return console.log('no cards left to swipe');
@@ -352,8 +275,6 @@ function createCardElementWithOutfit(outfits) {
         cardElement.addEventListener('animationend', function() {
 
             cardElement.parentElement.removeChild(cardElement);
-            console.log('deleted card: ' + cardElement.id)
-            console.log(cardStack.children.length)
             if (cardStack.children.length === 0) {
                 isShowingWinner = true;
                 globalActionsElement.remove();
