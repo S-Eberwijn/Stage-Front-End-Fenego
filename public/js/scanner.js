@@ -106,17 +106,27 @@ function addToLogger(message) {
 
 function setProductSuggestions(productService, categoryIds) {
     let suggestedItemsArray = [];
-
-    productService.getSuggestions(categoryIds).then(products => {
-        products.forEach(product => {
-            productService.getCategories(product.categories).then(r => {
-                product.categoriesNames = r;
-                suggestedItemsArray.push(product);
-                sessionStorage.setItem("suggestions", JSON.stringify(suggestedItemsArray));
-                window.location.href = "/main";
-            });
-        })
+    let customerId = sessionStorage.getItem('customerId');
+    customerService.getFavouritesOfCustomer(customerId).then((favourites) => {
+        console.log(favourites);
+            productService.getSuggestions(categoryIds).then(products => {
+                products.forEach(product => {
+                    favourites.lineItems.forEach(lineItem => {
+                        if (lineItem.productId === product.productId) {
+                            product.isFavourite = true;
+                        }
+                    });
+                    productService.getCategories(product.categories).then(r => {
+                        product.categoriesNames = r;
+                        suggestedItemsArray.push(product);
+                        sessionStorage.setItem("suggestions", JSON.stringify(suggestedItemsArray));
+                        window.location.href = "/main";
+                    });
+                })
+            })
     })
+
+
 }
 
 function addProductToScannedItems(productId) {

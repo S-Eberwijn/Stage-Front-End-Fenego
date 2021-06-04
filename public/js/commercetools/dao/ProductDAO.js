@@ -52,7 +52,6 @@ export default class ProductDAO {
             .catch(error => console.log(error));
     }
     getProductByKey(key) {
-        console.log(this.bearerToken);
         const request = {
             uri: this.productsService.byKey(key).build(), //max 500
             method: 'GET',
@@ -79,7 +78,7 @@ export default class ProductDAO {
                     Authorization: `Bearer ${this.bearerToken}`,
                 }
             };
-        })
+        });
         let returnResults = null;
         return this.client.execute(await request)
             .then(
