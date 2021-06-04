@@ -44,6 +44,22 @@ os.system('python -m pip install {}'.format(sys.argv[2]))
 os.system('python -m pip install {}'.format(sys.argv[3]))
 ```
 
+### CommerceTools Configuration
+#### Create API key with Admin rights
+On Commercetools Merchant Center:
+<br/>Settings > Developer Settings > New API Client > All admin rights
+#### Edit config file:
+<br/>Go to ./Fenego/public/js/config.js
+<br/>Change the following lines with the API information:
+
+```javascript
+const CT_API_HOST = "API URL";
+const CT_AUTH_HOST = "Auth URL";
+const PROJ_KEY = "project_key";
+const CLIENT_ID = "client_id";
+const CLIENT_SECRET = "secret";
+```
+
 
 ### Run the application
 
